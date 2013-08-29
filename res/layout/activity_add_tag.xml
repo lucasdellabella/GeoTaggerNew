@@ -1,0 +1,208 @@
+<RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical|center_horizontal"
+    android:background="@drawable/background"
+    android:gravity="top|right"
+    android:paddingBottom="10dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    tools:context=".AddTagActivity" xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentTop="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/tagview_nametxt"
+                style="@style/ShadowText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Tag"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textColor="@android:color/white" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp" >
+
+                <Button
+                    android:id="@+id/addtag_btnCancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/graybutton"
+                    android:height="32dp"
+                    android:minHeight="32dp"
+                    android:minWidth="75dip"
+                    android:text="Cancel"
+                    android:textColor="@android:color/black" />
+
+                <Button
+                    android:id="@+id/addtag_btnOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginLeft="5dp"
+                    android:background="@drawable/greenbutton"
+                    android:minHeight="32dp"
+                    android:minWidth="75dip"
+                    android:text="Add" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="0dp"
+            android:layout_weight="1"
+            android:background="@drawable/scrollview"
+            android:paddingBottom="10dp"
+            android:paddingTop="@dimen/scrollview_topmargin" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/Scrollview_Leftmargin"
+                android:paddingRight="@dimen/Scrollview_Leftmargin" >
+
+                <TextView
+                    android:id="@+id/addtag_lblname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="fill"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:text="Name"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/addtag_name"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:gravity="left"
+                    android:hint="Tag Name"
+                    android:inputType="textCapSentences"
+                    android:maxLength="35"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:textSize="22sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/addtag_lblpic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:text="Picture"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <ImageView
+                    android:id="@+id/addtag_imgView"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:adjustViewBounds="true"
+                    android:clickable="true"
+                    android:cropToPadding="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:longClickable="true"
+                    android:maxHeight="400dp"
+                    android:maxWidth="400dp"
+                    android:padding="@dimen/image_padding"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/icon" />
+
+                <TextView
+                    android:id="@+id/addtag_lbldesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:text="Description"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white" />
+
+                <EditText
+                    android:id="@+id/addtag_desc"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:layout_weight="2.11"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:gravity="top"
+                    android:hint="Tag Description"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="4"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:singleLine="false" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:gravity="center"
+                    android:orientation="horizontal" >
+
+                    <TextView
+                        android:id="@+id/addtag_lblloc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Location"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="@android:color/white" />
+
+                    <CheckBox
+                        android:id="@+id/addtag_useGPS"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/Scrollview_Leftmargin"
+                        android:text="Use GPS Location"
+                        android:textColor="@android:color/white" />
+                </LinearLayout>
+
+                <EditText
+                    android:id="@+id/addtag_location"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:gravity="left"
+                    android:hint="Tag Location Description"
+                    android:maxLines="1"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:textSize="22sp" />
+
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+
+</RelativeLayout>

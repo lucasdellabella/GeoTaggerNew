@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Geotagger</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_register">Sign Up</string>
+    <string name="ok">Ok</string>
+    <string name="invalid_login">Username or Password was incorrect. Please try again.</string>
+    <string name="unknown_error">Unknown error. Please try again.</string>
+    <string name="title_activity_tag_view">TagView</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="str_Username">Username</string>
+    <string name="str_Pass">Password</string>
+    <string name="str_Pass_Confirm">Confirm Password</string>
+    <string name="title_activity_add_tag">AddTagActivity</string>
+    <string name="title_activity_taglist">MyTagsActivity</string>
+    <string name="list_no_tags">No Tags to display.</string>
+    <string name="dlg_tagimg_title">Select Tag Image</string>
+
+    <style name="ratingDialogStyle" parent="android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <string name="title_activity_friend_list">FriendListActivity</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_activity_user_profile">UserProfileActivity</string>
+    <string name="list_no_friends">No friends have been added yet. Click the + to search!</string>
+    <string name="title_activity_edit_profile">EditProfileActivity</string>
+
+</resources>

@@ -1,0 +1,191 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingTop="3dp"
+    tools:context=".editprofileActivity" >
+
+    <RelativeLayout
+        android:id="@+id/pvheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/pageheader" >
+
+        <TextView
+            android:id="@+id/editprofile_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:gravity="center"
+            android:paddingBottom="2dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="Edit Profile"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/pageheader_textsize"
+            android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/editprofile_editBtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="22dp"
+            android:layout_marginRight="5dp"
+            android:background="@drawable/graybutton"
+            android:src="@drawable/ic_editprofile"
+            android:visibility="invisible" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/pvheader"
+        android:layout_centerHorizontal="true"
+        android:foregroundGravity="center"
+        android:paddingBottom="5dp"
+        android:paddingLeft="@dimen/Scrollview_Leftmargin"
+        android:paddingRight="@dimen/Scrollview_Leftmargin" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/editprofile_imageview"
+                android:layout_width="148dp"
+                android:layout_height="148dp"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:longClickable="true"
+                android:maxHeight="@dimen/image_height"
+                android:maxWidth="@dimen/image_width"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_addphoto" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/editprofile_locationtxt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Location: "
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editprofile_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:hint="Location"
+                    android:inputType="textCapWords"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:textSize="22sp" >
+
+                    <requestFocus />
+                </EditText>
+
+                <TextView
+                    android:id="@+id/editprofile_aboutme"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:maxLines="5"
+                    android:text="About Me:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editprofile_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:gravity="top|left"
+                    android:hint="About Me"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:lines="2"
+                    android:minLines="2"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:textSize="22sp" />
+
+                <TextView
+                    android:id="@+id/editprofile_quotelbl"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="Favorite Quote:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold" />
+
+                <EditText
+                    android:id="@+id/editprofile_quote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/scrollview_topmargin"
+                    android:background="@drawable/select_text"
+                    android:ems="10"
+                    android:hint="Favorite Quote"
+                    android:inputType="textCapSentences|textPersonName"
+                    android:paddingLeft="@dimen/textfield_padding"
+                    android:paddingRight="@dimen/textfield_padding"
+                    android:textSize="22sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" >
+
+                    <Button
+                        android:id="@+id/editprofile_cancelBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="false"
+                        android:layout_alignParentRight="false"
+                        android:layout_marginRight="10dp"
+                        android:layout_toLeftOf="@+id/editprofile_saveBtn"
+                        android:background="@drawable/graybutton"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="Cancel"
+                        android:textStyle="bold" />
+
+                    <Button
+                        android:id="@+id/editprofile_saveBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/greenbutton"
+                        android:paddingLeft="3dp"
+                        android:paddingRight="3dp"
+                        android:text="Save"
+                        android:textStyle="bold" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

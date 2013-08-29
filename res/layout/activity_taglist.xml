@@ -1,0 +1,37 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="5dp"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/taglist_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:background="@drawable/pageheader"
+        android:gravity="center"
+        android:paddingBottom="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="Username&apos;s Tags"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/pageheader_textsize"
+        android:textStyle="bold" />
+	
+	<LinearLayout
+	   android:orientation="vertical"
+	   android:layout_width="fill_parent"
+	   android:layout_height="fill_parent">
+		<ListView
+		    android:id="@+id/android:list"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    />
+		<TextView
+		    android:id="@+id/android:empty"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent"
+		    android:text="@string/list_no_tags"/>
+	</LinearLayout>
+</LinearLayout>
