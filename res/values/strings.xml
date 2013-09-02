@@ -19,7 +19,11 @@
     <string name="title_activity_add_tag">AddTagActivity</string>
     <string name="title_activity_taglist">MyTagsActivity</string>
     <string name="list_no_tags">No Tags to display.</string>
+    <string name="list_no_adventures">No Adventures to display.</string>
     <string name="dlg_tagimg_title">Select Tag Image</string>
+    <string name="title_activity_adventurelist">List of Adventures</string>
+    <string name="title_activity_adventureView">Viewing Adventure</string>
+    <string name="title_activity_editAdventure">Editing Adventure</string>
 
     <style name="ratingDialogStyle" parent="android:style/Theme.Dialog">
         <item name="android:windowNoTitle">true</item>

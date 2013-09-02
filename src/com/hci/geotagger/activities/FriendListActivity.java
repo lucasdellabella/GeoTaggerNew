@@ -6,11 +6,13 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hci.geotagger.R;
+import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
+import com.hci.geotagger.connectors.AdventureHandler;
 import com.hci.geotagger.connectors.ImageHandler;
 import com.hci.geotagger.connectors.TagHandler;
 
@@ -55,6 +57,9 @@ public class FriendListActivity extends ListActivity {
 	private String friendAdded = ""; //callback field used to pass data between threads when adding friend
 	private UserAccount acctToAdd = null;
 	private int friendListOwnerId; //id of the user account whose friends list is being shown
+	
+	private int addUserFlag;	
+	private Adventure adventure;
 
 	/*
 	 * Event Handlers
@@ -63,6 +68,10 @@ public class FriendListActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_friend_list);
+		
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		adventure = (Adventure) bundle.getSerializable("adventure");
 		
 		//initialize objects
 		friends = new ArrayList<UserAccount>();
@@ -139,7 +148,12 @@ public class FriendListActivity extends ListActivity {
 				i.putExtra("account", acct);
 				startActivity(i);
 			}
-		});
+		});		
+		
+		if(intent.getFlags() == 1)
+		{
+			addUserFlag = 1;
+		}
 	}
 
 	
@@ -184,9 +198,16 @@ public class FriendListActivity extends ListActivity {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		//show delete context menu only if user is viewing their own tag list
 		if(this.friendListOwnerId == UserSession.CURRENTUSER_ID)
-		{
-			menu.setHeaderTitle("Remove Friend");
-			menu.add(1,1,1,"Remove " + friends.get(info.position).getuName());
+		{			
+			menu.setHeaderTitle("Remove Friend");			
+			if(addUserFlag == 1)
+			{
+				menu.add(1,1,1,"Add " + friends.get(info.position).getuName());
+			}
+			else
+			{
+				menu.add(1,1,1,"Remove " + friends.get(info.position).getuName());
+			}
 		}
 	} 
 	
@@ -196,9 +217,13 @@ public class FriendListActivity extends ListActivity {
 	        final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 	                .getMenuInfo();
 	        //delete the selected tag
-	        if(item.getItemId() == 1)
+	        if(item.getTitle().equals("Remove"))
 	        {
 	        	removeFriend(info.position);
+	        }
+	        else if(item.getTitle().equals("Add"))
+	        {
+	        	addFriend(info.position);
 	        }
 	        return true;
 	    }
@@ -238,6 +263,38 @@ public class FriendListActivity extends ListActivity {
 		PD = ProgressDialog.show(FriendListActivity.this,
 				"Please Wait", "Removing Friend...", true);
 	}
+	
+	/*
+	 * Adds an existing friend to an adventure.
+	 */
+	private void addFriend(final int position) {		
+		final AdventureHandler AH = new AdventureHandler();
+		// Handler handler = new Handler();		
+		Runnable addTag = new Runnable() {
+			@Override
+			public void run() {
+				boolean success = AH.addPeopleToAdventure(adventure.getID(), friends.get(position).getId());
+				if (success) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							PD.dismiss();														
+							adventure.addPerson(friends.get(position));
+							Toast.makeText(FriendListActivity.this,
+									"Person Added!", Toast.LENGTH_SHORT).show();
+						}
+					});
+				} else
+					Toast.makeText(FriendListActivity.this,
+							"Error Adding Person...", Toast.LENGTH_SHORT).show();
+			}
+		};
+		Thread thread = new Thread(null, addTag, "AddTagThread");
+		thread.start();
+		PD = ProgressDialog.show(FriendListActivity.this, "Please Wait",
+				"Adding person...", true);
+	}
+
+	
 	//Attempt to add a friend based on the given username
 	private void addFriend(String userName)
 	{

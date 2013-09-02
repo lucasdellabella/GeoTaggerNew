@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends Activity {
 	TextView homeLabel;
-	Button btnAdd, btnMyTags, btnFriends, btnProfile;
+	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut, btnAdventures, btnAddTag, btnMapView;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,22 +23,27 @@ public class HomeActivity extends Activity {
 		homeLabel = (TextView) findViewById(R.id.home_homeLbl);
 		homeLabel.setText(homeLabel.getText() + " " + UserSession.CURRENT_USER.getuName());
 		
-		btnAdd = (Button) findViewById(R.id.home_btnAddTag);
+		btnAddTag = (Button) findViewById(R.id.home_btnAddTag);
+		btnGroups = (Button) findViewById(R.id.home_btnGroups);
 		btnMyTags = (Button) findViewById(R.id.home_btnMyTags);
 		btnFriends = (Button) findViewById(R.id.home_btnFriends);
-		btnProfile = (Button) findViewById(R.id.home_btnProfile);
+		btnMyProfile = (Button) findViewById(R.id.home_btnMyProfile);		
+		btnAdventures = (Button) findViewById(R.id.home_btnAdventures);
+		btnMapView = (Button) findViewById(R.id.home_btnMapView);
 		
 		//go to add tags menu when add button is clicked
-		btnAdd.setOnClickListener(new OnClickListener() 
+		btnAddTag.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View view0) 
 			{
 				// create link to add tag
 				Intent i = new Intent(getBaseContext(), AddTagActivity.class);
+				i.putExtra("id", UserSession.CURRENTUSER_ID);
 				startActivity(i);
 			}
 		});
 		
+		//go to my tags screen when my tags button is clicked
 		btnMyTags.setOnClickListener(new OnClickListener() 
 		{
 			public void onClick(View view0) 
@@ -62,11 +67,44 @@ public class HomeActivity extends Activity {
 			}
 		});
 		
-		// go to add tags menu when add button is clicked
-		btnProfile.setOnClickListener(new OnClickListener() {
+		// go to profile screen when my profile button is clicked
+		btnMyProfile.setOnClickListener(new OnClickListener() {
 			public void onClick(View view0) {
 				// open current user's profile
 				Intent i = new Intent(getBaseContext(), UserProfileActivity.class);
+				//tell the profile to open the current user's profile
+				i.putExtra("LoggedInUser", true);
+				startActivity(i);
+			}
+		});
+		
+		// go to groups screen when groups button is clicked
+		btnGroups.setOnClickListener(new OnClickListener() {
+			public void onClick(View view0) {
+				// open current user's profile
+				Intent i = new Intent(getBaseContext(), UserProfileActivity.class); //NEEDS TO BE FIXED DD 
+				//tell the profile to open the current user's profile
+				i.putExtra("LoggedInUser", true);
+				startActivity(i);
+			}
+		});
+		
+		// go to adventures screen when adventures button is clicked
+		btnAdventures.setOnClickListener(new OnClickListener() {
+			public void onClick(View view0) {
+				// open current user's profile
+				Intent i = new Intent(getBaseContext(), UserProfileActivity.class); //NEEDS TO BE FIXED
+				//tell the profile to open the current user's profile
+				i.putExtra("LoggedInUser", true);
+				startActivity(i);
+			}
+		});	
+		
+		// go to maps screen when maps button is clicked
+		btnMapView.setOnClickListener(new OnClickListener() {
+			public void onClick(View view0) {
+				// open current user's profile
+				Intent i = new Intent(getBaseContext(), MapViewActivity.class); //NEEDS TO BE FIXED
 				//tell the profile to open the current user's profile
 				i.putExtra("LoggedInUser", true);
 				startActivity(i);

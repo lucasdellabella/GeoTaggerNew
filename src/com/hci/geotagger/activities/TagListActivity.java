@@ -10,10 +10,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hci.geotagger.R;
+import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
+import com.hci.geotagger.connectors.AdventureHandler;
 import com.hci.geotagger.connectors.ImageHandler;
 import com.hci.geotagger.connectors.TagHandler;
 
@@ -57,6 +59,8 @@ public class TagListActivity extends ListActivity {
 	private int CONTEXT_DELETE_ID = 1;
 	private String userName;
 	private ImageHandler imageHandler;
+	private int addTagFlag;	
+	private Adventure adventure;
 	TextView nameTxt;
 
 	HashMap<String, Bitmap> thumbCache;
@@ -65,7 +69,11 @@ public class TagListActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_taglist);
-
+		
+		Intent intent = getIntent();
+		Bundle bundle = intent.getExtras();
+		adventure = (Adventure) bundle.getSerializable("adventure");
+		
 		// initialize objects
 		imageHandler = new ImageHandler();
 		thumbCache = new HashMap<String, Bitmap>();
@@ -109,10 +117,14 @@ public class TagListActivity extends ListActivity {
 			this.userID = id;
 			retrieveTags();
 		}
+		if(intent.getFlags() == 1)
+		{
+			addTagFlag = 1;
+		}		
 	}
 
 	// setup separate thread to retrieve tags
-	private void retrieveTags() {
+	public void retrieveTags() {
 		// retrieve the tags in separate thread
 		viewTags = new Runnable() {
 			@Override
@@ -204,9 +216,17 @@ public class TagListActivity extends ListActivity {
 			ContextMenuInfo menuInfo) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) menuInfo;
 		// show delete context menu only if user is viewing their own tag list
-		if (this.userID == UserSession.CURRENTUSER_ID) {
+		if (this.userID == UserSession.CURRENTUSER_ID) 
+		{
 			menu.setHeaderTitle("Tag " + tags.get(info.position).getName());
-			menu.add("Delete");
+			if(addTagFlag == 1)
+			{				
+				menu.add("Add");
+			}
+			else
+			{				
+				menu.add("Delete");	
+			}
 		}
 	}
 
@@ -216,8 +236,13 @@ public class TagListActivity extends ListActivity {
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		// delete the selected tag
-		if (item.getTitle() == "Delete") {
+		if (item.getTitle().equals("Remove")) 
+		{
 			deleteTag(info.position);
+		}
+		else if(item.getTitle().equals("Add"))
+		{
+			addTag(info.position);
 		}
 		return true;
 	}
@@ -252,6 +277,35 @@ public class TagListActivity extends ListActivity {
 		PD = ProgressDialog.show(TagListActivity.this, "Please Wait",
 				"Deleting tag...", true);
 	}
+	
+	/*
+	 * Adds an existing tag to an adventure if the user is in an adventure and wants to add an existing tag.
+	 */
+	private void addTag(final int position) {		
+		final AdventureHandler AH = new AdventureHandler();			
+		Runnable addTag = new Runnable() {
+			@Override
+			public void run() {
+				boolean success = AH.addTagToAdventure(adventure.getID(), tags.get(position).getId());
+				if (success) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							PD.dismiss();														
+							adventure.addTag(tags.get(position));
+							Toast.makeText(TagListActivity.this,
+									"Tag Added!", Toast.LENGTH_SHORT).show();
+						}
+					});
+				} else
+					Toast.makeText(TagListActivity.this,
+							"Error Adding Tag...", Toast.LENGTH_SHORT).show();
+			}
+		};
+		Thread thread = new Thread(null, addTag, "AddTagThread");
+		thread.start();
+		PD = ProgressDialog.show(TagListActivity.this, "Please Wait",
+				"Adding tag...", true);
+	}
 
 	/*
 	 * Functions
@@ -269,7 +323,6 @@ public class TagListActivity extends ListActivity {
 		tags = new ArrayList<Tag>();
 		JSONObject obj;
 		JSONArray tagData = tagHandler.GetTagsById(userID);
-
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)

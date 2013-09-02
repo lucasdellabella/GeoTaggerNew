@@ -11,10 +11,15 @@ public final class Constants {
 	public static final String OP_LOGIN_ID = "loginById";
 	public static final String OP_REGISTER = "register";
 	public static final String OP_ADD_TAG = "addTag";
+	public static final String OP_ADD_PERSON = "addPerson";
+	public static final String OP_ADD_ADV = "addAdventure";
 	public static final String OP_UPLOAD_IMG = "uploadImage";
 	public static final String OP_GETTAGS_BYID = "getTagsById";
+	public static final String OP_GETADVS_BYID = "getAdvsById";
+	public static final String OP_GETPEOPLE_BYID = "getPeopleById";
 	public static final String OP_GETNAME_FROMID = "getNameFromId";
 	public static final String OP_DELETE_TAG = "deleteTag";
+	public static final String OP_DELETE_ADV = "deleteAdventure";
 	public static final String OP_ADD_FRIEND = "addFriend";
 	public static final String OP_GETFRIENDS = "getFriends";
 	public static final String OP_GETUSER = "getUser";
@@ -53,6 +58,7 @@ public final class Constants {
 	public static final String REGISTER_URL = BASE_URL + "index.php";
 	public static final String TAGOP_URL = BASE_URL + "index.php";
 	public static final String IMAGE_URL = BASE_URL + "index.php";
+	public static final String ADV_URL = BASE_URL + "index.php";
 	
 	//Request codes
 	public static final int SELECT_IMG = 1;
@@ -91,5 +97,5 @@ public final class Constants {
 	public static final int ADDFRIEND_ERROR = 3;
 	
 	//img cache size for tag/friend thumbnails
-	public static final int IMG_CACHE_SIZE = 50;
+	public static final int IMG_CACHE_SIZE = 50;	
 }
