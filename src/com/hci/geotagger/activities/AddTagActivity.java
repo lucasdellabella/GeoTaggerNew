@@ -191,6 +191,7 @@ public class AddTagActivity extends BaseActivity
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		adventure = (Adventure) bundle.getSerializable("adventure");
+		AH = new AdventureHandler();
 		
 		//get form control IDs
 		imgView = (ImageView) findViewById(R.id.addtag_imgView);
@@ -310,6 +311,8 @@ public class AddTagActivity extends BaseActivity
 		// Add button action
 		btnOk.setOnClickListener(new OnClickListener() 
 		{
+			private int flag;
+
 			public void onClick(View view0) 
 			{
 				Log.i(LOGTAG, "You reached add tag");
@@ -347,12 +350,6 @@ public class AddTagActivity extends BaseActivity
 												
 						//attempt to add tag to db in an async task
 						new AddTagTask(c).execute(t);
-						
-						//THE CODE BELOW CAUSES THE APPLICATION TO CRASH BUT IT DOES STORE THE INFORMATION PASSED DD 8/25/13
-						
-						//Adds tag to adventure if the user created a new tag while in an adventure.					
-						AH.addTagToAdventure(adventure.getID(), t.getId());
-						adventure.addTag(t);
 					}
 					else //no location added to the tag
 					{
@@ -361,14 +358,21 @@ public class AddTagActivity extends BaseActivity
 								null, Constants.VISIBILITY_FULL);
 						
 						//attempt to add tag to db in an async task
-						new AddTagTask(c).execute(t);
+						new AddTagTask(c).execute(t);		
 						
-						//THE CODE BELOW CAUSES THE APPLICATION TO CRASH BUT IT DOES STORE THE INFORMATION PASSED DD 8/25/13
-						
-						//Adds tag to adventure if the user created a new tag while in an adventure.					
-						AH.addTagToAdventure(adventure.getID(), t.getId());
-						adventure.addTag(t);
+						if(flag == 1)
+						{
+							AH.addTagToAdventure(adventure.getID(), t.getId());
+							adventure.addTag(t);
+						}
+						else if(flag == 2)
+						{
+							adventure.addStoreTagList(t);
+						}
+
 					}
+					
+
 			
 					//will only reach here if something goes wrong adding tag
 					//if so, re enable button
@@ -454,7 +458,7 @@ public class AddTagActivity extends BaseActivity
         		case Constants.CAPTURE_IMG:
         			//if the image was saved to the device use the URI to populate image view and set the current image
         			if (TMP_IMGURI != null)
-        			{
+        			{        				
         				CUR_IMGURI = TMP_IMGURI;
         				CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
         				TMP_IMGURI = null;
@@ -484,7 +488,7 @@ public class AddTagActivity extends BaseActivity
 	{
 		//create logout menu item with ID = 1
 		menu.add(1, 1, 1, "Logout");
-		menu.add(1, 2, 2,"Home");
+		menu.add(1, 2, 2, "Home");
 		return true;
 	}
 	

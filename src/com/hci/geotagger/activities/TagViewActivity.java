@@ -34,6 +34,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 
 import android.hardware.Sensor;
@@ -78,6 +79,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	RatingBar ratingBar;
 	ProgressDialog PD;
 	ListView commentList;
+	String url;
 	
 	private int currentTagIndex;
 	private ArrayList<Tag> tagList;
@@ -106,8 +108,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private CommentAdapter CA;
 	
 	private ImageHandler imageHandler;
-	private Uri TMP_IMGURI;
-
+	private File CURRENT_IMAGE, TEMP_IMAGE;
+	private Uri CUR_IMGURI, TMP_IMGURI;
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -710,6 +712,44 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		}
 		//open camera to take pic when camera button is clicked				
         startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
+	}
+	
+	/*
+	 * Upload an image to the server and set the URL
+	 */
+	private String uploadImage(File f)
+	{
+		//first check the size of the image file without getting pixels
+		BitmapFactory.Options options = new BitmapFactory.Options();
+		options.inJustDecodeBounds = true;
+		Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
+		
+		int height = options.outHeight;
+		int width = options.outWidth;
+		Log.d("Image Size", "H, W = " + height + ", " + width);
+		//resize image if it is very large to avoid out of memory exception
+		if (height > 2048 || width > 2048)
+			options.inSampleSize = 4;
+		else if(height > 1024 || width > 1024)
+			options.inSampleSize = 2;
+		
+		//get bitmap pixels
+		options.inJustDecodeBounds = false;
+		b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
+		height = b.getHeight();
+		width = b.getWidth();
+		Log.d("New Image Size", "H, W = " + height + ", " + width);
+		if(height > 0 && width > 0)
+		{
+			String url = imageHandler.UploadImageToServer(b);
+			b.recycle();
+			Log.d("AddImageTask", "Got response, img url = " + url);
+			return url;
+		}
+		else
+		{
+			return null;
+		}	
 	}
 	
 	/*

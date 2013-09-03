@@ -14,6 +14,8 @@ public class Adventure implements Serializable
 	private Date createdDateTime;
 	private ArrayList<Tag> tagArray;
 	private ArrayList<UserAccount> peopleArray;	
+	private ArrayList<Tag> storeAddTagList, storeRemoveTagList;
+	private ArrayList<UserAccount> storeAddUserList, storeRemoveUserList;
 	
 	/*
 	 * Initializes all fields except for creatorAccount.
@@ -21,16 +23,20 @@ public class Adventure implements Serializable
 	 * 
 	 * @param:	All params are fields.
 	 */
-	public Adventure(int vis, int cID, String newName, String desc, String cName, Date cTime)
+	public Adventure(int vis, int cID, String newName, String newDescription, String cName, Date cTime)
 	{
 		this.setVisibility(vis);
-		this.setCreatorID(cID);
+		this.setCreatorID(cID);	
 		this.setName(newName);
-		this.setDescription(desc);
+		this.setDescription(newDescription);
 		this.setCreatorName(cName);
 		this.createdDateTime = cTime;		
 		this.tagArray = new ArrayList<Tag>();
 		this.peopleArray = new ArrayList<UserAccount>();
+		this.storeAddTagList = new ArrayList<Tag>();
+		this.storeRemoveTagList = new ArrayList<Tag>();
+		this.storeAddUserList = new ArrayList<UserAccount>();
+		this.storeRemoveUserList = new ArrayList<UserAccount>();
 	}
 	
 	/*
@@ -49,6 +55,10 @@ public class Adventure implements Serializable
 		this.createdDateTime = cTime;		
 		this.tagArray = new ArrayList<Tag>();
 		this.peopleArray = new ArrayList<UserAccount>();
+		this.storeAddTagList = new ArrayList<Tag>();
+		this.storeRemoveTagList = new ArrayList<Tag>();
+		this.storeAddUserList = new ArrayList<UserAccount>();
+		this.storeRemoveUserList = new ArrayList<UserAccount>();
 	}
 	
 	//All get and set methods are self-explanatory.
@@ -193,5 +203,109 @@ public class Adventure implements Serializable
 				peopleArray.remove(index);
 			}
 		}		
-	}	
+	}
+	
+	/**
+	 * These methods deal with storing tags and users that are to be added and/or removed from the adventure.
+	 * These methods are used by activities called from AdvEditTagTabActivity, AdvEditPeopleTabActivity and the 
+	 * EditAdventureActivity since we want to ensure that all changes made to the Adventure occur only when the user
+	 * presses the save or cancel buttons. Otherwise adding and removing tags and users would occur instantaneously 
+	 * and we do not want that.  
+	 */
+	
+	public boolean addStoreTagList(Tag t)
+	{
+		if(t != null)
+		{
+			storeAddTagList.add(t);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public ArrayList<Tag> getStoreAddTagList()
+	{
+		return storeAddTagList;
+	}
+	
+	public boolean removeStoreTagList(Tag t)
+	{
+		if(t != null)
+		{
+			storeRemoveTagList.add(t);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public ArrayList<Tag> getStoreRemoveTagList()
+	{
+		return storeRemoveTagList;
+	}
+	
+	public boolean addStoreUserList(UserAccount u)
+	{
+		if(u != null)
+		{
+			storeAddUserList.add(u);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public ArrayList<UserAccount> getStoreAddUserList()
+	{
+		return storeAddUserList;
+	}
+	
+	public boolean removeStoreUserList(UserAccount u)
+	{
+		if(u != null)
+		{
+			storeRemoveUserList.add(u);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	
+	public ArrayList<UserAccount> getStoreRemoveUserList()
+	{
+		return storeRemoveUserList;
+	}
+	
+	public void emptyStoreTagList(ArrayList<Tag> list)
+	{
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(list.size() > 0)
+			{
+				Tag t = list.get(i);
+				t = null;
+			}
+		}
+	}
+	
+	public void emptyStoreUserList(ArrayList<UserAccount> list)
+	{
+		for(int i = 0; i < list.size(); i++)
+		{
+			if(list.size() > 0)
+			{
+				UserAccount u = list.get(i);
+				u = null;
+			}
+		}
+	}
 }
