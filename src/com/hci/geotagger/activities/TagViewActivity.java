@@ -1,5 +1,6 @@
 package com.hci.geotagger.activities;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -21,7 +22,9 @@ import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.ImageHandler;
 import com.hci.geotagger.connectors.TagHandler;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -67,7 +70,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 {
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
 			 txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
-	ImageView img_tagImage;
+	ImageView img_tagImage, img_commentImage;
 	ImageView btnRating;
 	Button commentBtn;
 	EditText commentTxt;
@@ -102,6 +105,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private ArrayList<Comment> comments = null;
 	private CommentAdapter CA;
 	
+	private ImageHandler imageHandler;
+	private Uri TMP_IMGURI;
+
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -117,10 +124,12 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		commentList.setAdapter(this.CA);
 		registerForContextMenu(commentList);
 		tagHandler = new TagHandler();
+		imageHandler = new ImageHandler(this);
 		commentBtn = (Button) findViewById(R.id.tagview_commentbtn);
 		commentTxt = (EditText) findViewById(R.id.tagview_commenttxt);
 			
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
+		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		
 		//LOCATION INITIALIZATION
 		
@@ -222,13 +231,19 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					ratingDialog.show();	
 				}
 			});
+			img_commentImage.setOnClickListener(new OnClickListener()
+			{
+				public void onClick(View view0)
+				{
+					openCamera();
+				}
+			});
 			//add comment when comment button is pressed
 			commentBtn.setOnClickListener(new OnClickListener() 
 			{
 				public void onClick(View view0) 
 				{
-					addComment();
-					
+					addComment();	
 				}
 			});
 		}	
@@ -329,9 +344,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			menu.add(1,1,1,"Remove Comment");
 		}
 	} 
-		
-		//actions for context menu items
-	
+			
 	/*
 	 * Implements the click listeners for selecting an item from the context menu
 	 */
@@ -682,7 +695,22 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		return super.onOptionsItemSelected(item);
 	}
 	
-	 // ArrayAdapter to bind comments to list view
+	private void openCamera()
+	{
+		Intent i_Cam = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+		//create a file to save an image in
+		
+		File f = imageHandler.makeImageFile();
+		if (f != null)
+		{
+			TMP_IMGURI = Uri.fromFile(f);
+			img_commentImage.setImageURI(TMP_IMGURI);
+			//if file was created, pass the URI to the camera app
+			i_Cam.putExtra(MediaStore.EXTRA_OUTPUT, TMP_IMGURI);
+		}
+		//open camera to take pic when camera button is clicked				
+        startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
+	}
 	
 	/*
 	 * This class extends ArrayAdapter to bind comments to a list view
@@ -728,6 +756,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				TextView nameTxt = (TextView) row.findViewById(R.id.commentrow_txtName);
 				TextView timeTxt = (TextView) row.findViewById(R.id.commentrow_txtTime);
 				TextView commentTxt = (TextView) row.findViewById(R.id.commentrow_txtdesc);
+				//ImageView commentImg = (ImageView) row.findViewById(R.id.commentrow_thumbnail);
 				
 				if (nameTxt != null) 
 					nameTxt.setText(comment.getUsername()); 
@@ -742,6 +771,15 @@ public class TagViewActivity extends Activity implements SensorEventListener
 						
 				if(commentTxt != null)
 					commentTxt.setText(comment.getText().toString());
+				
+				/*
+				if(commentImg != null)
+				{
+					if(!comment.getImageURL().isEmpty())
+					{
+						//there is a picture in the comment
+					}
+				}*/
 			}
 			return row;
 		}

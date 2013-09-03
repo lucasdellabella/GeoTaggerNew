@@ -134,9 +134,7 @@ public class AddTagActivity extends BaseActivity
 	   	Intent i = new Intent();
 		i.setType("image/*");
 		i.setAction(Intent.ACTION_GET_CONTENT);
-		startActivityForResult(
-		Intent.createChooser(i, "Select Picture"),
-		Constants.SELECT_IMG);
+		startActivityForResult(Intent.createChooser(i, "Select Picture"), Constants.SELECT_IMG);
 	}
 
 	/*
@@ -174,8 +172,7 @@ public class AddTagActivity extends BaseActivity
 		else
 		{
 			return null;
-		}
-		
+		}	
 	}
 	
 	/*
@@ -424,7 +421,7 @@ public class AddTagActivity extends BaseActivity
 	}
 	
 	/*
-	 * When the image is selected in the galler, show it in the ImageView
+	 * When the image is selected in the gallery, show it in the ImageView
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{

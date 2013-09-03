@@ -210,11 +210,28 @@
                     android:layout_weight="4"
                     android:gravity="bottom"
                     android:paddingTop="3dp" >
+                    
+                    <ImageView
+                    	android:id="@+id/tagview_commentimg"
+                    	android:layout_width="10dp"
+                    	android:layout_height="fill_parent"
+                    	android:contentDescription="uploadImg"
+                    	android:adjustViewBounds="true"
+                    	android:clickable="true"
+                    	android:cropToPadding="false"
+                    	android:focusable="true"
+                    	android:focusableInTouchMode="true"
+                    	android:maxHeight="10dp"
+                    	android:maxWidth="10dp"
+                    	android:scaleType="fitCenter"
+                    	android:layout_weight="1"
+                    	android:padding="@dimen/image_padding"
+                    	android:src="@drawable/icon" />
 
                     <EditText
                         android:id="@+id/tagview_commenttxt"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Add a comment"
@@ -227,7 +244,7 @@
                     <Button
                         android:id="@+id/tagview_commentbtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="@drawable/greenbutton"
                         android:minHeight="32dp"
