@@ -57,7 +57,7 @@ public class AdventureListActivity extends ListActivity {
 	private String userName;
 	private Adventure a;
 	TextView nameTxt;
-	Button newAdvBtn;
+	private Button addAdv;
 
 	HashMap<String, Bitmap> thumbCache;
 
@@ -65,11 +65,8 @@ public class AdventureListActivity extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_adventurelist);
-		Button addAdv = new Button(this);
-		addAdv.setText("New Adventure");
-		addAdv.setBackgroundColor(R.drawable.greenbutton);
-		addAdv.setWidth(150);
-		addAdv.setHeight(50);
+		
+		addAdv = (Button) findViewById(R.id.adventureList_btnNewAdv);
 		addAdv.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -78,8 +75,7 @@ public class AdventureListActivity extends ListActivity {
 				intent.putExtra("newAdventure", true);
 				startActivity(intent);
 			}
-		});
-		getListView().addFooterView(addAdv);
+		});		
 
 		// initialize objects		
 		thumbCache = new HashMap<String, Bitmap>();

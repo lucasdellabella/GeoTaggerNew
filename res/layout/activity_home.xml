@@ -43,14 +43,6 @@
         	android:textColor="@android:color/white"
         	android:textStyle="bold" />
 		<Button
-	    	android:id="@+id/home_btnGroups"   	    
-        	android:layout_width="match_parent"
-        	android:layout_height="100dp"        	        	
-	    	android:background="@drawable/greenbutton"
-	    	android:text="Groups"
-	    	android:textColor="@android:color/white"
-	    	android:textStyle="bold" />
-		<Button
 	    	android:id="@+id/home_btnAdventures"	    
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        	

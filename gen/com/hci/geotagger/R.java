@@ -233,9 +233,9 @@ containing a value of this type.
         public static final int x=0x7f020034;
     }
     public static final class id {
-        public static final int CommentLabel=0x7f050052;
-        public static final int TagImage=0x7f050059;
-        public static final int action_settings=0x7f050074;
+        public static final int CommentLabel=0x7f050051;
+        public static final int TagImage=0x7f050058;
+        public static final int action_settings=0x7f050073;
         public static final int addtag_btnCancel=0x7f050007;
         public static final int addtag_btnOk=0x7f050008;
         public static final int addtag_desc=0x7f05000f;
@@ -254,21 +254,21 @@ containing a value of this type.
         public static final int adventureEdit_lblname=0x7f05001c;
         public static final int adventureEdit_name=0x7f05001d;
         public static final int adventureEdit_nametxt=0x7f05001b;
+        public static final int adventureList_btnNewAdv=0x7f050018;
         public static final int adventureView_desc=0x7f050016;
         public static final int adventureView_edit=0x7f050014;
         public static final int adventureView_lbldesc=0x7f050015;
         public static final int adventureView_nametxt=0x7f050013;
         public static final int adventurelist_username=0x7f050017;
-        public static final int android_adventure=0x7f050018;
-        public static final int buttonTest=0x7f05005a;
-        public static final int commentList=0x7f050053;
-        public static final int commentbar=0x7f050054;
-        public static final int commentrow_thumbnail=0x7f050069;
-        public static final int commentrow_txtName=0x7f050068;
-        public static final int commentrow_txtTime=0x7f050067;
-        public static final int commentrow_txtdesc=0x7f05006a;
-        public static final int content=0x7f050050;
-        public static final int dialog_ratingbar=0x7f05006e;
+        public static final int buttonTest=0x7f050059;
+        public static final int commentList=0x7f050052;
+        public static final int commentbar=0x7f050053;
+        public static final int commentrow_thumbnail=0x7f050068;
+        public static final int commentrow_txtName=0x7f050067;
+        public static final int commentrow_txtTime=0x7f050066;
+        public static final int commentrow_txtdesc=0x7f050069;
+        public static final int content=0x7f05004f;
+        public static final int dialog_ratingbar=0x7f05006d;
         public static final int editprofile_aboutme=0x7f050026;
         public static final int editprofile_cancelBtn=0x7f05002a;
         public static final int editprofile_desc=0x7f050027;
@@ -281,74 +281,73 @@ containing a value of this type.
         public static final int editprofile_saveBtn=0x7f05002b;
         public static final int editprofile_username=0x7f050021;
         public static final int friendlist_username=0x7f05002c;
-        public static final int friendrow_thumbnail=0x7f05006b;
-        public static final int friendrow_txtName=0x7f05006c;
+        public static final int friendrow_thumbnail=0x7f05006a;
+        public static final int friendrow_txtName=0x7f05006b;
         public static final int friends_bottombar=0x7f05002e;
         public static final int friends_btnAdd=0x7f05002f;
         public static final int friends_emptylbl=0x7f05002d;
-        public static final int handle=0x7f050051;
+        public static final int handle=0x7f050050;
         public static final int home_btnAddTag=0x7f050032;
-        public static final int home_btnAdventures=0x7f050034;
-        public static final int home_btnFriends=0x7f050035;
-        public static final int home_btnGroups=0x7f050033;
-        public static final int home_btnMapView=0x7f050037;
-        public static final int home_btnMyProfile=0x7f050036;
+        public static final int home_btnAdventures=0x7f050033;
+        public static final int home_btnFriends=0x7f050034;
+        public static final int home_btnMapView=0x7f050036;
+        public static final int home_btnMyProfile=0x7f050035;
         public static final int home_btnMyTags=0x7f050031;
         public static final int home_homeLbl=0x7f050030;
         public static final int hybrid=0x7f050004;
-        public static final int layout_root=0x7f050065;
-        public static final int lbl_debug=0x7f05003f;
+        public static final int layout_root=0x7f050064;
+        public static final int lbl_debug=0x7f05003e;
         public static final int linearLayout1=0x7f050005;
-        public static final int login_btnLogin=0x7f05003c;
-        public static final int login_lblRegister=0x7f05003d;
-        public static final int login_loginLbl=0x7f050038;
-        public static final int login_mainImage=0x7f050039;
-        public static final int login_pwTxt=0x7f05003b;
-        public static final int login_unameTxt=0x7f05003a;
-        public static final int map=0x7f05003e;
-        public static final int mycompass=0x7f05004e;
+        public static final int login_btnLogin=0x7f05003b;
+        public static final int login_lblRegister=0x7f05003c;
+        public static final int login_loginLbl=0x7f050037;
+        public static final int login_mainImage=0x7f050038;
+        public static final int login_pwTxt=0x7f05003a;
+        public static final int login_unameTxt=0x7f050039;
+        public static final int map=0x7f05003d;
+        public static final int mycompass=0x7f05004d;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050001;
-        public static final int profile_descriptionlbl=0x7f050060;
-        public static final int profile_locationlbl=0x7f05005e;
-        public static final int profileview_aboutme=0x7f050061;
-        public static final int profileview_editBtn=0x7f05005c;
-        public static final int profileview_imageview=0x7f05005d;
-        public static final int profileview_locationtxt=0x7f05005f;
-        public static final int profileview_quote=0x7f050063;
-        public static final int profileview_quotelbl=0x7f050062;
-        public static final int profileview_tagsBtn=0x7f050064;
-        public static final int profileview_username=0x7f05005b;
+        public static final int profile_descriptionlbl=0x7f05005f;
+        public static final int profile_locationlbl=0x7f05005d;
+        public static final int profileview_aboutme=0x7f050060;
+        public static final int profileview_editBtn=0x7f05005b;
+        public static final int profileview_imageview=0x7f05005c;
+        public static final int profileview_locationtxt=0x7f05005e;
+        public static final int profileview_quote=0x7f050062;
+        public static final int profileview_quotelbl=0x7f050061;
+        public static final int profileview_tagsBtn=0x7f050063;
+        public static final int profileview_username=0x7f05005a;
         public static final int pvheader=0x7f050020;
-        public static final int rank_dialog_button=0x7f05006f;
-        public static final int rank_dialog_text1=0x7f05006d;
-        public static final int reg_btnCancel=0x7f050043;
-        public static final int reg_confirmTxt=0x7f050042;
-        public static final int reg_pwTxt=0x7f050041;
-        public static final int reg_submitBtn=0x7f050044;
-        public static final int reg_unameTxt=0x7f050040;
-        public static final int row_thumbnail=0x7f050072;
-        public static final int row_txtName=0x7f050071;
-        public static final int row_txtTime=0x7f050070;
-        public static final int row_txtdesc=0x7f050073;
+        public static final int rank_dialog_button=0x7f05006e;
+        public static final int rank_dialog_text1=0x7f05006c;
+        public static final int reg_btnCancel=0x7f050042;
+        public static final int reg_confirmTxt=0x7f050041;
+        public static final int reg_pwTxt=0x7f050040;
+        public static final int reg_submitBtn=0x7f050043;
+        public static final int reg_unameTxt=0x7f05003f;
+        public static final int row_thumbnail=0x7f050071;
+        public static final int row_txtName=0x7f050070;
+        public static final int row_txtTime=0x7f05006f;
+        public static final int row_txtdesc=0x7f050072;
         public static final int satellite=0x7f050002;
         public static final int scrollView1=0x7f050009;
-        public static final int searchdlg_txtusername=0x7f050066;
-        public static final int slidingDrawer1=0x7f05004f;
-        public static final int taglist_username=0x7f050058;
-        public static final int tagview_commentbtn=0x7f050057;
-        public static final int tagview_commentimg=0x7f050055;
-        public static final int tagview_commenttxt=0x7f050056;
-        public static final int tagview_currentlocationtxt=0x7f05004b;
-        public static final int tagview_descriptiontxt=0x7f05004d;
-        public static final int tagview_distancetotxt=0x7f05004c;
-        public static final int tagview_imageview=0x7f050048;
-        public static final int tagview_latlongtxt=0x7f050049;
-        public static final int tagview_locationtxt=0x7f05004a;
+        public static final int searchdlg_txtusername=0x7f050065;
+        public static final int slidingDrawer1=0x7f05004e;
+        public static final int taglist_username=0x7f050057;
+        public static final int tagview_commentbtn=0x7f050056;
+        public static final int tagview_commentimg=0x7f050054;
+        public static final int tagview_commenttxt=0x7f050055;
+        public static final int tagview_currentlocationtxt=0x7f05004a;
+        public static final int tagview_descriptiontxt=0x7f05004c;
+        public static final int tagview_distancetotxt=0x7f05004b;
+        public static final int tagview_imageview=0x7f050047;
+        public static final int tagview_latlongtxt=0x7f050048;
+        public static final int tagview_locationtxt=0x7f050049;
         public static final int tagview_nametxt=0x7f050006;
-        public static final int tagview_ownertimetxt=0x7f050047;
-        public static final int tagview_ratingbtn=0x7f050045;
-        public static final int tagview_ratingtxt=0x7f050046;
+        public static final int tagview_ownertimetxt=0x7f050046;
+        public static final int tagview_ratingbtn=0x7f050044;
+        public static final int tagview_ratingtxt=0x7f050045;
         public static final int terrain=0x7f050003;
     }
     public static final class layout {
@@ -560,7 +559,7 @@ containing a value of this type.
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.hci.geotagger:buttonBarButtonStyle
+          @attr name android:buttonBarButtonStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarButtonStyle = 1;
         /**
@@ -570,7 +569,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 
           <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
 or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
-          @attr name com.hci.geotagger:buttonBarStyle
+          @attr name android:buttonBarStyle
         */
         public static final int ButtonBarContainerTheme_buttonBarStyle = 0;
         /** Attributes that can be used with a MapAttrs.
@@ -626,7 +625,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:cameraBearing
+          @attr name android:cameraBearing
         */
         public static final int MapAttrs_cameraBearing = 1;
         /**
@@ -640,7 +639,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:cameraTargetLat
+          @attr name android:cameraTargetLat
         */
         public static final int MapAttrs_cameraTargetLat = 2;
         /**
@@ -654,7 +653,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:cameraTargetLng
+          @attr name android:cameraTargetLng
         */
         public static final int MapAttrs_cameraTargetLng = 3;
         /**
@@ -668,7 +667,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:cameraTilt
+          @attr name android:cameraTilt
         */
         public static final int MapAttrs_cameraTilt = 4;
         /**
@@ -682,7 +681,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:cameraZoom
+          @attr name android:cameraZoom
         */
         public static final int MapAttrs_cameraZoom = 5;
         /**
@@ -702,7 +701,7 @@ containing a value of this type.
 <tr><td><code>terrain</code></td><td>3</td><td></td></tr>
 <tr><td><code>hybrid</code></td><td>4</td><td></td></tr>
 </table>
-          @attr name com.hci.geotagger:mapType
+          @attr name android:mapType
         */
         public static final int MapAttrs_mapType = 0;
         /**
@@ -716,7 +715,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiCompass
+          @attr name android:uiCompass
         */
         public static final int MapAttrs_uiCompass = 6;
         /**
@@ -730,7 +729,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiRotateGestures
+          @attr name android:uiRotateGestures
         */
         public static final int MapAttrs_uiRotateGestures = 7;
         /**
@@ -744,7 +743,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiScrollGestures
+          @attr name android:uiScrollGestures
         */
         public static final int MapAttrs_uiScrollGestures = 8;
         /**
@@ -758,7 +757,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiTiltGestures
+          @attr name android:uiTiltGestures
         */
         public static final int MapAttrs_uiTiltGestures = 9;
         /**
@@ -772,7 +771,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiZoomControls
+          @attr name android:uiZoomControls
         */
         public static final int MapAttrs_uiZoomControls = 10;
         /**
@@ -786,7 +785,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:uiZoomGestures
+          @attr name android:uiZoomGestures
         */
         public static final int MapAttrs_uiZoomGestures = 11;
         /**
@@ -800,7 +799,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:useViewLifecycle
+          @attr name android:useViewLifecycle
         */
         public static final int MapAttrs_useViewLifecycle = 12;
         /**
@@ -814,7 +813,7 @@ containing a value of this type.
 theme attribute (in the form
 "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
 containing a value of this type.
-          @attr name com.hci.geotagger:zOrderOnTop
+          @attr name android:zOrderOnTop
         */
         public static final int MapAttrs_zOrderOnTop = 13;
     };
