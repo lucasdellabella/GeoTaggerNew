@@ -58,24 +58,21 @@ public class AdvViewTagTabActivity extends ListActivity
 	private Runnable viewTags;
 	private int userID;
 	private int CONTEXT_DELETE_ID = 1;	
-	private ImageHandler imageHandler;	
+	private ImageHandler imageHandler;
+	private Button addTag;
 
 	HashMap<String, Bitmap> thumbCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_adventure_view);
+		setContentView(R.layout.activity_adv_view_tag_tab);
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		adventure = (Adventure) bundle.getSerializable("adventure");
 		
-		Button addTag = new Button(this);
-		addTag.setText("Add a new tag");
-		addTag.setBackgroundColor(R.drawable.greenbutton);
-		addTag.setWidth(200);
-		addTag.setHeight(50);
+		addTag = (Button)findViewById(R.id.advViewTagTab_btnNewTag);		
 		addTag.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -84,10 +81,10 @@ public class AdvViewTagTabActivity extends ListActivity
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("adventure", adventure);
 				intent.putExtras(bundle);
+				intent.setFlags(1);
 				startActivity(intent);				
 			}
-		});
-		getListView().addFooterView(addTag);
+		});		
 
 		// initialize objects
 		imageHandler = new ImageHandler();
@@ -163,7 +160,7 @@ public class AdvViewTagTabActivity extends ListActivity
 	{
 		tags = new ArrayList<Tag>();
 		JSONObject obj;			
-		JSONArray tagData = advHandler.GetTagsInAdventure(adventure.getID());
+		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getID());
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)

@@ -58,7 +58,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_adventure_view);		
+		setContentView(R.layout.activity_adv_view_people_tab);		
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();

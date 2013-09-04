@@ -58,7 +58,7 @@ public class FriendListActivity extends ListActivity {
 	private UserAccount acctToAdd = null;
 	private int friendListOwnerId; //id of the user account whose friends list is being shown
 	
-	private int addUserFlag;	
+	private int flag;	
 	private Adventure adventure;
 
 	/*
@@ -152,7 +152,7 @@ public class FriendListActivity extends ListActivity {
 		
 		if(intent.getFlags() == 1)
 		{
-			addUserFlag = 1;
+			flag = 1;
 		}
 	}
 
@@ -200,7 +200,7 @@ public class FriendListActivity extends ListActivity {
 		if(this.friendListOwnerId == UserSession.CURRENTUSER_ID)
 		{			
 			menu.setHeaderTitle("Remove Friend");			
-			if(addUserFlag == 1)
+			if(flag == 1)
 			{
 				menu.add(1,1,1,"Add " + friends.get(info.position).getuName());
 			}
@@ -267,18 +267,18 @@ public class FriendListActivity extends ListActivity {
 	/*
 	 * Adds an existing friend to an adventure.
 	 */
-	private void addFriend(final int position) {		
+	private void addFriend(final int index) {		
 		final AdventureHandler AH = new AdventureHandler();
 		// Handler handler = new Handler();		
 		Runnable addTag = new Runnable() {
 			@Override
 			public void run() {
-				boolean success = AH.addPeopleToAdventure(adventure.getID(), friends.get(position).getId());
+				boolean success = adventure.addStoreUserList(friends.get(index));
 				if (success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							PD.dismiss();														
-							adventure.addPerson(friends.get(position));
+							adventure.addPerson(friends.get(index));
 							Toast.makeText(FriendListActivity.this,
 									"Person Added!", Toast.LENGTH_SHORT).show();
 						}

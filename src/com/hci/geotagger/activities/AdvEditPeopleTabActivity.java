@@ -15,6 +15,7 @@ import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
+import com.hci.geotagger.connectors.AccountHandler;
 import com.hci.geotagger.connectors.ImageHandler;
 import com.hci.geotagger.connectors.AdventureHandler;
 
@@ -51,29 +52,27 @@ public class AdvEditPeopleTabActivity extends ListActivity
 	private ProgressDialog PD = null;
 	private ArrayList<UserAccount> ua = null;
 	private UserAdapter UA;	
-	private AdventureHandler advHandler;	
+	private AdventureHandler advHandler;
+	private AccountHandler ah;
 	private Runnable viewPeople;
 	private int userID;
 	private int CONTEXT_DELETE_ID = 1;	
 	private ImageHandler imageHandler;	
 	private Adventure adventure;
+	private Button addPerson;
 
 	HashMap<String, Bitmap> thumbCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_adventure_view);
+		setContentView(R.layout.activity_edit_adv_people_tab);
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		adventure = (Adventure) bundle.getSerializable("adventure");
-				
-		Button addPerson = new Button(this);
-		addPerson.setText("Add an Person");
-		addPerson.setBackgroundColor(R.drawable.greenbutton);
-		addPerson.setWidth(200);
-		addPerson.setHeight(50);
+		adventure = (Adventure) bundle.getSerializable("adventure");				
+		
+		addPerson = (Button)findViewById(R.id.editAdvPeopleTab_btnAddPerson);
 		addPerson.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -86,8 +85,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 				startActivity(intent1);
 			}
 		});
-		getListView().addFooterView(addPerson);		
-		
+				
 		// initialize objects
 		imageHandler = new ImageHandler();
 		thumbCache = new HashMap<String, Bitmap>();
@@ -159,6 +157,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 	// them to the array list
 	private void GetPeople()  
 	{
+		ah = new AccountHandler();
 		ua = new ArrayList<UserAccount>();
 		JSONObject obj;		
 		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getID());
@@ -175,7 +174,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 					e.printStackTrace();
 				}
 				if (obj != null) {
-					UserAccount u = this.createAccountFromJSON(obj);
+					UserAccount u = ah.CreateAccountFromJSON(obj);
 					ua.add(u);
 				}
 			}
@@ -256,7 +255,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 		Runnable deletePerson = new Runnable() {
 			@Override
 			public void run() {
-				boolean success = advHandler.deletePeopleFromAdventure(adventure.getID(), ua.get(position).getId());
+				boolean success = adventure.removeStoreUserList(ua.get(position));
 				if (success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
@@ -298,34 +297,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 			PD.dismiss();
 			UA.notifyDataSetChanged();
 		}
-	};
-	
-	/*
-	 * Added here since UserAccount lacks a handler.
-	 */
-	public UserAccount createAccountFromJSON(JSONObject json)
-	{
-		Date d = new Date();
-    	try 
-    	{
-    		//format the date
-    		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			d = ts.parse(json.getString("CreatedDateTime"));			
-			//instantiate the tag object with properties from JSON
-			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), json.getString("Password"),
-					json.getInt("Type"), json.getInt("Visibility"), d);				
-			return ua;			
-		} 
-    	catch (JSONException e) 
-    	{
-    		Log.d("TagHandler", "CreateTag from JSONObject failed");
-			e.printStackTrace();
-		} catch (ParseException e) {
-			Log.d("TagHandler", "Problem parsing timestamp from JSON");
-			e.printStackTrace();
-		}
-    	return null;
-	}
+	};	
 
 	// arrayadapter to bind users to list view
 	private class UserAdapter extends ArrayAdapter<UserAccount> {

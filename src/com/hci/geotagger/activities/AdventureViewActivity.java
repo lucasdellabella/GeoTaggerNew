@@ -66,9 +66,9 @@ public class AdventureViewActivity extends TabActivity
 		description = (TextView) findViewById(R.id.adventureView_desc);
 		description.setText(adventure.getDescription());		
 		
+		edit = (Button) findViewById(R.id.adventureView_edit);
 		if(UserSession.CURRENTUSER_ID == adventure.getCreatorID())
-		{
-			edit = (Button) findViewById(R.id.adventureView_edit);
+		{			
 			//Button is visible
 			edit.setVisibility(0);
 		}

@@ -22,7 +22,6 @@ import com.hci.geotagger.common.Constants;
 
 public class AdventureHandler 
 {
-	public static final String LOGTAG = "EXPLORECA";
 	private JSONParser jsonParser;
 	private static String advOpURL = Constants.ADV_URL;		
 	
@@ -38,10 +37,9 @@ public class AdventureHandler
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("operation", Constants.OP_ADD_ADV));
-        params.add(new BasicNameValuePair("cId", Integer.toString(a.getCreatorID())));
-        params.add(new BasicNameValuePair("vis", Integer.toString(a.getVisibility())));
+        params.add(new BasicNameValuePair("uId", Integer.toString(a.getCreatorID())));
         params.add(new BasicNameValuePair("name", a.getName()));
-        params.add(new BasicNameValuePair("desc", a.getDescription()));       
+        params.add(new BasicNameValuePair("desc", a.getDescription()));              
         
         //make webservice call to add adventure to db
 		try
@@ -58,12 +56,12 @@ public class AdventureHandler
 	}
 	
 	//delete an adventure from the db
-	public boolean deleteAdventure(long aId)
+	public boolean deleteAdventure(long id)
 	{
 		// Building Parameters
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
 	    params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_ADV));
-	    params.add(new BasicNameValuePair("aId", Long.toString(aId)));
+	    params.add(new BasicNameValuePair("id", Long.toString(id)));
 	      
 	    //make webservice call to remove tag from db
 	    try
@@ -83,12 +81,12 @@ public class AdventureHandler
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the adventures for the given user ID
 	 */
-	public JSONArray getAllAdventuresUserPartOf(int uId)
+	public JSONArray getAllAdventuresUserPartOf(int id)
 	{
 		 // Building Parameters
         List<NameValuePair> getAdvsParams = new ArrayList<NameValuePair>();
         getAdvsParams.add(new BasicNameValuePair("operation", Constants.OP_GETADVS_BYID));
-        getAdvsParams.add(new BasicNameValuePair("uId", Integer.toString(uId)));
+        getAdvsParams.add(new BasicNameValuePair("id", Integer.toString(id)));
         
 		try
 		{
@@ -142,14 +140,14 @@ public class AdventureHandler
 	/*
 	 * Add tags to the Adventure.
 	 */
-	public boolean addTagToAdventure(long aId, long tagId)
+	public boolean addTagToAdventure(long tagId, long advId)
 	{
 		// Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("operation", Constants.OP_ADD_TAG));
-        params.add(new BasicNameValuePair("aId", Long.toString(aId)));
+        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
         params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
-         Log.i(LOGTAG, "YOU REACHED THIS CODE");
+               
         //make webservice call to add tag to adventure
 		try
 		{
@@ -168,11 +166,11 @@ public class AdventureHandler
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the tags for the given adventure ID.
 	 */	
-	public JSONArray GetTagsInAdventure(long aId)
+	public JSONArray getAllAdventureTags(long id)
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETTAGS_BYID));
-		getTagsParams.add(new BasicNameValuePair("id", Long.toString(aId)));
+		getTagsParams.add(new BasicNameValuePair("id", Long.toString(id)));
 		
 		try
 		{
@@ -200,12 +198,12 @@ public class AdventureHandler
 	}	
 	
 	//delete a tag from the adventure
-	public boolean deleteTagFromAdventure(long aId, long tagId)
+	public boolean removeTagFromAdventure(long tagId, long advId)
 	{
 		// Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
-        params.add(new BasicNameValuePair("aId", Long.toString(aId)));
+        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
         params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
         
         //make webservice call to remove tag from adventure
@@ -225,13 +223,13 @@ public class AdventureHandler
 	/*
 	 * Add people to the Adventure.
 	 */
-	public boolean addPeopleToAdventure(long aId, int personId)
+	public boolean addUserToAdventureById(int uId, long advId)
 	{
 		// Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("operation", Constants.OP_ADD_PERSON));
-        params.add(new BasicNameValuePair("aId", Long.toString(aId))); 
-        params.add(new BasicNameValuePair("personId", Integer.toString(personId)));
+        params.add(new BasicNameValuePair("advId", Long.toString(advId))); 
+        params.add(new BasicNameValuePair("uId", Integer.toString(uId)));
                 
         //make webservice call to add tag to adventure
 		try
@@ -283,13 +281,13 @@ public class AdventureHandler
 	}	
 	
 	//delete a person from the adventure
-	public boolean deletePeopleFromAdventure(long aId, int personId)
+	public boolean removeUserFromAdventure(int uId, long advId)
 	{
 		// Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
-        params.add(new BasicNameValuePair("aId", Long.toString(aId)));
-        params.add(new BasicNameValuePair("personId", Integer.toString(personId)));
+        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
+        params.add(new BasicNameValuePair("personId", Integer.toString(uId)));
         
         //make webservice call to remove tag from adventure
 		try

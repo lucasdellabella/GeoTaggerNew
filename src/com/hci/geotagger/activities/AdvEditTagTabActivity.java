@@ -59,23 +59,20 @@ public class AdvEditTagTabActivity extends ListActivity
 	private int CONTEXT_DELETE_ID = 1;	
 	private ImageHandler imageHandler;
 	private Adventure adventure;
+	private Button addTag, addTagNew;
 
 	HashMap<String, Bitmap> thumbCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_adventure_view);
+		setContentView(R.layout.activity_edit_adv_tag_tab);
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
 		adventure = (Adventure) bundle.getSerializable("adventure");
 		
-		Button addTag = new Button(this);
-		addTag.setText("Add an existing tag");
-		addTag.setBackgroundColor(R.drawable.greenbutton);
-		addTag.setWidth(200);
-		addTag.setHeight(50);
+		addTag = (Button)findViewById(R.id.editAdvTagTab_btnAddTag);
 		addTag.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -87,15 +84,10 @@ public class AdvEditTagTabActivity extends ListActivity
 				intent1.setFlags(1);
 				startActivity(intent1);
 			}
-		});
-		getListView().addFooterView(addTag);
+		});			
 		
-		Button addTagNew = new Button(this);
-		addTagNew.setText("Add a new tag");
-		addTag.setBackgroundColor(R.drawable.greenbutton);
-		addTag.setWidth(200);
-		addTag.setHeight(50);
-		addTag.setOnClickListener(new Button.OnClickListener()
+		addTagNew = (Button)findViewById(R.id.editAdvTagTab_btnNewTag);
+		addTagNew.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
 			{
@@ -103,10 +95,10 @@ public class AdvEditTagTabActivity extends ListActivity
 				Bundle bundle = new Bundle();
 				bundle.putSerializable("adventure", adventure);
 				intent2.putExtras(bundle);
+				intent2.setFlags(2);
 				startActivity(intent2);
 			}
-		});
-		getListView().addFooterView(addTagNew);
+		});		
 
 		// initialize objects
 		imageHandler = new ImageHandler();
@@ -182,7 +174,7 @@ public class AdvEditTagTabActivity extends ListActivity
 	{
 		tags = new ArrayList<Tag>();
 		JSONObject obj;		
-		JSONArray tagData = advHandler.GetTagsInAdventure(adventure.getID());
+		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getID());
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)
@@ -277,7 +269,7 @@ public class AdvEditTagTabActivity extends ListActivity
 			Runnable deleteTag = new Runnable() {
 				@Override
 				public void run() {
-					boolean success = advHandler.deleteTagFromAdventure(adventure.getID(), tags.get(position).getId());
+					boolean success = adventure.removeStoreTagList(tags.get(position));
 					if (success) {
 						runOnUiThread(new Runnable() {
 							public void run() {

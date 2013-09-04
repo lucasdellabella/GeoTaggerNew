@@ -210,9 +210,9 @@ public class LoginActivity extends Activity
 				{	
 					progressDialog.dismiss();
 					//parser error
-					//JSON ERROR IS STILL HERE, THIS IS A QUICK FIX DD 9/03/13
-//					AlertHandler alert = new AlertHandler();
-//					alert.showAlert(c, null, getString(R.string.unknown_error));
+					AlertHandler alert = new AlertHandler();
+					//THE JSON STILL DOESNT WORK THIS IS A QUICK FIX DD 9/3/13
+					//alert.showAlert(c, null, getString(R.string.unknown_error));
 					//debug
 					Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
 					ex.printStackTrace();
@@ -222,8 +222,8 @@ public class LoginActivity extends Activity
 			{
 				progressDialog.dismiss();
 				//parser error
-				//JSON ERROR IS STILL HERE, THIS IS A QUICK FIX DD 9/03/13
-				//AlertHandler alert = new AlertHandler();
+				AlertHandler alert = new AlertHandler();
+				//THE JSON STILL DOESNT WORK THIS IS A QUICK FIX DD 9/3/13
 				//alert.showAlert(c, null, getString(R.string.unknown_error));
 				//debug
 				Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
