@@ -59,7 +59,7 @@ public class TagListActivity extends ListActivity {
 	private int CONTEXT_DELETE_ID = 1;
 	private String userName;
 	private ImageHandler imageHandler;
-	private int addTagFlag;	
+	private int flag;	
 	private Adventure adventure;
 	TextView nameTxt;
 
@@ -119,12 +119,12 @@ public class TagListActivity extends ListActivity {
 		}
 		if(intent.getFlags() == 1)
 		{
-			addTagFlag = 1;
+			flag = 1;
 		}		
 	}
 
 	// setup separate thread to retrieve tags
-	public void retrieveTags() {
+	private void retrieveTags() {
 		// retrieve the tags in separate thread
 		viewTags = new Runnable() {
 			@Override
@@ -219,7 +219,7 @@ public class TagListActivity extends ListActivity {
 		if (this.userID == UserSession.CURRENTUSER_ID) 
 		{
 			menu.setHeaderTitle("Tag " + tags.get(info.position).getName());
-			if(addTagFlag == 1)
+			if(flag == 1)
 			{				
 				menu.add("Add");
 			}
@@ -242,7 +242,11 @@ public class TagListActivity extends ListActivity {
 		}
 		else if(item.getTitle().equals("Add"))
 		{
-			addTag(info.position);
+			addTagToAdventure(info.position);
+		}
+		else if(item.getTitle().equals("Remove") && flag == 1)
+		{
+			removeTagFromAdventure(info.position);
 		}
 		return true;
 	}
@@ -281,17 +285,15 @@ public class TagListActivity extends ListActivity {
 	/*
 	 * Adds an existing tag to an adventure if the user is in an adventure and wants to add an existing tag.
 	 */
-	private void addTag(final int position) {		
-		final AdventureHandler AH = new AdventureHandler();			
+	private void addTagToAdventure(final int position) {				
 		Runnable addTag = new Runnable() {
 			@Override
 			public void run() {
-				boolean success = AH.addTagToAdventure(adventure.getID(), tags.get(position).getId());
+				boolean success = adventure.addStoreTagList(tags.get(position));
 				if (success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
-							PD.dismiss();														
-							adventure.addTag(tags.get(position));
+							PD.dismiss();							
 							Toast.makeText(TagListActivity.this,
 									"Tag Added!", Toast.LENGTH_SHORT).show();
 						}
@@ -305,6 +307,33 @@ public class TagListActivity extends ListActivity {
 		thread.start();
 		PD = ProgressDialog.show(TagListActivity.this, "Please Wait",
 				"Adding tag...", true);
+	}
+	
+	/*
+	 * Removes an existing tag from an adventure.
+	 */
+	private void removeTagFromAdventure(final int position) {				
+		Runnable removeTag = new Runnable() {
+			@Override
+			public void run() {
+				boolean success = adventure.removeStoreTagList(tags.get(position));
+				if (success) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							PD.dismiss();							
+							Toast.makeText(TagListActivity.this,
+									"Tag Removed!", Toast.LENGTH_SHORT).show();
+						}
+					});
+				} else
+					Toast.makeText(TagListActivity.this,
+							"Error Removing Tag...", Toast.LENGTH_SHORT).show();
+			}
+		};
+		Thread thread = new Thread(null, removeTag, "AddTagThread");
+		thread.start();
+		PD = ProgressDialog.show(TagListActivity.this, "Please Wait",
+				"Removing tag...", true);
 	}
 
 	/*

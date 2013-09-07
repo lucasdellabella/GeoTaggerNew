@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends Activity {
 	TextView homeLabel;
-	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut, btnAdventures, btnAddTag, btnMapView;
+	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut, btnAdventures, btnAddTag;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,12 +23,11 @@ public class HomeActivity extends Activity {
 		homeLabel = (TextView) findViewById(R.id.home_homeLbl);
 		homeLabel.setText(homeLabel.getText() + " " + UserSession.CURRENT_USER.getuName());
 		
-		btnAddTag = (Button) findViewById(R.id.home_btnAddTag);
+		btnAddTag = (Button) findViewById(R.id.home_btnAddTag);		
 		btnMyTags = (Button) findViewById(R.id.home_btnMyTags);
 		btnFriends = (Button) findViewById(R.id.home_btnFriends);
 		btnMyProfile = (Button) findViewById(R.id.home_btnMyProfile);		
 		btnAdventures = (Button) findViewById(R.id.home_btnAdventures);
-		btnMapView = (Button) findViewById(R.id.home_btnMapView);
 		
 		//go to add tags menu when add button is clicked
 		btnAddTag.setOnClickListener(new OnClickListener() 
@@ -37,7 +36,6 @@ public class HomeActivity extends Activity {
 			{
 				// create link to add tag
 				Intent i = new Intent(getBaseContext(), AddTagActivity.class);
-				i.putExtra("id", UserSession.CURRENTUSER_ID);
 				startActivity(i);
 			}
 		});
@@ -81,23 +79,12 @@ public class HomeActivity extends Activity {
 		btnAdventures.setOnClickListener(new OnClickListener() {
 			public void onClick(View view0) {
 				// open current user's profile
-				Intent i = new Intent(getBaseContext(), AdventureListActivity.class); //NEEDS TO BE FIXED
-				//tell the profile to open the current user's profile
+				Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
+				//tell the profile to open the current user's adventure list
 				i.putExtra("LoggedInUser", true);
 				startActivity(i);
 			}
-		});	
-		
-		// go to maps screen when maps button is clicked
-		btnMapView.setOnClickListener(new OnClickListener() {
-			public void onClick(View view0) {
-				// open current user's profile
-				Intent i = new Intent(getBaseContext(), MapViewActivity.class); //NEEDS TO BE FIXED
-				//tell the profile to open the current user's profile
-				i.putExtra("LoggedInUser", true);
-				startActivity(i);
-			}
-		});
+		});		
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

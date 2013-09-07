@@ -26,13 +26,13 @@
 		<ListView
 		    android:id="@+id/android:list"
 		    android:layout_width="fill_parent"
-		    android:layout_height="fill_parent" />	
+		    android:layout_height="fill_parent" />
 		<Button 
 		    android:id="@+id/adventureList_btnNewAdv"
 		    android:layout_width="match_parent"
 		    android:layout_height="wrap_content"
 		    android:background="@drawable/greenbutton"
-		    android:text="Create New Adventure"/>		    
+		    android:text="Create new Adventure"/>			    
 		<TextView
 		    android:id="@+id/android:empty"
 		    android:layout_width="fill_parent"

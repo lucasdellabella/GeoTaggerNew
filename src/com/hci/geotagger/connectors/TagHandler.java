@@ -18,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.location.Location;
 import android.util.Log;
 
 import com.hci.geotagger.Objects.Comment;
@@ -130,8 +129,8 @@ public class TagHandler {
 				lat = 0;
 				lon = 0;
 			}
-			GeoLocation geo = new GeoLocation(lat, lon);
 			
+			GeoLocation geo = new GeoLocation(lat, lon);
 			//instantiate the tag object with properties from JSON
 			Tag t = new Tag(json.getLong("TagID"), json.getString("Name"), json.getString("Description"), json.getString("ImageUrl"),
 					json.getString("Location"), json.getString("Category"), json.getInt("RatingScore"),

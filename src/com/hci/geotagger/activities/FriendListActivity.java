@@ -223,7 +223,11 @@ public class FriendListActivity extends ListActivity {
 	        }
 	        else if(item.getTitle().equals("Add"))
 	        {
-	        	addFriend(info.position);
+	        	addFriendToAdventure(info.position);
+	        }	        
+	        else if(item.getTitle().equals("Remove") && flag == 1)
+	        {
+	        	removeFriendFromAdventure(info.position);
 	        }
 	        return true;
 	    }
@@ -267,18 +271,15 @@ public class FriendListActivity extends ListActivity {
 	/*
 	 * Adds an existing friend to an adventure.
 	 */
-	private void addFriend(final int index) {		
-		final AdventureHandler AH = new AdventureHandler();
-		// Handler handler = new Handler();		
-		Runnable addTag = new Runnable() {
+	private void addFriendToAdventure(final int index) {			
+		Runnable addFriend = new Runnable() {
 			@Override
 			public void run() {
 				boolean success = adventure.addStoreUserList(friends.get(index));
 				if (success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
-							PD.dismiss();														
-							adventure.addPerson(friends.get(index));
+							PD.dismiss();							
 							Toast.makeText(FriendListActivity.this,
 									"Person Added!", Toast.LENGTH_SHORT).show();
 						}
@@ -288,10 +289,37 @@ public class FriendListActivity extends ListActivity {
 							"Error Adding Person...", Toast.LENGTH_SHORT).show();
 			}
 		};
-		Thread thread = new Thread(null, addTag, "AddTagThread");
+		Thread thread = new Thread(null, addFriend, "AddFriendThread");
 		thread.start();
 		PD = ProgressDialog.show(FriendListActivity.this, "Please Wait",
 				"Adding person...", true);
+	}
+	
+	/*
+	 * Removes an existing friend from an adventure.
+	 */
+	private void removeFriendFromAdventure(final int index) {			
+		Runnable removeFriend = new Runnable() {
+			@Override
+			public void run() {
+				boolean success = adventure.removeStoreUserList(friends.get(index));
+				if (success) {
+					runOnUiThread(new Runnable() {
+						public void run() {
+							PD.dismiss();							
+							Toast.makeText(FriendListActivity.this,
+									"Person Removed!", Toast.LENGTH_SHORT).show();
+						}
+					});
+				} else
+					Toast.makeText(FriendListActivity.this,
+							"Error Removing Person...", Toast.LENGTH_SHORT).show();
+			}
+		};
+		Thread thread = new Thread(null, removeFriend, "RemoveFriendThread");
+		thread.start();
+		PD = ProgressDialog.show(FriendListActivity.this, "Please Wait",
+				"Removing person...", true);
 	}
 
 	
