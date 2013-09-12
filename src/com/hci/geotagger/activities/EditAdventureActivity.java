@@ -3,17 +3,25 @@ package com.hci.geotagger.activities;
 import java.util.Date;
 import java.util.ArrayList;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.hci.geotagger.R;
+import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AdventureHandler;
+import com.hci.geotagger.connectors.TagHandler;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;
+import com.hci.geotagger.exceptions.UnknownErrorException;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.Objects.UserAccount;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -23,6 +31,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TabHost;
 import android.widget.Toast;
+import android.app.ProgressDialog;
 import android.app.TabActivity;
 
 public class EditAdventureActivity extends TabActivity 
@@ -109,6 +118,9 @@ public class EditAdventureActivity extends TabActivity
 				{
 					adventure.setName(nameE.getText().toString());
 					adventure.setDescription(descriptionE.getText().toString());
+					if(isNewAdv == true){
+						new AddAdvTask(context).execute(adventure);
+					}
 					doStoreAddTagList();
 					doStoreRemoveTagList();
 					doStoreAddUserList();
@@ -205,4 +217,121 @@ public class EditAdventureActivity extends TabActivity
 		
 		return super.onOptionsItemSelected(item);
 	}		
+	
+	/*
+	 * This class extends AsyncTask and provides the methods to add a tag via an
+	 * asynchronous task
+	 */
+	class AddAdvTask extends AsyncTask<Adventure, Void, JSONObject> 
+	{
+		ProgressDialog progressDialog;
+		Context c;
+		//get context from the parent activity for opening dialogs
+		public AddAdvTask(Context context)
+		{
+			this.c = context;		
+		}
+		
+		//Setup progress dialog before execution
+		@Override
+		public void onPreExecute() 
+		{
+			progressDialog = new ProgressDialog(c);
+			progressDialog.setMessage("Creating tag...");
+			progressDialog.setCancelable(false);
+			progressDialog.setIndeterminate(true);
+			progressDialog.show();
+		}
+		
+		/*
+		 * After login task is finished, get response and
+		 * determine if the login was successful. If so, close dialog 
+		 * and move to next activity, if not show error. 
+		 */
+		@Override
+		protected void onPostExecute(JSONObject response) 
+		{	
+			if(response != null)
+			{
+				try
+				{
+					String returnCode = response.getString(Constants.SUCCESS);
+					//if success = 1, create a user account object from the JSON returned from the database,
+					//set the loggedin flag to true, and open the Home page
+					if (returnCode != null)
+					{
+						if (Integer.parseInt(returnCode) == 1)
+						{
+								String msg = "Tag added!";
+								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+								// return to home screen
+								Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
+								i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								startActivity(i);
+								progressDialog.dismiss();
+								finish();
+									
+						}
+						else
+						{
+							progressDialog.dismiss();
+							throw new UnknownErrorException();
+						}
+					}
+					else
+					{	
+						progressDialog.dismiss();
+						Log.d("AddTagPostExecute", "Null response, Logon Error.");
+						throw new UnknownErrorException();
+					}
+				}
+				catch (UnknownErrorException ex)
+				{	
+					//parser error
+					AlertHandler alert = new AlertHandler();
+					alert.showAlert(c, null, ex.getMessage());
+					Log.d("RegisterPostExecute", "Parsing returned JSON object failed.");
+					ex.printStackTrace();
+				} 
+				catch (JSONException e) 
+				{
+					progressDialog.dismiss();
+					AlertHandler alert = new AlertHandler();
+					alert.showAlert(c, null, getString(R.string.unknown_error));
+					e.printStackTrace();
+				}	
+				
+			}		
+		}//end onPostExecute
+		
+		/*
+		 * Create an account handler and attempt to log in with 
+		 * the provided credentials. 
+		 */
+		@Override
+		protected JSONObject doInBackground(Adventure... adventure) 
+		{
+			Adventure t = adventure[0];
+			
+			// attempt to add tag
+			AdventureHandler handler = new AdventureHandler();
+			JSONObject response;
+			try 
+			{
+				//if there is an image, first try to upload it
+				
+				//add tag to db
+				response = handler.AddAdventure(t);
+				Log.d("AddTagTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
+			} 
+			catch (JSONException e) 
+			{
+				e.printStackTrace();
+				return null;
+			}
+			return response;
+
+		}// end doInBackground
+	}//end LoginTask
+	
 }
