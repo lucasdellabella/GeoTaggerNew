@@ -57,6 +57,8 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.WindowManager.LayoutParams;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -77,7 +79,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 {
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
 			 txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
-	ImageView img_tagImage, img_commentImage, commentrow_thumbnail;
+	ImageView img_tagImage, img_commentImage, commentrow_thumbnail, compassTriangle;
 	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
 	Button commentBtn;
@@ -109,7 +111,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private float[] matrixR;
 	private float[] matrixI;
 	private float[] matrixValues;
-	private Compass myCompass;
+	private float pivotX = 0;
+	private float pivotY = 0;
+	private float currentDegree;
+	//private Compass myCompass;
 	
 	private ArrayList<Comment> comments = null;
 	private CommentAdapter CA;
@@ -140,6 +145,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
+		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
+		
+		pivotX = compassTriangle.getWidth()/2;
+		pivotY = compassTriangle.getHeight()/2;
 		
 		//LOCATION INITIALIZATION
 		
@@ -159,7 +168,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//COMPASS INITIALIZATION
 		
 		//create the compass defined in Compass.java
-		myCompass = (Compass) findViewById(R.id.mycompass);
+		//myCompass = (Compass) findViewById(R.id.mycompass);
 		//initialize the sensors for the compass
 		sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 	    sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -171,6 +180,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	    matrixR = new float[9];
 	    matrixI = new float[9];
 	    matrixValues = new float[3];
+    	currentDegree = 0;
 	    
 	    //END COMPASS INITIALIZATION
 		
@@ -260,6 +270,39 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	} //end onCreate
 	
 	/*
+	 * Implemented so that the sensors for the compass are only working when the 
+	 * application is active and not just running in the background which would affect
+	 * battery life
+	 * 
+	 * @see android.app.Activity#onResume()
+	 */
+	@Override
+	protected void onResume() 
+	{
+		//sensorManager.registerListener(this, sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+		//sensorManager.registerListener(this, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
+		sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), 
+				SensorManager.SENSOR_DELAY_GAME);
+		super.onResume();
+	}
+	
+	/*
+	 * Implemented so that the sensors for the compass are only working when the 
+	 * application is active and not just running in the background which would affect
+	 * battery life
+	 * 
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() 
+	{
+		//sensorManager.unregisterListener(this, sensorAccelerometer);
+		//sensorManager.unregisterListener(this, sensorMagneticField);
+		sensorManager.unregisterListener(this);
+		super.onPause();
+	}
+	
+	/*
 	 * Method must be defined to implement SensorEventListener
 	 * @see android.hardware.SensorEventListener#onAccuracyChanged(android.hardware.Sensor, int)
 	 */
@@ -279,21 +322,23 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	 * 
 	 * @see android.hardware.SensorEventListener#onSensorChanged(android.hardware.SensorEvent)
 	 */
+	
+	/*
 	@Override
 	public void onSensorChanged(SensorEvent event) 
 	{
 		  switch(event.sensor.getType()) //determine what sensor event has occured
 		  {
-		  	case Sensor.TYPE_ACCELEROMETER:
-		  		for(int i = 0; i < 3; i++)
-		  		{
-		  			valuesAccelerometer[i] = event.values[i];
-		  		}
-		  		break;
 		  	case Sensor.TYPE_MAGNETIC_FIELD:
 		  		for(int i = 0; i < 3; i++)
 		  		{
 		  			valuesMagneticField[i] = event.values[i];
+		  		}
+		  		break;
+		  	case Sensor.TYPE_ACCELEROMETER:
+		  		for(int i = 0; i < 3; i++)
+		  		{
+		  			valuesAccelerometer[i] = event.values[i];
 		  		}
 		  		break;
 		  }
@@ -304,39 +349,32 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		  if(success) //if the rotation matrix was found above, update the compass
 		  {  
 			  SensorManager.getOrientation(matrixR, matrixValues);
-			  myCompass.update(matrixValues[0]);
+			  //myCompass.update(matrixValues[0]);
+			  compassTriangle.setRotation(matrixValues[0]);
 		  }
-	}
+	}*/
 	
-	/*
-	 * Implemented so that the sensors for the compass are only working when the 
-	 * application is active and not just running in the background which would affect
-	 * battery life
-	 * 
-	 * @see android.app.Activity#onResume()
-	 */
-	@Override
-	protected void onResume() 
-	{
-		sensorManager.registerListener(this, sensorAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
-		sensorManager.registerListener(this, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
-		super.onResume();
-	}
-	
-	/*
-	 * Implemented so that the sensors for the compass are only working when the 
-	 * application is active and not just running in the background which would affect
-	 * battery life
-	 * 
-	 * @see android.app.Activity#onPause()
-	 */
-	@Override
-	protected void onPause() 
-	{
-		sensorManager.unregisterListener(this, sensorAccelerometer);
-		sensorManager.unregisterListener(this, sensorMagneticField);
-		super.onPause();
-	}
+    @Override
+	public void onSensorChanged(SensorEvent event) 
+    {
+    	// get the angle around the z-axis rotated
+	    float degree = Math.round(event.values[0]);
+		 
+	    // create a rotation animation (reverse turn degree degrees)
+	    RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
+	    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+	 
+	    // how long the animation will take place
+	    ra.setDuration(210);
+	 
+	        // set the animation after the end of the reservation status
+	        ra.setFillAfter(true);
+	 
+	        // Start the animation
+	        compassTriangle.startAnimation(ra);
+	        currentDegree = -degree;
+	 
+	    }
 
 	/*
 	 * Creates the context menu that allows the user to delete tags

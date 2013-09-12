@@ -136,11 +136,13 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
             
-              <view
-                  android:id="@+id/mycompass"
-                  android:layout_height="300sp"
-                  android:layout_width="300sp"
-                  class="com.hci.geotagger.Objects.Compass" />
+              <ImageView
+                  android:id="@+id/compassTriangle"
+                  android:layout_height="200sp"
+                  android:layout_width="200sp"
+                  android:contentDescription="Triangle for Compass"
+                  android:src="@drawable/arrow"
+                   />
 
         </LinearLayout>
     </ScrollView>

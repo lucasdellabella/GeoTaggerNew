@@ -67,6 +67,7 @@
         <activity
             android:name="com.hci.geotagger.activities.TagViewActivity"
             android:label="@string/title_activity_tag_view"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Dialog" >
         </activity>
         <activity
