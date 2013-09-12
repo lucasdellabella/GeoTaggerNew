@@ -60,7 +60,7 @@ public class JSONParser
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "n");
+                sb.append(line + "\n");
             }
             is.close();
             json = sb.toString();
@@ -113,7 +113,7 @@ public class JSONParser
             StringBuilder sb = new StringBuilder();
             String line = null;
             while ((line = reader.readLine()) != null) {
-                sb.append(line + "n");
+                sb.append(line + "\n");
             }
             is.close();
             json = sb.toString();

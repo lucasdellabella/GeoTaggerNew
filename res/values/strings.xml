@@ -9,6 +9,8 @@
     <string name="ok">Ok</string>
     <string name="invalid_login">Username or Password was incorrect. Please try again.</string>
     <string name="unknown_error">Unknown error. Please try again.</string>
+    <string name="unknown_error_response_null">Response is null.</string>
+    <string name="unknown_error_try_catch">Try catch fail.</string>
     <string name="title_activity_tag_view">TagView</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
@@ -20,6 +22,7 @@
     <string name="title_activity_taglist">MyTagsActivity</string>
     <string name="list_no_tags">No Tags to display.</string>
     <string name="list_no_adventures">No Adventures to display.</string>
+    <string name="list_no_advPeople">No People in Adventure.</string>
     <string name="dlg_tagimg_title">Select Tag Image</string>
     <string name="title_activity_adventurelist">List of Adventures</string>
     <string name="title_activity_adventureView">Viewing Adventure</string>

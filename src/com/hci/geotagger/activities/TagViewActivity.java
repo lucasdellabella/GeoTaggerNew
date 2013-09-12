@@ -1,6 +1,9 @@
 package com.hci.geotagger.activities;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import com.hci.geotagger.connectors.TagHandler;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.app.Activity;
@@ -36,6 +40,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -43,6 +48,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import android.view.ContextMenu;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -58,6 +64,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -71,7 +78,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 {
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
 			 txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
-	ImageView img_tagImage, img_commentImage;
+	ImageView img_tagImage, img_commentImage, commentrow_thumbnail;
+	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
 	Button commentBtn;
 	EditText commentTxt;
@@ -132,6 +140,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
+		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
 		
 		//LOCATION INITIALIZATION
 		
@@ -422,9 +431,18 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				public void run() 
 				{
 					final StringBuilder sb = new StringBuilder();
-					JSONObject response = 
-							tagHandler.AddTagComment(currentTag.getId(), comment,
-							UserSession.CURRENT_USER.getuName());
+					JSONObject response;
+					if(HAS_IMAGE == true)
+					{
+						response = tagHandler.AddTagComment(currentTag.getId(), comment,
+								UserSession.CURRENT_USER.getuName(), url);
+						Log.d("TagViewActivity", "Picture Added");
+					}
+					else
+					{
+						response = tagHandler.AddTagComment(currentTag.getId(), comment,
+								UserSession.CURRENT_USER.getuName());
+					}
 					try 
 					{
 						String msg;
@@ -701,18 +719,50 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	{
 		Intent i_Cam = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		//create a file to save an image in
-		
 		File f = imageHandler.makeImageFile();
 		if (f != null)
 		{
 			TMP_IMGURI = Uri.fromFile(f);
-			img_commentImage.setImageURI(TMP_IMGURI);
 			//if file was created, pass the URI to the camera app
 			i_Cam.putExtra(MediaStore.EXTRA_OUTPUT, TMP_IMGURI);
 		}
 		//open camera to take pic when camera button is clicked				
         startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
 	}
+	
+	/*
+	 * When the image is selected in the gallery, show it in the ImageView
+	 */
+	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+        if (resultCode == RESULT_OK)
+        {	
+        	switch(requestCode)
+            {
+                //if new picture is taken, show that in the image view
+        		case Constants.CAPTURE_IMG:
+        			//if the image was saved to the device use the URI to populate image view and set the current image
+        			if (TMP_IMGURI != null)
+        			{        				
+        				CUR_IMGURI = TMP_IMGURI;
+        				CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
+        				TMP_IMGURI = null;
+        				
+        				img_commentImage.setImageURI(CUR_IMGURI);
+        				HAS_IMAGE = true;
+        			}
+        			break;
+            }
+        }
+        //if user backed out of the camera without saving picture, discard empty image file
+        else
+        {
+        	if (TEMP_IMAGE != null)
+        		TEMP_IMAGE.delete();
+        	
+        	TMP_IMGURI = null;
+        }
+    }
 	
 	/*
 	 * Upload an image to the server and set the URL
@@ -796,7 +846,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				TextView nameTxt = (TextView) row.findViewById(R.id.commentrow_txtName);
 				TextView timeTxt = (TextView) row.findViewById(R.id.commentrow_txtTime);
 				TextView commentTxt = (TextView) row.findViewById(R.id.commentrow_txtdesc);
-				//ImageView commentImg = (ImageView) row.findViewById(R.id.commentrow_thumbnail);
+				ImageView commentImg = (ImageView) row.findViewById(R.id.commentrow_thumbnail);
 				
 				if (nameTxt != null) 
 					nameTxt.setText(comment.getUsername()); 
@@ -812,14 +862,18 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				if(commentTxt != null)
 					commentTxt.setText(comment.getText().toString());
 				
-				/*
+				
 				if(commentImg != null)
 				{
-					if(!comment.getImageURL().isEmpty())
+					try
 					{
-						//there is a picture in the comment
+						InputStream is = (InputStream) new URL(comment.getImageURL()).getContent();
+						Drawable d = Drawable.createFromStream(is, "commentImage");
+						commentImg.setBackground(d);
 					}
-				}*/
+					catch(Exception e) 
+					{}
+				}
 			}
 			return row;
 		}

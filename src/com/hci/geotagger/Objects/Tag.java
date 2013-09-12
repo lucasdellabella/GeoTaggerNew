@@ -3,8 +3,6 @@ package com.hci.geotagger.Objects;
 import java.io.Serializable;
 import java.util.Date;
 
-import android.location.Location;
-
 public class Tag implements Serializable {
 
 	private long id;

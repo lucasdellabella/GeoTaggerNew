@@ -136,10 +136,10 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
             
-              <view 
-                  android:id="@+id/mycompass" 
-                  android:layout_height="300sp" 
-                  android:layout_width="300sp" 
+              <view
+                  android:id="@+id/mycompass"
+                  android:layout_height="300sp"
+                  android:layout_width="300sp"
                   class="com.hci.geotagger.Objects.Compass" />
 
         </LinearLayout>
@@ -212,21 +212,21 @@
                     android:paddingTop="3dp" >
                     
                     <ImageView
-                    	android:id="@+id/tagview_commentimg"
-                    	android:layout_width="10dp"
-                    	android:layout_height="fill_parent"
-                    	android:contentDescription="uploadImg"
-                    	android:adjustViewBounds="true"
-                    	android:clickable="true"
-                    	android:cropToPadding="false"
-                    	android:focusable="true"
-                    	android:focusableInTouchMode="true"
-                    	android:maxHeight="10dp"
-                    	android:maxWidth="10dp"
-                    	android:scaleType="fitCenter"
-                    	android:layout_weight="1"
-                    	android:padding="@dimen/image_padding"
-                    	android:src="@drawable/icon" />
+                     android:id="@+id/tagview_commentimg"
+                     android:layout_width="10dp"
+                     android:layout_height="fill_parent"
+                     android:contentDescription="uploadImg"
+                     android:adjustViewBounds="true"
+                     android:clickable="true"
+                     android:cropToPadding="false"
+                     android:focusable="true"
+                     android:focusableInTouchMode="true"
+                     android:maxHeight="10dp"
+                     android:maxWidth="10dp"
+                     android:scaleType="fitCenter"
+                     android:layout_weight="1"
+                     android:padding="@dimen/image_padding"
+                     android:src="@drawable/icon" />
 
                     <EditText
                         android:id="@+id/tagview_commenttxt"

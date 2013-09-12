@@ -18,7 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.location.Location;
 import android.util.Log;
 
 import com.hci.geotagger.Objects.Comment;
@@ -130,8 +129,8 @@ public class TagHandler {
 				lat = 0;
 				lon = 0;
 			}
-			GeoLocation geo = new GeoLocation(lat, lon);
 			
+			GeoLocation geo = new GeoLocation(lat, lon);
 			//instantiate the tag object with properties from JSON
 			Tag t = new Tag(json.getLong("TagID"), json.getString("Name"), json.getString("Description"), json.getString("ImageUrl"),
 					json.getString("Location"), json.getString("Category"), json.getInt("RatingScore"),
@@ -197,6 +196,33 @@ public class TagHandler {
 		}
 	}
 	
+	/*
+	 * Add a tag comment to the database with picture
+	 */
+	public JSONObject AddTagComment(Long tagID, String text, String username, String imgURL)
+	{
+		 // Building Parameters
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("operation", Constants.OP_ADD_TAGCOMMENT));
+        params.add(new BasicNameValuePair("tagId", Long.toString(tagID)));
+        params.add(new BasicNameValuePair("comment", text ));
+        params.add(new BasicNameValuePair("uName", username));
+        params.add(new BasicNameValuePair("commentPic", imgURL));
+       
+        //make webservice call to add tag comment to db
+		try
+		{
+			JSONObject json = jsonParser.getJSONFromUrl(tagOpURL, params);
+			Log.d("TagHandler AddTagComment", "JSON Response from PHP: " + json.toString());
+			return json;
+		}
+		catch (Exception ex)
+		{
+			Log.d("TagHandler AddTagComment", "Exception occurred adding comment, returning null.");
+			return null;
+		}
+	}
+	
 	public Comment CreateCommentFromJson(JSONObject json)
 	{
 		Date d = new Date();
@@ -205,9 +231,37 @@ public class TagHandler {
     		//format the date
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));
-			//instantiate the comment object with properties from JSON
-			Comment c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
-					json.getString("Text"), json.getString("Username"),  d);
+			
+			
+			Comment c;
+			
+			//below code keeps tags working until server has imageURL field for comments
+			if(!json.getString("Text").equals(""))
+			{
+				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
+						json.getString("Text"), json.getString("Username"),  d);
+			}
+			else
+			{
+				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
+						json.getString("Text"), json.getString("Username"),  d, 
+						json.getString("commentPic"));
+			}
+			
+			/*
+			 * Used for when comment images are added as a field to the database
+			if(!json.getString("CommentImageURL").equals(""))
+			{
+				c = new Comment(json.getLong("ID"), json.getLong("ParentTagID"),
+						json.getString("Text"), json.getString("Username"), d,
+						json.getString("CommentImageURL"));
+			}
+			else
+			{
+				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
+						json.getString("Text"), json.getString("Username"),  d);
+			}*/
+			
 			return c;			
 		} 
     	catch (JSONException e) 
