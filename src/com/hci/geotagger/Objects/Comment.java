@@ -7,12 +7,9 @@ public class Comment implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	private long id, parentTagId;
-	private String text, Username, imageUrl;
+	private String text, Username;
 	private Date createdDateTime;
 	
-	/*
-	 * Standard comment constructor
-	 */
 	public Comment(long cID, long tagID, String txt, String uName, Date ts)
 	{
 		this.setId(cID);
@@ -20,19 +17,6 @@ public class Comment implements Serializable{
 		this.setText(txt);
 		this.setUsername(uName);
 		this.setCreatedDateTime(ts);
-	}
-	
-	/*
-	 * Comment constructor for use with images
-	 */
-	public Comment(long cID, long tagID, String txt, String uName, Date ts, String imgUrl)
-	{
-		this.setId(cID);
-		this.setParentTagId(tagID);
-		this.setText(txt);
-		this.setUsername(uName);
-		this.setCreatedDateTime(ts);
-		this.setImageURL(imgUrl);
 	}
 
 	public long getId() {
@@ -74,12 +58,5 @@ public class Comment implements Serializable{
 	public void setCreatedDateTime(Date createdDateTime) {
 		this.createdDateTime = createdDateTime;
 	}
-	
-	public void setImageURL(String imgURL) {
-		this.imageUrl = imgURL;
-	}
 
-	public String getImageURL() {
-		return imageUrl;
-	}
 }

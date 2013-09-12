@@ -89,15 +89,6 @@
                 android:maxWidth="400dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon" />
-            
-            <TextView
-                android:id="@+id/tagview_latlongtxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Latitude, Longitude"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
 
             <TextView
                 android:id="@+id/tagview_locationtxt"
@@ -105,24 +96,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="Location"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-            
-            <TextView
-                android:id="@+id/tagview_currentlocationtxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Current Location"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-            
-            <TextView
-                android:id="@+id/tagview_distancetotxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Distance to Tag"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@color/light_gray" />
 
@@ -135,12 +108,15 @@
                 android:text="Description of the android tag"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
+<<<<<<< HEAD
             
               <view
                   android:id="@+id/mycompass"
                   android:layout_height="300sp"
                   android:layout_width="300sp"
                   class="com.hci.geotagger.Objects.Compass" />
+=======
+>>>>>>> fa376da541230ebe8a60b839e301cf0753a0ee64
 
         </LinearLayout>
     </ScrollView>
@@ -210,6 +186,7 @@
                     android:layout_weight="4"
                     android:gravity="bottom"
                     android:paddingTop="3dp" >
+<<<<<<< HEAD
                     
                     <ImageView
                      android:id="@+id/tagview_commentimg"
@@ -227,11 +204,13 @@
                      android:layout_weight="1"
                      android:padding="@dimen/image_padding"
                      android:src="@drawable/icon" />
+=======
+>>>>>>> fa376da541230ebe8a60b839e301cf0753a0ee64
 
                     <EditText
                         android:id="@+id/tagview_commenttxt"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Add a comment"
@@ -244,7 +223,7 @@
                     <Button
                         android:id="@+id/tagview_commentbtn"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:background="@drawable/greenbutton"
                         android:minHeight="32dp"
