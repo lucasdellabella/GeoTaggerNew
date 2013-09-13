@@ -211,7 +211,7 @@ public class LoginActivity extends Activity
 					progressDialog.dismiss();
 					//parser error
 					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, getString(R.string.unknown_error_try_catch));
+					//alert.showAlert(c, null, getString(R.string.unknown_error_try_catch));
 					//debug
 					Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
 					ex.printStackTrace();
@@ -222,7 +222,7 @@ public class LoginActivity extends Activity
 				progressDialog.dismiss();
 				//parser error
 				AlertHandler alert = new AlertHandler();
-				alert.showAlert(c, null, getString(R.string.unknown_error_response_null));
+				//alert.showAlert(c, null, getString(R.string.unknown_error_response_null));
 				//debug
 				Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
 			}

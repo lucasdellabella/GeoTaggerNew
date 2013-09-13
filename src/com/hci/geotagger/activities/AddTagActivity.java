@@ -190,9 +190,9 @@ public class AddTagActivity extends BaseActivity
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
-		adventure = (Adventure) bundle.getSerializable("adventure");
+		//adventure = (Adventure) bundle.getSerializable("adventure");
 		AH = new AdventureHandler();
-		
+
 		//get form control IDs
 		imgView = (ImageView) findViewById(R.id.addtag_imgView);
 		registerForContextMenu(imgView);
