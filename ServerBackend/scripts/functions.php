@@ -30,7 +30,7 @@ class DBFunctions
 
     // Get user info by id and password
     public function loginById($id, $password) {
-    	$result = mysql_query("SELECT AccountID, Username, EmailAddress, Password, Image, Description, Location, Quote, Type, Visibility, CreatedDateTime, RatingScore FROM accounts WHERE AccountID=".$id." AND Password=MD5('".$password."')");
+    	$result = mysql_query("SELECT AccountID, Username, EmailAddress, Password, Image, Description, Location, Quote, Type, Visibility, CreatedDateTime, RatingScore FROM accounts WHERE AccountID=".$id." AND Password='".$password."'");
         $num_of_rows = mysql_num_rows($result);
 
         // If greater than zero, return the user, otherwise return false
