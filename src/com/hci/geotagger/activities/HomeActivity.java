@@ -81,7 +81,7 @@ public class HomeActivity extends Activity {
 				// open current user's profile
 				Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
 				//tell the profile to open the current user's adventure list
-				i.putExtra("LoggedInUser", true);
+				i.putExtra("id", UserSession.CURRENTUSER_ID);
 				startActivity(i);
 			}
 		});		

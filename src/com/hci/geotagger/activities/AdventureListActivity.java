@@ -3,7 +3,6 @@ package com.hci.geotagger.activities;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +33,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -54,12 +54,10 @@ public class AdventureListActivity extends ListActivity {
 	private Runnable viewAdventures;
 	private int userID;
 	private int CONTEXT_DELETE_ID = 1;
-	private String userName;
+	private String userName;	
 	private Adventure a;
 	TextView nameTxt;
 	private Button addAdv;
-
-	HashMap<String, Bitmap> thumbCache;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +75,7 @@ public class AdventureListActivity extends ListActivity {
 			}
 		});		
 
-		// initialize objects		
-		thumbCache = new HashMap<String, Bitmap>();
+		// initialize objects				
 		adventures = new ArrayList<Adventure>();
 		this.AA = new AdventureAdapter(this, R.layout.row, adventures);
 		setListAdapter(this.AA);
@@ -281,6 +278,7 @@ public class AdventureListActivity extends ListActivity {
 		JSONArray adventureData = adventureHandler.getAllAdventuresUserPartOf(userID);
 
 		if (adventureData != null) {
+			Log.d("AdventureList", adventureData.toString());
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)
 			for (int i = 0; i < adventureData.length(); i++) {
@@ -288,7 +286,7 @@ public class AdventureListActivity extends ListActivity {
 				try {
 					obj = adventureData.getJSONObject(i);
 				} catch (JSONException e) {
-					Log.d("TagList GetTags",
+					Log.d("AdventureList GetAdventures",
 							"Error getting JSON Object from array.");
 					e.printStackTrace();
 				}
@@ -299,11 +297,9 @@ public class AdventureListActivity extends ListActivity {
 				}
 			}
 		}
-
-	}
-
+		runOnUiThread(returnRes);
+	}	
 	
-
 	/*
 	 * Bindings
 	 */
@@ -329,8 +325,8 @@ public class AdventureListActivity extends ListActivity {
 		Context c;
 
 		public AdventureAdapter(Context context, int textViewResourceId,
-				ArrayList<Adventure> tags) {
-			super(context, textViewResourceId, tags);
+				ArrayList<Adventure> adventures) {
+			super(context, textViewResourceId, adventures);
 			this.adventures = adventures;
 			this.c = context;
 		}
@@ -355,6 +351,8 @@ public class AdventureListActivity extends ListActivity {
 						.findViewById(R.id.row_txtdesc);
 				TextView timeTxt = (TextView) row
 						.findViewById(R.id.row_txtTime);
+				final ImageView imgView = (ImageView) row
+						.findViewById(R.id.row_thumbnail);
 				
 
 				if (nameTxt != null)
@@ -366,11 +364,15 @@ public class AdventureListActivity extends ListActivity {
 					SimpleDateFormat df = new SimpleDateFormat(
 							Constants.DATETIME_FORMAT);
 					String formatted = df.format(date);
-					timeTxt.setText(formatted);				}
-				
+					timeTxt.setText(formatted);	
+					
+					Bitmap default_bitmap = BitmapFactory.decodeResource(
+							c.getResources(), R.drawable.icon);
+					imgView.setImageBitmap(default_bitmap);
+				}				
 			}// end if a
 			return row;
 		}// end getView
 
-	}// end adventureadapter
+	}// end adventureadapter	
 }

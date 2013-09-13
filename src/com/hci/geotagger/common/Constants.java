@@ -15,7 +15,7 @@ public final class Constants {
 	public static final String OP_ADD_ADV = "addAdventure";
 	public static final String OP_UPLOAD_IMG = "uploadImage";
 	public static final String OP_GETTAGS_BYID = "getTagsById";
-	public static final String OP_GETADVS_BYID = "getAdvsById";
+	public static final String OP_GETADVS_BYID = "getAllAdventuresUserPartOf";
 	public static final String OP_GETPEOPLE_BYID = "getPeopleById";
 	public static final String OP_GETNAME_FROMID = "getNameFromId";
 	public static final String OP_DELETE_TAG = "deleteTag";

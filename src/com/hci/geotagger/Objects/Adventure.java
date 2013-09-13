@@ -51,7 +51,7 @@ public class Adventure implements Serializable
 		this.setCreatorID(cID);
 		this.setName(newName);
 		this.setDescription(desc);
-		this.setCreatorName(cName);
+		this.setCreatorName(cName);		
 		this.createdDateTime = cTime;		
 		this.tagArray = new ArrayList<Tag>();
 		this.peopleArray = new ArrayList<UserAccount>();
@@ -111,7 +111,7 @@ public class Adventure implements Serializable
 	public String getDescription()
 	{
 		return this.description;
-	}
+	}	
 	
 	public void setCreatorName(String cName)
 	{

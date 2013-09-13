@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.hci.geotagger.R;
+import com.hci.geotagger.activities.AddTagActivity.AddTagTask;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AdventureHandler;
@@ -40,8 +41,7 @@ public class EditAdventureActivity extends TabActivity
 	private EditText nameE, descriptionE;
 	private AdventureHandler advHandler;
 	private Adventure adventure;	
-	private TabHost tabHost;
-	private Adventure newAdventure;
+	private TabHost tabHost;	
 	private boolean isNewAdv = false;
 	private Context context = EditAdventureActivity.this;
 	
@@ -52,18 +52,20 @@ public class EditAdventureActivity extends TabActivity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//hide title bar
 		setContentView(R.layout.activity_edit_adventure);
 		
-		Intent intent = getIntent();
-		Bundle bundle = intent.getExtras();		
-		adventure = (Adventure) bundle.getSerializable("adventure");		
+		advHandler = new AdventureHandler();
+		
+		Intent intent = getIntent();				
 		if(intent.getBooleanExtra("newAdventure", false) == true)
 		{			
-			newAdventure = new Adventure(Constants.VISIBILITY_FULL, UserSession.CURRENTUSER_ID, null, null,
-											UserSession.CURRENT_USER.getName(), new Date());
-			//advHandler = new AdventureHandler();
-			//advHandler.AddAdventure(newAdventure);
-			adventure = newAdventure;
+			adventure = new Adventure(Constants.VISIBILITY_FULL, UserSession.CURRENTUSER_ID, null, null,
+										UserSession.CURRENT_USER.getName(), new Date());			
 			isNewAdv = true;
-		}		
+		}
+		else
+		{
+			Bundle bundle = intent.getExtras();		
+			adventure = (Adventure) bundle.getSerializable("adventure");
+		}
 		
 		//Set up tab view
 		tabHost = getTabHost();
@@ -96,11 +98,7 @@ public class EditAdventureActivity extends TabActivity
 		cancel.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
-			{
-				if(isNewAdv == false)
-				{
-					//advHandler.deleteAdventure(adventure.getID());
-				}
+			{				
 				startActivity(new Intent(v.getContext(), AdventureListActivity.class));
 			}
 		});
@@ -108,8 +106,8 @@ public class EditAdventureActivity extends TabActivity
 		save.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
-			{
-				if(nameE.getText().equals(null) || descriptionE.getText().equals(null))
+			{				
+				if(nameE.getText().toString().isEmpty() || descriptionE.getText().toString().isEmpty())
 				{
 					Toast t = Toast.makeText(context, "Adventure needs name and description!", Toast.LENGTH_SHORT);
 					t.show();
@@ -118,15 +116,16 @@ public class EditAdventureActivity extends TabActivity
 				{
 					adventure.setName(nameE.getText().toString());
 					adventure.setDescription(descriptionE.getText().toString());
-					if(isNewAdv == true){
+					if(isNewAdv == true)
+					{
 						new AddAdvTask(context).execute(adventure);
 					}
 					doStoreAddTagList();
 					doStoreRemoveTagList();
 					doStoreAddUserList();
-					doStoreRemoveUserList();				
-					startActivity(new Intent(v.getContext(), AdventureListActivity.class));
-				}
+					doStoreRemoveUserList();
+					startActivity(new Intent(v.getContext(), AdventureListActivity.class));					
+				}				
 			}
 		});			
 	}//end onCreate	
@@ -142,7 +141,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			Tag t = tempList.get(i);
 			adventure.addTag(t);
-			//advHandler.addTagToAdventure(t.getId(), adventure.getID());
+			advHandler.addTagToAdventure(t.getId(), adventure.getID());
 			adventure.emptyStoreTagList(tempList);
 		}
 	}
@@ -154,7 +153,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			Tag t = tempList.get(i);
 			adventure.removeTag(t.getId());
-			//advHandler.removeTagFromAdventure(t.getId(), adventure.getID());
+			advHandler.removeTagFromAdventure(t.getId(), adventure.getID());
 			adventure.emptyStoreTagList(tempList);
 		}
 	}
@@ -166,7 +165,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			UserAccount u = tempList.get(i);
 			adventure.addPerson(u);
-			//advHandler.addUserToAdventureById(u.getId(), adventure.getID());
+			advHandler.addUserToAdventureById(u.getId(), adventure.getID());
 			adventure.emptyStoreUserList(tempList);
 		}
 	}
@@ -178,7 +177,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			UserAccount u = tempList.get(i);
 			adventure.removePerson(u.getId());
-			//advHandler.removeUserFromAdventure(u.getId(), adventure.getID());
+			advHandler.removeUserFromAdventure(u.getId(), adventure.getID());
 			adventure.emptyStoreUserList(tempList);
 		}
 	}
@@ -216,10 +215,10 @@ public class EditAdventureActivity extends TabActivity
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}		
+	}
 	
 	/*
-	 * This class extends AsyncTask and provides the methods to add a tag via an
+	 * This class extends AsyncTask and provides the methods to add an adventure via an
 	 * asynchronous task
 	 */
 	class AddAdvTask extends AsyncTask<Adventure, Void, JSONObject> 
@@ -237,7 +236,7 @@ public class EditAdventureActivity extends TabActivity
 		public void onPreExecute() 
 		{
 			progressDialog = new ProgressDialog(c);
-			progressDialog.setMessage("Creating tag...");
+			progressDialog.setMessage("Creating adventure...");
 			progressDialog.setCancelable(false);
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
@@ -257,20 +256,19 @@ public class EditAdventureActivity extends TabActivity
 				{
 					String returnCode = response.getString(Constants.SUCCESS);
 					//if success = 1, create a user account object from the JSON returned from the database,
-					//set the loggedin flag to true, and open the Home page
+					//set the loggedin flag to true, and open the adventure list page
 					if (returnCode != null)
 					{
 						if (Integer.parseInt(returnCode) == 1)
 						{
-								String msg = "Tag added!";
+								String msg = "Adventure added!";
 								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-								// return to home screen
+								// return to adventure list screen
 								Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
-								i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+								//i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 								startActivity(i);
 								progressDialog.dismiss();
 								finish();
-									
 						}
 						else
 						{
@@ -281,7 +279,7 @@ public class EditAdventureActivity extends TabActivity
 					else
 					{	
 						progressDialog.dismiss();
-						Log.d("AddTagPostExecute", "Null response, Logon Error.");
+						Log.d("AddAdvPostExecute", "Null response, Logon Error.");
 						throw new UnknownErrorException();
 					}
 				}
@@ -309,20 +307,18 @@ public class EditAdventureActivity extends TabActivity
 		 * the provided credentials. 
 		 */
 		@Override
-		protected JSONObject doInBackground(Adventure... adventure) 
+		protected JSONObject doInBackground(Adventure...adventure) 
 		{
-			Adventure t = adventure[0];
+			Adventure a = adventure[0];
 			
 			// attempt to add tag
 			AdventureHandler handler = new AdventureHandler();
 			JSONObject response;
 			try 
-			{
-				//if there is an image, first try to upload it
-				
-				//add tag to db
-				response = handler.AddAdventure(t);
-				Log.d("AddTagTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
+			{				
+				//add adventure to db
+				response = handler.AddAdventure(a);
+				Log.d("AddAdvTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
 			} 
 			catch (JSONException e) 
 			{
@@ -333,5 +329,4 @@ public class EditAdventureActivity extends TabActivity
 
 		}// end doInBackground
 	}//end LoginTask
-	
 }
