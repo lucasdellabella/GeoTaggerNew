@@ -173,8 +173,8 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int reg_submitBtn=0x7f090041;
         public static final int reg_unameTxt=0x7f09003d;
         public static final int row_thumbnail=0x7f09006f;
-        public static final int row_txtName=0x7f09006e;
-        public static final int row_txtTime=0x7f09006d;
+        public static final int row_txtName=0x7f09006d;
+        public static final int row_txtTime=0x7f09006e;
         public static final int row_txtdesc=0x7f090070;
         public static final int scrollView1=0x7f090004;
         public static final int searchdlg_txtusername=0x7f090063;
