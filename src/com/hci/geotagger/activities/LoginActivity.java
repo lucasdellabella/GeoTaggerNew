@@ -13,6 +13,7 @@ import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.Constants;
+import com.hci.geotagger.common.MyUserAccount;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
 
@@ -160,7 +161,7 @@ public class LoginActivity extends Activity
 						AccountHandler handler = new AccountHandler();
 						//CREATE USER ACCOUNT OBJECT
 						Log.d("LoginPostExecute", response.toString());
-						UserAccount loginAccount = handler.CreateAccountFromJSON(response);
+						MyUserAccount loginAccount = handler.CreateMyAccountFromJSON(response);
 						if(loginAccount != null)
 						{
 							UserSession.login(c.getApplicationContext(), loginAccount);

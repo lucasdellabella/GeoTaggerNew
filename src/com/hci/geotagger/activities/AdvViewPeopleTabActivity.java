@@ -218,7 +218,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));			
 			//instantiate the tag object with properties from JSON
-			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), json.getString("Password"),
+			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), 
 					json.getInt("Type"), json.getInt("Visibility"), d);				
 			return ua;			
 		} 
