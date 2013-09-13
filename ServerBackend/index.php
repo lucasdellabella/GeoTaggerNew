@@ -328,7 +328,7 @@
 	function editProfile($operation, $db) {
 		$uId = $_POST['uId'];
 		$imgUrl = $_POST['imgUrl'];
-		$desc = $_POST['desc'];
+		$desc = $_POST['description'];
 		$location = $_POST['location'];
 		$quote = $_POST['quote'];
 

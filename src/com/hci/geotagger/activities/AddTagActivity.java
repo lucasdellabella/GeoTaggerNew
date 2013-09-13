@@ -362,7 +362,7 @@ public class AddTagActivity extends BaseActivity
 						
 						if(flag == 1)
 						{
-							AH.addTagToAdventure(adventure.getID(), t.getId());
+							AH.addTagToAdventure(adventure.getId(), t.getId());
 							adventure.addTag(t);
 						}
 						else if(flag == 2)

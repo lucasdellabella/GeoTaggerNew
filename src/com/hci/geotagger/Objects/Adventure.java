@@ -8,8 +8,8 @@ public class Adventure implements Serializable
 {		
 	private static final long serialVersionUID = 2L;
 	private long id;
-	private int visibility, creatorID;
-	private String name, description, creatorName;
+	private int visibility, ownerID;
+	private String name, description; //, creatorName;
 	private UserAccount creatorAccount;
 	private Date createdDateTime;
 	private ArrayList<Tag> tagArray;
@@ -23,13 +23,14 @@ public class Adventure implements Serializable
 	 * 
 	 * @param:	All params are fields.
 	 */
-	public Adventure(int vis, int cID, String newName, String newDescription, String cName, Date cTime)
+	public Adventure(int vis, int cID, String newName, 
+			String newDescription, /*String cName,*/ Date cTime)
 	{
 		this.setVisibility(vis);
 		this.setCreatorID(cID);	
 		this.setName(newName);
 		this.setDescription(newDescription);
-		this.setCreatorName(cName);
+		//this.setCreatorName(cName);
 		this.createdDateTime = cTime;		
 		this.tagArray = new ArrayList<Tag>();
 		this.peopleArray = new ArrayList<UserAccount>();
@@ -44,14 +45,15 @@ public class Adventure implements Serializable
 	 * 
 	 * @param:	All params are fields.
 	 */
-	public Adventure(long nID, int vis, int cID, String newName, String desc, String cName, Date cTime)
+	public Adventure(long nID, int vis, int cID, String newName, 
+			String desc, /*String cName,*/ Date cTime)
 	{
 		this.setID(nID);
 		this.setVisibility(vis);
 		this.setCreatorID(cID);
 		this.setName(newName);
 		this.setDescription(desc);
-		this.setCreatorName(cName);		
+		//this.setCreatorName(cName);		
 		this.createdDateTime = cTime;		
 		this.tagArray = new ArrayList<Tag>();
 		this.peopleArray = new ArrayList<UserAccount>();
@@ -68,7 +70,7 @@ public class Adventure implements Serializable
 		this.id = id;
 	}
 	
-	public long getID()
+	public long getId()
 	{
 		return this.id;
 	}
@@ -85,12 +87,12 @@ public class Adventure implements Serializable
 	
 	public void setCreatorID(int cID)
 	{
-		this.creatorID = cID;
+		this.ownerID = cID;
 	}
 	
 	public int getCreatorID()
 	{
-		return this.creatorID;
+		return this.ownerID;
 	}
 	
 	public void setName(String name)
@@ -113,7 +115,7 @@ public class Adventure implements Serializable
 		return this.description;
 	}	
 	
-	public void setCreatorName(String cName)
+	/*public void setCreatorName(String cName)
 	{
 		this.creatorName = cName;
 	}
@@ -121,7 +123,7 @@ public class Adventure implements Serializable
 	public String getCreatorName()
 	{
 		return this.creatorName;
-	}
+	}*/
 	
 	public void setCreatorAccount(UserAccount cAccount)
 	{

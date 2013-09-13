@@ -58,7 +58,7 @@ public class EditAdventureActivity extends TabActivity
 		if(intent.getBooleanExtra("newAdventure", false) == true)
 		{			
 			adventure = new Adventure(Constants.VISIBILITY_FULL, UserSession.CURRENTUSER_ID, null, null,
-										UserSession.CURRENT_USER.getName(), new Date());			
+										/*UserSession.CURRENT_USER.getName(),*/ new Date());			
 			isNewAdv = true;
 		}
 		else
@@ -158,7 +158,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			Tag t = tempList.get(i);
 			adventure.addTag(t);
-			advHandler.addTagToAdventure(t.getId(), adventure.getID());
+			advHandler.addTagToAdventure(t.getId(), adventure.getId());
 			adventure.emptyStoreTagList(tempList);
 		}
 	}
@@ -170,7 +170,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			Tag t = tempList.get(i);
 			adventure.removeTag(t.getId());
-			advHandler.removeTagFromAdventure(t.getId(), adventure.getID());
+			advHandler.removeTagFromAdventure(t.getId(), adventure.getId());
 			adventure.emptyStoreTagList(tempList);
 		}
 	}
@@ -182,7 +182,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			UserAccount u = tempList.get(i);
 			adventure.addPerson(u);
-			advHandler.addUserToAdventureById(u.getId(), adventure.getID());
+			advHandler.addUserToAdventureById(u.getId(), adventure.getId());
 			adventure.emptyStoreUserList(tempList);
 		}
 	}
@@ -194,7 +194,7 @@ public class EditAdventureActivity extends TabActivity
 		{
 			UserAccount u = tempList.get(i);
 			adventure.removePerson(u.getId());
-			advHandler.removeUserFromAdventure(u.getId(), adventure.getID());
+			advHandler.removeUserFromAdventure(u.getId(), adventure.getId());
 			adventure.emptyStoreUserList(tempList);
 		}
 	}

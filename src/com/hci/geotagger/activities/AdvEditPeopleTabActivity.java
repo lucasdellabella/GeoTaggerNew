@@ -160,7 +160,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 		ah = new AccountHandler();
 		ua = new ArrayList<UserAccount>();
 		JSONObject obj;		
-		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getID());
+		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getId());
 			if (peopleData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)

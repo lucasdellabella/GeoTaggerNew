@@ -122,12 +122,13 @@ public class AdvViewTagTabActivity extends ListActivity
 
 		// get the UserID that was passed to this activity to determine whose
 		// tags to load
-		Intent i = getIntent();
-		int id = i.getIntExtra("id", -1);
-		if (id != -1) {
-			this.userID = id;
-			retrieveTags();
-		}
+//		Intent i = getIntent();
+//		int id = i.getIntExtra("id", -1);
+//		if (id != -1) {
+//			this.userID = id;
+//			retrieveTags();
+//		}
+		retrieveTags();
 	}
 
 	// setup separate thread to retrieve tags
@@ -160,7 +161,7 @@ public class AdvViewTagTabActivity extends ListActivity
 	{
 		tags = new ArrayList<Tag>();
 		JSONObject obj;			
-		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getID());
+		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getId());
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)
