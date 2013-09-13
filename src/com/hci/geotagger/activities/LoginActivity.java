@@ -10,8 +10,6 @@
 package com.hci.geotagger.activities;
 
 import com.hci.geotagger.R;
-import com.hci.geotagger.Objects.UserAccount;
-import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.MyUserAccount;
 import com.hci.geotagger.common.UserSession;
