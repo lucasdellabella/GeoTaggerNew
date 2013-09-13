@@ -1,4 +1,4 @@
-/*
+/* 
  * LoginActivity class contains the code for the login screen
  * This validates a user's login credentials and directs them
  * to the home screen, or links new users to the Registration
@@ -40,7 +40,7 @@ public class LoginActivity extends Activity
 	TextView regBtn;
 	EditText unameTxt;
 	EditText pwTxt;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -48,7 +48,7 @@ public class LoginActivity extends Activity
 		setContentView(R.layout.activity_login);
 		final Context c = LoginActivity.this;
 		SharedPreferences app_settings = c.getSharedPreferences(Constants.LOGIN_DATAFILE, Constants.MODE_PRIVATE);
-		
+
 		//First Check user session see if a user is already logged in
 		if (UserSession.LOGGED_IN == true && UserSession.CURRENT_USER != null)
 		{
@@ -83,7 +83,7 @@ public class LoginActivity extends Activity
 				//attempt to log in user
 				String uName = unameTxt.getText().toString();
 				String pw = pwTxt.getText().toString();
-				
+
 				if (! uName.isEmpty() && ! pw.isEmpty())
 				{
 					//execute a new LoginTask
@@ -97,7 +97,7 @@ public class LoginActivity extends Activity
 				}
 			}
 		});
-		
+
 		//Register Button Action
 		regBtn = (TextView) findViewById(R.id.login_lblRegister);
 		regBtn.setOnClickListener(new OnClickListener() 
@@ -108,10 +108,10 @@ public class LoginActivity extends Activity
 				// create link to home screen
 				Intent j = new Intent(getBaseContext(), RegisterActivity.class);
 				startActivity(j);
-				
+
 			}
 		});
-		
+
 	}//end oncreate
 
 
@@ -128,8 +128,8 @@ public class LoginActivity extends Activity
 		{
 			this.c = context;		
 		}
-		
-		 //Setup progress dialog before execution
+
+		//Setup progress dialog before execution
 		@Override
 		public void onPreExecute() 
 		{
@@ -139,7 +139,7 @@ public class LoginActivity extends Activity
 			progressDialog.setIndeterminate(true);
 			progressDialog.show();
 		}
-		
+
 		/*
 		 * After login task is finished, get response and
 		 * determine if the login was successful. If so, close dialog 
@@ -147,87 +147,49 @@ public class LoginActivity extends Activity
 		 */
 		@Override
 		protected void onPostExecute(JSONObject response) {
-			
-			if(response != null)
-			{
-				try
-				{
-					String returnCode = response.getString(Constants.SUCCESS);
-					//if success = 1, create a user account object from the JSON returned from the database,
-					//set the loggedin flag to true, and open the Home page
-					if (returnCode != null)
+			String msg = "success";
+
+			if(response != null && response.has(Constants.SUCCESS)) {
+				try {
+				String returnCode = response.getString(Constants.SUCCESS);
+				//if success = 1, create a user account object from the JSON returned from the database,
+				//set the loggedin flag to true, and open the Home page
+				if (response.getString(Constants.SUCCESS) != null) {
+					if (Integer.parseInt(returnCode) == 1)
 					{
-						if (Integer.parseInt(returnCode) == 1)
+						AccountHandler handler = new AccountHandler();
+						//CREATE USER ACCOUNT OBJECT
+						Log.d("LoginPostExecute", response.toString());
+						UserAccount loginAccount = handler.CreateAccountFromJSON(response);
+						if(loginAccount != null)
 						{
-							AccountHandler handler = new AccountHandler();
-							//CREATE USER ACCOUNT OBJECT
-							Log.d("LoginPostExecute", response.toString());
-							UserAccount loginAccount = handler.CreateAccountFromJSON(response);
-							if(loginAccount != null)
-							{
-								UserSession.login(c.getApplicationContext(), loginAccount);
-								
-								Log.d("LoginPostExecute", "Login Success");
-								// create link to home screen
-								Intent i = new Intent(getBaseContext(), HomeActivity.class);
-								i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(i);
-								progressDialog.dismiss();
-								Log.d("LoginPostExecute", "Login Success 2");
-								finish();
-							}
-							else
-							{
-								progressDialog.dismiss();
-								Log.d("LoginPostExecute", "Could not create User Account Object");
-								//AlertHandler alert = new AlertHandler();
-								//alert.showAlert(c, null, getString(R.string.unknown_error));
-								String msg = getString(R.string.unknown_error);
-								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-							}		
-						}
-						else
-						{	
+							UserSession.login(c.getApplicationContext(), loginAccount);
+
+							Log.d("LoginPostExecute", "Login Success");
+							// create link to home screen
+							Intent i = new Intent(getBaseContext(), HomeActivity.class);
+							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+							startActivity(i);
 							progressDialog.dismiss();
-							//invalid username or password
-							String errorMsg = response.getString(Constants.ERROR_MSG);
-							//AlertHandler alert = new AlertHandler();
-							//alert.showAlert(c, null, getString(R.string.invalid_login));
-							String msg = getString(R.string.invalid_login);
-							Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-							Log.d("LoginPostExecute", "Logon error: " + errorMsg);				
-						}		
-					}
-					else
-					{	
-						progressDialog.dismiss();
-						String msg = getString(R.string.unknown_error);
-						Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-						Log.d("LoginPostExecute", "Null response, Logon Error.");
-					}
-				}
-				catch (Exception ex)
-				{	
-					progressDialog.dismiss();
-					//parser error
-					AlertHandler alert = new AlertHandler();
-					//alert.showAlert(c, null, getString(R.string.unknown_error_try_catch));
-					//debug
-					Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
-					ex.printStackTrace();
-				}			 
-			}		
-			else
-			{
-				progressDialog.dismiss();
-				//parser error
-				AlertHandler alert = new AlertHandler();
-				//alert.showAlert(c, null, getString(R.string.unknown_error_response_null));
-				//debug
-				Log.d("LoginPostExecute", "Parsing returned JSON object failed.");
-			}
+							Log.d("LoginPostExecute", "Login Success 2");
+							finish();
+							return;
+						} else { msg = "Could not create User Account Object"; }
+					} else { 	 msg = "Parsing returned JSON object failed: Invalid return code for successful login"; }
+				} else { 		 msg = "Null successful response, Logon Error."; }
+				} catch (Exception ex) { ex.printStackTrace(); }
+			} else { 			 msg = "Null response, Logon Error."; }
+			
+			progressDialog.dismiss();
+			//TODO under what conditions do we want to notify the user of a login error?
+			//				AlertHandler alert = new AlertHandler();
+			//				alert.showAlert(c, null, getString(R.string.unknown_error_try_catch));
+			String msg2 = getString(R.string.unknown_error);
+			Toast.makeText(getApplicationContext(), msg2, Toast.LENGTH_SHORT).show();
+			Log.d("LoginPostExecute", msg);
+
 		}//end onPostExecute
-		
+
 		/*
 		 * Create an account handler and attempt to log in with 
 		 * the provided credentials. 
@@ -248,8 +210,9 @@ public class LoginActivity extends Activity
 				AccountHandler handler = new AccountHandler();
 				try 
 				{
+					//
 					JSONObject response = handler.login(id, pw);
-					Log.d("LoginTask ID", "Got response, returncode = "+ response.getString(Constants.SUCCESS));
+					Log.d("LoginTask ID", "Got response, returncode = "/*+ response.getString(Constants.SUCCESS)*/);
 					return response;
 				} 
 				catch (Exception ex)
@@ -279,12 +242,12 @@ public class LoginActivity extends Activity
 				} 
 				catch (Exception ex) 
 				{
-					Log.d("LoginTask", "Exception authenticating with Username");
+					Log.d("LoginTask", "Exception authenticating with Username " + ex);
 					ex.printStackTrace();
 					return null;
 				}
 			}
 		}// end doInBackground
 	}//end LoginTask
-	
+
 }//end LoginActivity
