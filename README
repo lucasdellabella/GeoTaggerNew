@@ -1,1 +1,2 @@
 - to run, need to add google-play-services.jar to build path
+- recommend github app for committing -- auto-detects changes from eclipse to local repo
