@@ -13,5 +13,5 @@
     <dimen name="textfield_padding">4dp</dimen>
     <dimen name="pageheader_textsize">25sp</dimen>
     <dimen name="paheheader_height">32dp</dimen>
-
+    <dimen name="button_height">42dp</dimen>
 </resources>

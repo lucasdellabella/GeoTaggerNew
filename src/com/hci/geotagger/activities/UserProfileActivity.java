@@ -66,7 +66,11 @@ public class UserProfileActivity extends Activity {
 		//after user account has been set, start showing its data
 		if(currentUserAccount != null)
 		{
-			uNameTxt.setText(currentUserAccount.getuName() + "'s Profile");
+			String profile = (currentUserAccount.getuName() + "'s Profile");
+			if (profile.length() > 0)
+				profile = profile.substring(0, 1).toUpperCase() + profile.substring(1);
+
+			uNameTxt.setText(profile);
 			//if the user is viewing their own profile, show the edit button
 			if (currentUserAccount.getId() == UserSession.CURRENTUSER_ID)
 			{
@@ -162,7 +166,7 @@ public class UserProfileActivity extends Activity {
 		String quote = (currentUserAccount.getQuote().equalsIgnoreCase("null")) ? str_default : currentUserAccount.getQuote();
 		String loc = (currentUserAccount.getLocation().equalsIgnoreCase("null"))? str_default : currentUserAccount.getLocation();
 		String desc = (currentUserAccount.getDescription().equalsIgnoreCase("null")) ? str_default : currentUserAccount.getDescription();
-		
+
 		locTxt.setText(loc);
 		descTxt.setText(desc );
 		quoteTxt.setText(quote);	

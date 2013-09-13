@@ -28,8 +28,8 @@
 
         <ImageButton
             android:id="@+id/profileview_editBtn"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="60dp"
+            android:layout_height="36dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="22dp"
@@ -141,16 +141,15 @@
 
     <Button
         android:id="@+id/profileview_tagsBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/button_height"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_marginBottom="5dp"
-        android:layout_marginRight="30dp"
         android:background="@drawable/greenbutton"
         android:drawableRight="@drawable/ic_tag"
-        android:paddingLeft="8dp"
-        android:paddingRight="3dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
         android:text="View Tags"
         android:textStyle="bold" />
 

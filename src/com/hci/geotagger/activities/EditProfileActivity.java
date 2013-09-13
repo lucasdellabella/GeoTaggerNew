@@ -43,6 +43,7 @@ import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 public class EditProfileActivity extends BaseActivity {
+	private TextView profileTxt;
 	private EditText locTxt, descTxt, quoteTxt;
 	private Button saveBtn, cancelBtn;
 	private ProgressDialog PD;
@@ -62,6 +63,7 @@ public class EditProfileActivity extends BaseActivity {
 		accountHandler = new AccountHandler();
 		imageHandler = new ImageHandler(EditProfileActivity.this);
 		
+		profileTxt = (TextView) findViewById(R.id.editprofile_username);
 		locTxt = (EditText) findViewById(R.id.editprofile_location);
 		descTxt = (EditText) findViewById(R.id.editprofile_desc);
 		quoteTxt= (EditText) findViewById(R.id.editprofile_quote);
@@ -258,6 +260,11 @@ public class EditProfileActivity extends BaseActivity {
 		String str_default = "";
 		// set strings to default value if they are not set (to prevent
 		// displaying 'null')
+		String profile = (UserSession.CURRENT_USER.getuName() == null || 
+				UserSession.CURRENT_USER.getuName().equalsIgnoreCase("null")) ?
+						str_default : UserSession.CURRENT_USER.getuName();
+		if (profile.length() > 0)
+			profile = profile.substring(0, 1).toUpperCase() + profile.substring(1);
 		String quote = (UserSession.CURRENT_USER.getQuote()
 				.equalsIgnoreCase("null")) ? str_default
 				: UserSession.CURRENT_USER.getQuote();
@@ -267,7 +274,8 @@ public class EditProfileActivity extends BaseActivity {
 		String desc = (UserSession.CURRENT_USER.getDescription()
 				.equalsIgnoreCase("null")) ? str_default
 				: UserSession.CURRENT_USER.getDescription();
-
+		
+		profileTxt.setText("Edit " + profile + "\'s Profile");
 		locTxt.setText(loc);
 		descTxt.setText(desc);
 		quoteTxt.setText(quote);
