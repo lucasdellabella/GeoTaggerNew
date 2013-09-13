@@ -4,6 +4,7 @@
     android:layout_marginBottom="5dp"
     android:background="@drawable/background"
     android:orientation="vertical" >
+
     <TextView
         android:id="@+id/adventurelist_username"
         android:layout_width="fill_parent"
@@ -18,18 +19,19 @@
         android:textColor="@android:color/white"
         android:textSize="@dimen/pageheader_textsize"
         android:textStyle="bold" />
-        
-    	<Button 
-		    android:id="@+id/adventureList_btnNewAdv"
-		    android:layout_width="match_parent"
-		    android:layout_height="wrap_content"
-		    android:background="@drawable/greenbutton"
-		    android:text="Create new Adventure"/>
     
-	<LinearLayout
+    <Button 
+	    android:id="@+id/adventureList_btnNewAdv"
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/button_height"
+	    android:background="@drawable/greenbutton"
+	    android:text="Create New Adventure"/>
+    
+    <LinearLayout
 	   android:orientation="vertical"
 	   android:layout_width="fill_parent"
-	   android:layout_height="fill_parent">
+	   android:layout_height="wrap_content"
+	   android:layout_gravity="fill">
 		<ListView
 		    android:id="@+id/android:list"
 		    android:layout_width="fill_parent"
@@ -42,4 +44,5 @@
 		    android:text="@string/list_no_adventures"
 		    android:textColor="@android:color/white" />
 	</LinearLayout>
+
 </LinearLayout>

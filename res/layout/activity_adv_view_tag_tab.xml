@@ -12,9 +12,9 @@
 	<Button 
 	    android:id="@+id/advViewTagTab_btnNewTag"
 	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="@dimen/button_height"
 	    android:background="@drawable/greenbutton"
-	    android:text="Add new Tag"/>			    
+	    android:text="Add New Tag"/>			    
 	<TextView
 	    android:id="@+id/android:empty"
 	    android:layout_width="fill_parent"
