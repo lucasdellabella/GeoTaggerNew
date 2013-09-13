@@ -99,7 +99,9 @@ public class EditAdventureActivity extends TabActivity
 		{
 			public void onClick(View v)
 			{				
-				startActivity(new Intent(v.getContext(), AdventureListActivity.class));
+				Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
+				i.putExtra("id", UserSession.CURRENTUSER_ID);
+				startActivity(i);
 			}
 		});
 		save = (Button) findViewById(R.id.adventureEdit_btnOk);
@@ -111,6 +113,10 @@ public class EditAdventureActivity extends TabActivity
 				{
 					Toast t = Toast.makeText(context, "Adventure needs name and description!", Toast.LENGTH_SHORT);
 					t.show();
+					
+				
+					
+					
 				}
 				else
 				{
@@ -124,7 +130,18 @@ public class EditAdventureActivity extends TabActivity
 					doStoreRemoveTagList();
 					doStoreAddUserList();
 					doStoreRemoveUserList();
-					startActivity(new Intent(v.getContext(), AdventureListActivity.class));					
+					
+					
+					//startActivity(new Intent(v.getContext(), AdventureListActivity.class));		
+					
+					
+					
+					// create link to my tags
+					//Intent i = new Intent(getBaseContext(), TagListActivity.class);
+					//pass the ID of the current user to ViewTag activity to load their tags 
+					Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
+					i.putExtra("id", UserSession.CURRENTUSER_ID);
+					startActivity(i);
 				}				
 			}
 		});			
