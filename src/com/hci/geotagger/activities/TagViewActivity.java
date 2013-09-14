@@ -1,6 +1,8 @@
 package com.hci.geotagger.activities;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -68,6 +71,7 @@ import android.widget.Toast;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.location.LocationProvider;
 
 public class TagViewActivity extends Activity implements SensorEventListener 
 {
@@ -83,6 +87,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	ProgressDialog PD;
 	ListView commentList;
 	String url;
+	
+	private DecimalFormat ddf  = new DecimalFormat("#.00");
+	private DecimalFormat lldf = new DecimalFormat("#.000000");
 	
 	private int currentTagIndex;
 	private ArrayList<Tag> tagList;
@@ -157,6 +164,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		txt_currentLoc = (TextView) findViewById(R.id.tagview_currentlocationtxt);
 		//text that will be used for the user's distance to tag
 		txt_distance = (TextView) findViewById(R.id.tagview_distancetotxt);
+		txt_distance.bringToFront();			// had to do programmatically because I couldn't change the order in XML without it crashing
 		//request the latest location
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		//the location that is used for the location of the tag
@@ -629,7 +637,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			currentTag = tagList.get(currentTagIndex);
 			//show tag name and underline
 			txt_tagName.setText(currentTag.getName());
-			txt_tagName.setPaintFlags(txt_tagName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			//txt_tagName.setPaintFlags(txt_tagName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			//show tag rating
 			txt_Rating.setText(Integer.toString(currentTag.getRatingScore()));
 			//show owner name and date/time of tag
@@ -647,7 +655,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
         	double lat = geo.getLatitude();
         	double lon = geo.getLongitude();
         	//show tag location
-        	txt_latLong.setText(String.valueOf(lat) + ", " + String.valueOf(lon));
+        	txt_latLong.setText(lldf.format(lat) + ", " + lldf.format(lon));
         	//show tag location description
         	txt_tagLocation.setText(currentTag.getLocationString());
         	//show tag description
@@ -986,13 +994,17 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			{
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
-				String str = "Current Location: " + location.getLatitude() + ", "
-						+ location.getLongitude();
+				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
 				txt_currentLoc.setText(str);
 				tagLocation.setLatitude(geo.getLatitude());
 				tagLocation.setLongitude(geo.getLongitude());
-				String distance = String.valueOf(location.distanceTo(tagLocation));
-				txt_distance.setText(distance + " meters to tag");
+				float dist = location.distanceTo(tagLocation);
+				String unit = "m";
+				if (dist >= 1000)
+				{	unit = "km";
+					dist /= 1000;
+				}
+				txt_distance.setText(ddf.format(dist) + " " + unit);
 			}
 		}
 
@@ -1009,9 +1021,14 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		}
 
 		@Override
-		public void onStatusChanged(String arg0, int arg1, Bundle arg2)
+		public void onStatusChanged(String arg0, int status, Bundle arg2)
 		{
-			// TODO Auto-generated method stub	
+			if (status == LocationProvider.OUT_OF_SERVICE || status == LocationProvider.TEMPORARILY_UNAVAILABLE)
+			{
+				txt_currentLoc.setText("Location Not Available");
+				txt_currentLoc.setTypeface(null, Typeface.ITALIC);
+			}
+			else txt_currentLoc.setTypeface(null, Typeface.NORMAL);
 		}
 	}
 }
