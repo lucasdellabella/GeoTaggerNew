@@ -86,7 +86,8 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >  >
         </activity>
         <activity
-            android:name="com.hci.geotagger.activities.AdvEditPeopleTabActivity" > >            
+            android:name="com.hci.geotagger.activities.AdvEditPeopleTabActivity" 
+            android:theme="@style/CustomTabTheme"> >
         </activity>
         <activity
             android:name="com.hci.geotagger.activities.AdvEditTagTabActivity" > >            

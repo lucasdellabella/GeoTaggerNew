@@ -38,7 +38,7 @@ public class AdventureViewActivity extends TabActivity
 	{
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//hide title bar
-		setContentView(R.layout.activity_adventure_view);
+		setContentView(R.layout.activity_adventure_view_wtabs);
 		
 		Intent intent = getIntent();
 		Bundle bundle = intent.getExtras();
@@ -48,6 +48,7 @@ public class AdventureViewActivity extends TabActivity
 		tabHost = getTabHost();
 		TabHost.TabSpec spec;
 		Intent in;
+		
 		//Tags tab
 		in = new Intent(this, AdvViewTagTabActivity.class);
 		Bundle bundle2 = new Bundle();
@@ -55,13 +56,17 @@ public class AdventureViewActivity extends TabActivity
 		in.putExtras(bundle2);				
 		spec = tabHost.newTabSpec("tags").setIndicator("Tags").setContent(in);
 		tabHost.addTab(spec);
-		//People tab
-		in = new Intent(this, AdvViewPeopleTabActivity.class);
-		Bundle bundle3 = new Bundle();
-		bundle3.putSerializable("adventure", adventure);
-		in.putExtras(bundle3);
-		spec = tabHost.newTabSpec("people").setIndicator("People").setContent(in);
-		tabHost.addTab(spec);				
+		tabHost.getTabWidget().getChildAt(0).getLayoutParams().height = 45;		// hard coding to make text label smaller
+
+//		// commenting out people since it isn't implemented yet
+//		//People tab
+//		in = new Intent(this, AdvViewPeopleTabActivity.class);
+//		Bundle bundle3 = new Bundle();
+//		bundle3.putSerializable("adventure", adventure);
+//		in.putExtras(bundle3);
+//		spec = tabHost.newTabSpec("people").setIndicator("People").setContent(in);
+//		tabHost.addTab(spec);				
+//		tabHost.getTabWidget().getChildAt(1).getLayoutParams().height = 45;
 		
 		name = (TextView) findViewById(R.id.adventureView_nametxt);
 		name.setText(adventure.getName());
