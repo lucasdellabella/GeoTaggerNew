@@ -39,5 +39,6 @@
     <string name="title_activity_user_profile">UserProfileActivity</string>
     <string name="list_no_friends">No friends have been added yet. Click the + to search!</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
+    <string name="unknown_distance">\?\?.\?\? m</string>
 
 </resources>
