@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
- 
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -19,7 +19,8 @@ import org.json.JSONObject;
 
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.Constants;
- 
+import com.hci.geotagger.common.MyUserAccount;
+
 import android.util.Log;
 
  
@@ -106,6 +107,36 @@ public class AccountHandler {
      * @in json: JSONObject
      * @out UserAccount
      */
+    public MyUserAccount CreateMyAccountFromJSON(JSONObject json)
+    {
+    	Date d = new Date();
+    	try 
+    	{
+    		//get the user object from the json object
+    		JSONObject jUser = json;
+    		//format the date
+    		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			d = ts.parse(jUser.getString("CreatedDateTime"));
+			
+			String pwd = "";
+			 pwd = jUser.getString("Password");
+			//instantiate the user account object with properties from JSON
+			MyUserAccount ua = new MyUserAccount(jUser.getInt("AccountID"), jUser.getString("Username"), jUser.getString("EmailAddress"),
+					pwd, jUser.getString("Image"), jUser.getString("Description"), jUser.getString("Location"),
+					jUser.getString("Quote"), jUser.getInt("Type"), jUser.getInt("Visibility"), d , jUser.getInt("RatingScore"));
+			return ua;
+		} 
+    	catch (JSONException e) 
+    	{
+    		Log.d("AccountHandler", "CreateUserAccount from JSONObject failed");
+			e.printStackTrace();
+		} catch (ParseException e) {
+			Log.d("AccountHandler", "Problem parsing timestamp from JSON");
+			e.printStackTrace();
+		}
+    	return null;
+    }
+    
     public UserAccount CreateAccountFromJSON(JSONObject json)
     {
     	Date d = new Date();
@@ -116,9 +147,10 @@ public class AccountHandler {
     		//format the date
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			d = ts.parse(jUser.getString("CreatedDateTime"));
+			
 			//instantiate the user account object with properties from JSON
 			UserAccount ua = new UserAccount(jUser.getInt("AccountID"), jUser.getString("Username"), jUser.getString("EmailAddress"),
-					jUser.getString("Password"), jUser.getString("Image"), jUser.getString("Description"), jUser.getString("Location"),
+					jUser.getString("Image"), jUser.getString("Description"), jUser.getString("Location"),
 					jUser.getString("Quote"), jUser.getInt("Type"), jUser.getInt("Visibility"), d , jUser.getInt("RatingScore"));
 			return ua;
 		} 

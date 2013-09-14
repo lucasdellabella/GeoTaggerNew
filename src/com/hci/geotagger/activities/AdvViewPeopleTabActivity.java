@@ -99,12 +99,13 @@ public class AdvViewPeopleTabActivity extends ListActivity
 
 		// get the UserID that was passed to this activity to determine whose
 		// users to load
-		Intent i = getIntent();
-		int id = i.getIntExtra("id", -1);
-		if (id != -1) {
-			this.userID = id;
-			retrievePeople();
-		}
+//		Intent i = getIntent();
+//		int id = i.getIntExtra("id", -1);
+//		if (id != -1) {
+//			this.userID = id;
+//			retrievePeople();
+//		}
+		retrievePeople();
 	}
 
 	// setup separate thread to retrieve users
@@ -137,7 +138,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
 	{
 		ua = new ArrayList<UserAccount>();
 		JSONObject obj;		
-		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getID());
+		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getId());
 		if (peopleData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)
@@ -218,7 +219,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));			
 			//instantiate the tag object with properties from JSON
-			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), json.getString("Password"),
+			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), 
 					json.getInt("Type"), json.getInt("Visibility"), d);				
 			return ua;			
 		} 

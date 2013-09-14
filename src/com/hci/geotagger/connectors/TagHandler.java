@@ -207,18 +207,18 @@ public class TagHandler {
         params.add(new BasicNameValuePair("tagId", Long.toString(tagID)));
         params.add(new BasicNameValuePair("comment", text ));
         params.add(new BasicNameValuePair("uName", username));
-        params.add(new BasicNameValuePair("commentPic", imgURL));
+        params.add(new BasicNameValuePair("imgUrl", imgURL));
        
         //make webservice call to add tag comment to db
 		try
 		{
 			JSONObject json = jsonParser.getJSONFromUrl(tagOpURL, params);
-			Log.d("TagHandler AddTagComment", "JSON Response from PHP: " + json.toString());
+			Log.d("TagHandler AddTagComment(Picture)", "JSON Response from PHP: " + json.toString());
 			return json;
 		}
 		catch (Exception ex)
 		{
-			Log.d("TagHandler AddTagComment", "Exception occurred adding comment, returning null.");
+			Log.d("TagHandler AddTagComment(Picture)", "Exception occurred adding comment, returning null.");
 			return null;
 		}
 	}
@@ -232,35 +232,20 @@ public class TagHandler {
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));
 			
-			
 			Comment c;
 			
 			//below code keeps tags working until server has imageURL field for comments
-			if(!json.getString("Text").equals(""))
+			if(!json.getString("ImageUrl").equals(""))
 			{
 				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
-						json.getString("Text"), json.getString("Username"),  d);
-			}
-			else
-			{
-				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
-						json.getString("Text"), json.getString("Username"),  d, 
-						json.getString("commentPic"));
-			}
-			
-			/*
-			 * Used for when comment images are added as a field to the database
-			if(!json.getString("CommentImageURL").equals(""))
-			{
-				c = new Comment(json.getLong("ID"), json.getLong("ParentTagID"),
-						json.getString("Text"), json.getString("Username"), d,
-						json.getString("CommentImageURL"));
+						json.getString("Text"), json.getString("Username"),  d,
+						json.getString("ImageUrl"));
 			}
 			else
 			{
 				c = new Comment(json.getLong("ID"),json.getLong("ParentTagID"),
 						json.getString("Text"), json.getString("Username"),  d);
-			}*/
+			}
 			
 			return c;			
 		} 

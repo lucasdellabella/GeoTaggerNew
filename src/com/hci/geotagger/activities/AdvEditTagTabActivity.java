@@ -174,7 +174,7 @@ public class AdvEditTagTabActivity extends ListActivity
 	{
 		tags = new ArrayList<Tag>();
 		JSONObject obj;		
-		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getID());
+		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getId());
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)

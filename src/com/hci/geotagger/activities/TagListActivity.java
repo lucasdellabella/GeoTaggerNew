@@ -380,12 +380,14 @@ public class TagListActivity extends ListActivity {
 			@Override
 			public void run() {
 				// loop through tags and cache their images if they have them
-				for (Tag t : tags) {
+				for (Tag t : tags) 
+				{
 					if(t != null)
 					{
 						String url = t.getImageUrl();
 						// if tag has image url, download image and cache it
-						if (!url.isEmpty()) {
+						if (!url.isEmpty()) 
+						{
 							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
 									url, R.dimen.thumbnail_width,
 									R.dimen.thumbnail_height);

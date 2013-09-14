@@ -122,16 +122,18 @@ public class AdventureHandler
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));			
 			//instantiate the tag object with properties from JSON
-			Adventure a = new Adventure(json.getLong("AdventureID"), json.getInt("Visibility"), json.getInt("CreatorID"),
-					json.getString("Name"), json.getString("Description"), json.getString("Creatorname"), d);				
+			Adventure a = new Adventure(json.getLong("ID"), 
+					json.getInt("Visibility"), json.getInt("OwnerID"),
+					json.getString("Name"), json.getString("Description"), 
+					/*json.getString("Creatorname"),*/ d);				
 			return a;			
 		} 
     	catch (JSONException e) 
     	{
-    		Log.d("TagHandler", "CreateTag from JSONObject failed");
+    		Log.d("AdventureHandler", "CreateTag from JSONObject failed");
 			e.printStackTrace();
 		} catch (ParseException e) {
-			Log.d("TagHandler", "Problem parsing timestamp from JSON");
+			Log.d("AdventureHandler", "Problem parsing timestamp from JSON");
 			e.printStackTrace();
 		}
     	return null;
@@ -170,7 +172,7 @@ public class AdventureHandler
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETTAGS_BYID));
-		getTagsParams.add(new BasicNameValuePair("id", Long.toString(id)));
+		getTagsParams.add(new BasicNameValuePair("oId", Long.toString(id)));
 		
 		try
 		{
@@ -253,7 +255,7 @@ public class AdventureHandler
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETPEOPLE_BYID));
-		getTagsParams.add(new BasicNameValuePair("id", Long.toString(aId)));
+		getTagsParams.add(new BasicNameValuePair("id", Long.toString(aId))); // might need to be oId
 		
 		try
 		{

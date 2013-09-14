@@ -8,30 +8,28 @@ import java.util.Date;
 public class UserAccount implements Serializable {
 
 	private int id, Type, Visibility, UserRating;
-	private String uName, Name, Email, Password, Description, Location, Quote;
+	private String uName, Name, Email, Description, Location, Quote;
 	private String Image;
 	private Date createdDateTime;
 	//empty constructor for test objects
 	public UserAccount(){};
 	//init only required fields
-	public UserAccount(int aID, String userName, String pw, int type, int vis, Date ts )
+	public UserAccount(int aID, String userName, int type, int vis, Date ts )
 	{
 		this.id = aID;
 		this.uName = userName;
-		this.setPass(pw);
 		this.setType(type);
 		this.setVisibility(vis);
 		this.setCreatedDateTime(ts);
 		
 	}
 	//init only required fields
-	public UserAccount(int aID, String userName, String email, String pw, String img,
+	public UserAccount(int aID, String userName, String email, String img,
 			String desc, String loc, String quote, int type, int vis, Date ts, int rating )
 	{
 		this.id = aID;
 		this.uName = userName;
 		this.setEmail(email);
-		this.setPass(pw);
 		this.setImage(img);
 		this.setDescription(desc);
 		this.setLocation(loc);
@@ -41,11 +39,10 @@ public class UserAccount implements Serializable {
 		this.setCreatedDateTime(ts);
 		this.setUserRating(rating);
 	}
-	public UserAccount(int aID, String userName, String pw)
+	public UserAccount(int aID, String userName)
 	{
 		this.id = aID;
 		this.uName = userName;
-		this.setPass(pw);		
 	}
 	//init all fields
 	public int getId() {
@@ -59,12 +56,7 @@ public class UserAccount implements Serializable {
 	public void setuName(String uName) {
 		this.uName = uName;
 	}
-	public String getPass() {
-		return Password;
-	}
-	public void setPass(String password) {
-		Password = password;
-	}
+
 	public int getType() {
 		return Type;
 	}

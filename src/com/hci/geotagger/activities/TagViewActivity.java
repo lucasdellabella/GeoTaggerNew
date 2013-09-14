@@ -1,12 +1,11 @@
 package com.hci.geotagger.activities;
 
 import java.io.File;
-import java.io.InputStream;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import android.util.Log;
 
@@ -16,7 +15,6 @@ import org.json.JSONObject;
 
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Comment;
-import com.hci.geotagger.Objects.Compass;
 import com.hci.geotagger.Objects.GeoLocation;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;
@@ -26,7 +24,6 @@ import com.hci.geotagger.connectors.TagHandler;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import android.app.Activity;
@@ -39,7 +36,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -47,7 +43,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import android.view.ContextMenu;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -65,7 +60,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -104,15 +98,15 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	
 	//fields needed for the compass
 	private SensorManager sensorManager;
-	private Sensor sensorAccelerometer;
-	private Sensor sensorMagneticField; 
-	private float[] valuesAccelerometer;
-	private float[] valuesMagneticField;
-	private float[] matrixR;
-	private float[] matrixI;
-	private float[] matrixValues;
-	private float pivotX = 0;
-	private float pivotY = 0;
+	//private Sensor sensorAccelerometer;
+	//private Sensor sensorMagneticField; 
+	//private float[] valuesAccelerometer;
+	//private float[] valuesMagneticField;
+	//private float[] matrixR;
+	//private float[] matrixI;
+	//private float[] matrixValues;
+	//private float pivotX = 0;
+	//private float pivotY = 0;
 	private float currentDegree;
 	//private Compass myCompass;
 	
@@ -122,6 +116,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private ImageHandler imageHandler;
 	private File CURRENT_IMAGE, TEMP_IMAGE;
 	private Uri CUR_IMGURI, TMP_IMGURI;
+	
+	private HashMap<String, Bitmap> thumbCache;
+
 	
 	@SuppressWarnings("unchecked")
 	@Override
@@ -146,9 +143,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
 		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
+		thumbCache = new HashMap<String, Bitmap>();
 		
-		pivotX = compassTriangle.getWidth()/2;
-		pivotY = compassTriangle.getHeight()/2;
+		//pivotX = compassTriangle.getWidth()/2;
+		//pivotY = compassTriangle.getHeight()/2;
 		
 		//LOCATION INITIALIZATION
 		
@@ -171,15 +169,15 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//myCompass = (Compass) findViewById(R.id.mycompass);
 		//initialize the sensors for the compass
 		sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-	    sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-	    sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+	    //sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+	    //sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 	    //the values that grab the direction of the device  
-	    valuesAccelerometer = new float[3];
-	    valuesMagneticField = new float[3];
+	    //valuesAccelerometer = new float[3];
+	    //valuesMagneticField = new float[3];
 	    //the values that update the direction of the device
-	    matrixR = new float[9];
-	    matrixI = new float[9];
-	    matrixValues = new float[3];
+	    //matrixR = new float[9];
+	    //matrixI = new float[9];
+	    //matrixValues = new float[3];
     	currentDegree = 0;
 	    
 	    //END COMPASS INITIALIZATION
@@ -206,7 +204,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		    //display the tag info in the activity
 		    displayTag();
 		    retrieveComments();
-		    
+
 			//go to add tags menu when add button is clicked
 			btnRating.setOnClickListener(new OnClickListener() 
 			{
@@ -367,14 +365,13 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	    // how long the animation will take place
 	    ra.setDuration(210);
 	 
-	        // set the animation after the end of the reservation status
-	        ra.setFillAfter(true);
+	    // set the animation after the end of the reservation status
+	    ra.setFillAfter(true);
 	 
-	        // Start the animation
-	        compassTriangle.startAnimation(ra);
-	        currentDegree = -degree;
-	 
-	    }
+	    // Start the animation
+	    compassTriangle.startAnimation(ra);
+	    currentDegree = -degree; 
+	}
 
 	/*
 	 * Creates the context menu that allows the user to delete tags
@@ -471,6 +468,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					JSONObject response;
 					if(HAS_IMAGE == true)
 					{
+						String url = uploadImage(CURRENT_IMAGE);
+						Log.d("TagViewActivity", "url: " + url);
 						response = tagHandler.AddTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName(), url);
 						Log.d("TagViewActivity", "Picture Added");
@@ -582,11 +581,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					comments.add(c);
 				}
 			}
+			
+			loadImagesToCache();
 		}
-		runOnUiThread(returnRes);
 	}
 		
-	// update list on UI thread - Does this do anything? - SK 9/2
 	private Runnable returnRes = new Runnable() 
 	{
 		@Override
@@ -768,40 +767,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	}
 	
 	/*
-	 * When the image is selected in the gallery, show it in the ImageView
-	 */
-	public void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
-        if (resultCode == RESULT_OK)
-        {	
-        	switch(requestCode)
-            {
-                //if new picture is taken, show that in the image view
-        		case Constants.CAPTURE_IMG:
-        			//if the image was saved to the device use the URI to populate image view and set the current image
-        			if (TMP_IMGURI != null)
-        			{        				
-        				CUR_IMGURI = TMP_IMGURI;
-        				CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
-        				TMP_IMGURI = null;
-        				
-        				img_commentImage.setImageURI(CUR_IMGURI);
-        				HAS_IMAGE = true;
-        			}
-        			break;
-            }
-        }
-        //if user backed out of the camera without saving picture, discard empty image file
-        else
-        {
-        	if (TEMP_IMAGE != null)
-        		TEMP_IMAGE.delete();
-        	
-        	TMP_IMGURI = null;
-        }
-    }
-	
-	/*
 	 * Upload an image to the server and set the URL
 	 */
 	private String uploadImage(File f)
@@ -840,12 +805,82 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	}
 	
 	/*
+	 * When the image is selected in the gallery, show it in the ImageView
+	 */
+	public void onActivityResult(int requestCode, int resultCode, Intent data) 
+	{
+        if (resultCode == RESULT_OK)
+        {	
+        	switch(requestCode)
+            {
+                //if new picture is taken, show that in the image view
+        		case Constants.CAPTURE_IMG:
+        			//if the image was saved to the device use the URI to populate image view and set the current image
+        			if (TMP_IMGURI != null)
+        			{        				
+        				CUR_IMGURI = TMP_IMGURI;
+        				CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
+        				TMP_IMGURI = null;
+        				
+        				img_commentImage.setImageURI(CUR_IMGURI);
+        				HAS_IMAGE = true;
+        			}
+        			break;
+            }
+        }
+        //if user backed out of the camera without saving picture, discard empty image file
+        else
+        {
+        	if (TEMP_IMAGE != null)
+        		TEMP_IMAGE.delete();
+        	
+        	TMP_IMGURI = null;
+        }
+    }
+	
+	private void loadImagesToCache() {
+		// retrieve the tags in separate thread
+		Runnable loadImages = new Runnable() 
+		{
+			@Override
+			public void run() 
+			{
+
+				// loop through tags and cache their images if they have them
+				for (Comment c : comments) 
+				{
+					Log.d("cache1test", c.getText());
+					
+					if(c != null)
+					{
+						
+						String url = c.getImageURL();
+						// if tag has image url, download image and cache it
+						if (url != null && !url.equals("")) 
+						{
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
+									url, R.dimen.thumbnail_width,
+									R.dimen.thumbnail_height);
+							Log.d("CacheTest", "Bitmap: " + b.toString() + " URL: " + url);
+							if (b != null)
+								thumbCache.put(url, b);
+						}
+					}	
+				}
+				// update array adapter on ui thread
+				runOnUiThread(returnRes);
+			}
+		};
+		Thread thread = new Thread(null, loadImages, "LoadImageThread");
+		thread.start();
+	}
+	
+	/*
 	 * This class extends ArrayAdapter to bind comments to a list view
 	 */
 	private class CommentAdapter extends ArrayAdapter<Comment> 
 	{
 		private ArrayList<Comment> comments;
-		private Runnable loadImage;
 		Context c;
 
 		/*
@@ -900,17 +935,34 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					commentTxt.setText(comment.getText().toString());
 				
 				
-				if(commentImg != null)
+				if (commentImg != null) 
 				{
-					try
+					if (comment.getImageURL() != null) 
 					{
-						InputStream is = (InputStream) new URL(comment.getImageURL()).getContent();
-						Drawable d = Drawable.createFromStream(is, "commentImage");
-						commentImg.setBackground(d);
+						String url = comment.getImageURL();
+						// first try to get image from cache
+						Log.d("loadImageNull", "URL: " + url);
+						
+						if(!url.equals(""))
+						{							
+							if (thumbCache.containsKey(url)) 
+							{
+								commentImg.setImageBitmap(thumbCache.get(url));
+								Log.d("TagAdapter", "Got image from cache!");
+							} 
+							else 
+							{
+								Log.d("TagAdapter",
+										"Tag has imageurl but it isnt in cache");
+							}	
+						}
 					}
-					catch(Exception e) 
-					{}
-				}
+					else {
+						Bitmap default_bitmap = BitmapFactory.decodeResource(
+								c.getResources(), R.drawable.icon);
+						commentImg.setImageBitmap(default_bitmap);
+					}
+				} // end if imgview
 			}
 			return row;
 		}

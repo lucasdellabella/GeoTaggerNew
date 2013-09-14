@@ -160,8 +160,8 @@
 
         <Button
             android:id="@+id/handle"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
             android:background="@drawable/greenbutton"
             android:drawableRight="@drawable/ic_largecomment"
             android:minHeight="0dp"
@@ -215,8 +215,8 @@
                     
                     <ImageView
                      android:id="@+id/tagview_commentimg"
-                     android:layout_width="10dp"
-                     android:layout_height="fill_parent"
+                     android:layout_width="15dp"
+                     android:layout_height="@dimen/button_height"
                      android:contentDescription="uploadImg"
                      android:adjustViewBounds="true"
                      android:clickable="true"
@@ -233,7 +233,7 @@
                     <EditText
                         android:id="@+id/tagview_commenttxt"
                         android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
                         android:ems="10"
                         android:hint="Add a comment"
@@ -249,9 +249,9 @@
                         android:layout_height="fill_parent"
                         android:layout_weight="1"
                         android:background="@drawable/greenbutton"
-                        android:minHeight="32dp"
+                        android:minHeight="@dimen/button_height"
                         android:minWidth="0dp"
-                        android:text="Add" />
+                        android:text="+" />
                 </LinearLayout>
 
             </RelativeLayout>

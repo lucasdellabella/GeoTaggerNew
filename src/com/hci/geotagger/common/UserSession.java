@@ -29,7 +29,7 @@ public final class UserSession {
 	 * and set shared preferences so the login is saved even if
 	 * the application is killed or crashes
 	 */
-	public static void login(Context c, UserAccount account)
+	public static void login(Context c, MyUserAccount account)
 	{
 		LOGGED_IN = true;
 		CURRENT_USER = account;

@@ -235,7 +235,7 @@ public class AdventureListActivity extends ListActivity {
 		Runnable deleteAdventure = new Runnable() {
 			@Override
 			public void run() {
-				boolean success = ah.deleteAdventure(adventures.get(position).getID());
+				boolean success = ah.deleteAdventure(adventures.get(position).getId());
 				if (success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
