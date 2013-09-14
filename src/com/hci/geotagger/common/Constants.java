@@ -35,6 +35,8 @@ public final class Constants {
 	public static final String KEY_LOGGEDIN = "LoggedIn";
 	public static final String KEY_UID= "UserID";
 	public static final String KEY_PASS = "Password";
+	public static final boolean ADVENTURE_EDITABLE = false;
+	public static final boolean LIMIT_HOME_TO_ADVENTURE = true;
 	
 	//Login Mode
 	public static final int LOGIN_BYID = 0;

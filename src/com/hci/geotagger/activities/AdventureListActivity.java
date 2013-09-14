@@ -34,6 +34,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
@@ -73,7 +75,14 @@ public class AdventureListActivity extends ListActivity {
 				intent.putExtra("newAdventure", true);
 				startActivity(intent);
 			}
-		});		
+		});	
+		if (!Constants.ADVENTURE_EDITABLE){
+			addAdv.setVisibility(Button.INVISIBLE);
+			LinearLayout ll = (LinearLayout) findViewById(R.id.adventurelist);
+			ll.removeView(addAdv);
+			ll.requestLayout();
+		}
+			
 
 		// initialize objects				
 		adventures = new ArrayList<Adventure>();

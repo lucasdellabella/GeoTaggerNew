@@ -4,6 +4,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import com.hci.geotagger.R;
+import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AdventureHandler;
 import com.hci.geotagger.Objects.Adventure;
@@ -19,6 +20,7 @@ import android.view.Window;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.TabHost;
 import android.app.TabActivity;
@@ -67,17 +69,6 @@ public class AdventureViewActivity extends TabActivity
 		description.setText(adventure.getDescription());		
 		
 		edit = (Button) findViewById(R.id.adventureView_edit);
-		if(UserSession.CURRENTUSER_ID == adventure.getCreatorID())
-		{			
-			//Button is visible
-			edit.setVisibility(0);
-		}
-		else
-		{
-			//Button is invisible
-			edit.setVisibility(1);
-		}
-		
 		edit.setOnClickListener(new Button.OnClickListener()
 		{
 			public void onClick(View v)
@@ -89,6 +80,15 @@ public class AdventureViewActivity extends TabActivity
 				startActivity(i);
 			}
 		});
+
+		if(UserSession.CURRENTUSER_ID == adventure.getCreatorID() && Constants.ADVENTURE_EDITABLE)
+		{	//Button is visible
+			edit.setVisibility(Button.VISIBLE);
+		}
+		else
+		{	//Button is invisible
+			edit.setVisibility(Button.INVISIBLE);
+		}
 	}//end onCreate	
 	
 	// add logout to options menu since this class can't inherit it from

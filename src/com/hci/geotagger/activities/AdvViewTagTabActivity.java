@@ -119,6 +119,9 @@ public class AdvViewTagTabActivity extends ListActivity
 					startActivity(i);
 			}
 		});
+		
+		if (!Constants.ADVENTURE_EDITABLE)
+			addTag.setVisibility(Button.INVISIBLE);
 
 		// get the UserID that was passed to this activity to determine whose
 		// tags to load
