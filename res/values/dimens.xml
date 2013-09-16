@@ -12,6 +12,9 @@
     <dimen name="image_height">400dp</dimen>
     <dimen name="textfield_padding">4dp</dimen>
     <dimen name="pageheader_textsize">25sp</dimen>
+    <dimen name="home_page_button_textsize">20sp</dimen>
     <dimen name="paheheader_height">32dp</dimen>
     <dimen name="button_height">42dp</dimen>
+    <dimen name="menubar_button_height">32dp</dimen>
+    <dimen name="menubar_button_width">60dp</dimen> 
 </resources>
