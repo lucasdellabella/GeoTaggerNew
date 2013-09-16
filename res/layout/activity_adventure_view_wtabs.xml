@@ -64,25 +64,19 @@
                 android:paddingRight="@dimen/Scrollview_Leftmargin" >                       
 
                 <TextView
-                    android:id="@+id/adventureView_lbldesc"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Description"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white" />
-
-                <TextView
                     android:id="@+id/adventureView_desc"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
                     android:layout_marginBottom="10dp"
                     android:layout_weight="2.11"
-                    android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="top"
                     android:lines="4"                    
+                    android:text="Location"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/light_gray"
+                    android:textStyle="normal"
                     android:paddingLeft="@dimen/textfield_padding"
                     android:paddingRight="@dimen/textfield_padding"
                     android:singleLine="false" />
@@ -90,7 +84,7 @@
                 <TabHost
                     android:id="@android:id/tabhost"
                     android:layout_width="match_parent"                    
-                    android:layout_height="match_parent" >
+                    android:layout_height="wrap_content" >
                     
                     <LinearLayout
                         android:orientation="vertical"
@@ -104,7 +98,7 @@
                         <FrameLayout 
                             android:id="@android:id/tabcontent"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent" />      
+                            android:layout_height="fill_parent" />      
                     </LinearLayout>
                  </TabHost>                
 			</LinearLayout>
