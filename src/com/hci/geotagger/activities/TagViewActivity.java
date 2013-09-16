@@ -378,38 +378,38 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 
 
-		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
-			// assume flat, position is x & y
-			x = event.values[0];
-			y = event.values[1];
-
-			success = true;
-		} else {
-			switch(event.sensor.getType()){
-			case Sensor.TYPE_ACCELEROMETER:
-				for(int i =0; i < 3; i++){
-					valuesAccelerometer[i] = event.values[i];
-				}
-				break;
-			case Sensor.TYPE_MAGNETIC_FIELD:
-				for(int i =0; i < 3; i++){
-					valuesMagneticField[i] = event.values[i];
-				}
-				break;
-			}
-
-			success = SensorManager.getRotationMatrix(
-					matrixR,
-					matrixI,
-					valuesAccelerometer,
-					valuesMagneticField);
-
-			if(success){
-				SensorManager.getOrientation(matrixR, matrixValues);
-				x = Math.toDegrees(matrixValues[0]);
-				y = Math.toDegrees(matrixValues[1]);
-			}
-		}
+//		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+//			// assume flat, position is x & y
+//			x = event.values[0];
+//			y = event.values[1];
+//
+//			success = true;
+//		} else {
+//			switch(event.sensor.getType()){
+//			case Sensor.TYPE_ACCELEROMETER:
+//				for(int i =0; i < 3; i++){
+//					valuesAccelerometer[i] = event.values[i];
+//				}
+//				break;
+//			case Sensor.TYPE_MAGNETIC_FIELD:
+//				for(int i =0; i < 3; i++){
+//					valuesMagneticField[i] = event.values[i];
+//				}
+//				break;
+//			}
+//
+//			success = SensorManager.getRotationMatrix(
+//					matrixR,
+//					matrixI,
+//					valuesAccelerometer,
+//					valuesMagneticField);
+//
+//			if(success){
+//				SensorManager.getOrientation(matrixR, matrixValues);
+//				x = Math.toDegrees(matrixValues[0]);
+//				y = Math.toDegrees(matrixValues[1]);
+//			}
+//		}
 		//
 
 		//    	   double azimuth = Math.toDegrees(matrixValues[0]);
@@ -418,8 +418,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
 		if (location != null) { // success
-			x = this.locationListener.getLatitude();
-			y = this.locationListener.getLongitude();
+			x = location.getLatitude();
+			y = location.getLongitude();
 			success = true;
 		}
 
@@ -447,7 +447,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 			//myCompass.update(matrixValues[0]);
 
-		}
+		} else {
+			// TO DO some kind of error message or wait
+	 	}
+		
 
 
 	}
