@@ -46,62 +46,59 @@
 				android:text="Edit" />
         </RelativeLayout>
 
-        <ScrollView
+        <LinearLayout
             android:id="@+id/scrollView1"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
             android:layout_marginTop="0dp"
             android:layout_weight="1"
             android:background="@drawable/scrollview"
             android:paddingBottom="10dp"
             android:paddingTop="@dimen/scrollview_topmargin" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingLeft="@dimen/Scrollview_Leftmargin"
-                android:paddingRight="@dimen/Scrollview_Leftmargin" >                       
-
-                <TextView
-                    android:id="@+id/adventureView_desc"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:layout_marginBottom="10dp"
-                    android:layout_weight="2.11"
-                    android:ems="10"
-                    android:gravity="top"
-                    android:lines="4"                    
-                    android:text="Location"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/light_gray"
-                    android:textStyle="normal"
-                    android:paddingLeft="@dimen/textfield_padding"
-                    android:paddingRight="@dimen/textfield_padding"
-                    android:singleLine="false" />
+        
+		    <ScrollView 
+        		android:layout_height="100dp" 
+        		android:layout_width="fill_parent"> 
+				<TextView
+		           android:id="@+id/adventureView_desc"
+		           android:layout_width="fill_parent"
+		           android:layout_height="100dp"
+		           android:layout_marginTop="@dimen/scrollview_topmargin"
+		           android:layout_marginBottom="10dp"
+		           android:layout_weight="2.11"
+		           android:ems="10"
+		           android:text="Location"
+		           android:scrollbars="vertical"
+		           android:textAppearance="?android:attr/textAppearanceMedium"
+		           android:textColor="@color/light_gray"
+		           android:textStyle="normal"
+		           android:paddingLeft="10dp"
+		           android:paddingRight="10dp"
+		           android:singleLine="false" />
+			</ScrollView>        
                 
-                <TabHost
-                    android:id="@android:id/tabhost"
-                    android:layout_width="match_parent"                    
-                    android:layout_height="wrap_content" >
-                    
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" >
-                        
-                        <TabWidget 
-                            android:id="@android:id/tabs"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content" />
-                        <FrameLayout 
-                            android:id="@android:id/tabcontent"
-                            android:layout_width="match_parent"
-                            android:layout_height="fill_parent" />      
-                    </LinearLayout>
-                 </TabHost>                
-			</LinearLayout>
-		</ScrollView>
+            <TabHost
+               android:id="@android:id/tabhost"
+               android:layout_marginLeft="5dp"
+               android:layout_marginRight="5dp"
+               android:layout_width="fill_parent"                    
+               android:layout_height="480dp" >
+               <LinearLayout
+                   android:orientation="vertical"
+                   android:layout_width="fill_parent"
+                   android:layout_height="480dp" >
+                   
+                   <TabWidget 
+                       android:id="@android:id/tabs"
+                       android:layout_width="fill_parent"
+                       android:layout_height="wrap_content" />
+                   <FrameLayout 
+                       android:id="@android:id/tabcontent"
+                       android:layout_width="fill_parent"
+                       android:layout_height="430dp" />
+               </LinearLayout>
+            </TabHost>                
+		</LinearLayout>
 	</LinearLayout>
 </RelativeLayout>

@@ -171,8 +171,8 @@ public class AdventureHandler
 	public JSONArray getAllAdventureTags(long id)
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
-		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETTAGS_BYID));
-		getTagsParams.add(new BasicNameValuePair("oId", Long.toString(id)));
+		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETTAGS_BYADVID));
+		getTagsParams.add(new BasicNameValuePair("id", Long.toString(id)));
 		
 		try
 		{

@@ -50,6 +50,25 @@ public class Tag implements Serializable {
 	}
 	
 
+	//use this when getting tag object from db and ID is accessible. Also uses values for
+	//owner id and name so a user account object does not need to be created at this time.
+	public Tag(long tId, String name, String desc, String url, String locStr, String cat,
+			int rating, int oId, GeoLocation loc, int vis, Date ts)
+	{
+		this.setId(tId);
+		this.setName(name);
+		this.setDescription(desc);
+		this.setImageUrl(url);
+		this.setLocationString(locStr);
+		this.setCategory(cat);
+		this.setRatingScore(rating);
+		this.setOwnerId(oId);
+		this.setLocation(loc);
+		this.setVisibility(vis);
+		this.createdDateTime = ts;
+		
+	}
+	
 	public long getId() {
 		return id;
 	}

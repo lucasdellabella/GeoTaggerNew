@@ -131,10 +131,15 @@ public class TagHandler {
 			}
 			
 			GeoLocation geo = new GeoLocation(lat, lon);
+//			commenting out because don't really need to pass username but hopefully doesn't break everything
+//			//instantiate the tag object with properties from JSON
+//			Tag t = new Tag(json.getLong("TagID"), json.getString("Name"), json.getString("Description"), json.getString("ImageUrl"),
+//					json.getString("Location"), json.getString("Category"), json.getInt("RatingScore"),
+//					json.getInt("OwnerID"), json.getString("Username"), geo, json.getInt("Visibility"), d);
 			//instantiate the tag object with properties from JSON
 			Tag t = new Tag(json.getLong("TagID"), json.getString("Name"), json.getString("Description"), json.getString("ImageUrl"),
 					json.getString("Location"), json.getString("Category"), json.getInt("RatingScore"),
-					json.getInt("OwnerID"), json.getString("Username"), geo, json.getInt("Visibility"), d);
+					json.getInt("OwnerID"), geo, json.getInt("Visibility"), d);
 			return t;
 			
 			
