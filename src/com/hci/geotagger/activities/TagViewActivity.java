@@ -373,67 +373,67 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	{
 		float degree = currentDegree;
 		boolean success = false;
-		double x = 0;
-		double y = 0;
+		double xo = 0;
+		double yo = 0;
 
+		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+			// assume flat, position is x & y
+			xo = event.values[0];
+			yo = event.values[1];
 
-
-//		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
-//			// assume flat, position is x & y
-//			x = event.values[0];
-//			y = event.values[1];
-//
-//			success = true;
-//		} else {
-//			switch(event.sensor.getType()){
-//			case Sensor.TYPE_ACCELEROMETER:
-//				for(int i =0; i < 3; i++){
-//					valuesAccelerometer[i] = event.values[i];
-//				}
-//				break;
-//			case Sensor.TYPE_MAGNETIC_FIELD:
-//				for(int i =0; i < 3; i++){
-//					valuesMagneticField[i] = event.values[i];
-//				}
-//				break;
-//			}
-//
-//			success = SensorManager.getRotationMatrix(
-//					matrixR,
-//					matrixI,
-//					valuesAccelerometer,
-//					valuesMagneticField);
-//
-//			if(success){
-//				SensorManager.getOrientation(matrixR, matrixValues);
-//				x = Math.toDegrees(matrixValues[0]);
-//				y = Math.toDegrees(matrixValues[1]);
-//			}
-//		}
-		//
-
-		//    	   double azimuth = Math.toDegrees(matrixValues[0]);
-		//    	   double pitch = Math.toDegrees(matrixValues[1]);
-		//    	   double roll = Math.toDegrees(matrixValues[2]);
-
-		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-		if (location != null) { // success
-			x = location.getLatitude();
-			y = location.getLongitude();
 			success = true;
+		} else {
+			switch(event.sensor.getType()){
+			case Sensor.TYPE_ACCELEROMETER:
+				for(int i =0; i < 3; i++){
+					valuesAccelerometer[i] = event.values[i];
+				}
+				break;
+			case Sensor.TYPE_MAGNETIC_FIELD:
+				for(int i =0; i < 3; i++){
+					valuesMagneticField[i] = event.values[i];
+				}
+				break;
+			}
+
+			boolean s = SensorManager.getRotationMatrix(
+					matrixR,
+					matrixI,
+					valuesAccelerometer,
+					valuesMagneticField);
+
+			if(s){
+				SensorManager.getOrientation(matrixR, matrixValues);
+				xo = Math.toDegrees(matrixValues[0]);
+				yo = Math.toDegrees(matrixValues[1]);
+				success = true;
+			}
 		}
 
-		if (success) {
+		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (location != null && success) { // success
+			double x = location.getLatitude();
+			double y = location.getLongitude();
+
 			// TODO Need to calculate relative to coords of current tag
 			double lat = currentTag.getLocation().getLatitude();
 			double lon = currentTag.getLocation().getLongitude();
 
 			//http://stackoverflow.com/questions/3309617/calculating-degrees-between-2-points-with-inverse-y-axis
-			degree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
+			//Suppose you're at (a, b) and the object is at (c, d). 
+			//The relative position of the object to you is (x, y) = (c - a, d - b).
+			//var theta = Math.atan2(-y, x); b - d, c - a
+			float toDegree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
+			// from device to tag
+			
+			// now need to account for orientation of device (xo, yo)
+			float devDegree = (float) Math.toDegrees(Math.atan2(-yo, xo));
+			degree = devDegree - toDegree;
 
 			// create a rotation animation (reverse turn degree degrees)
-			RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
-					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+			RotateAnimation ra = 
+					new RotateAnimation(currentDegree, degree, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+					//new RotateAnimation(currentDegree, degree);
 
 			// how long the animation will take place
 			ra.setDuration(210);
@@ -449,62 +449,12 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 		} else {
 			// TO DO some kind of error message or wait
+			String msg = "Loading tag location...";
+			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+			Log.d("LoginPostExecute", msg);
 	 	}
-		
-
-
 	}
 
-	private void emilyOnSensorChanged(SensorEvent event) 
-	{
-		switch(event.sensor.getType()){
-		case Sensor.TYPE_ACCELEROMETER:
-			for(int i =0; i < 3; i++){
-				valuesAccelerometer[i] = event.values[i];
-			}
-			break;
-		case Sensor.TYPE_MAGNETIC_FIELD:
-			for(int i =0; i < 3; i++){
-				valuesMagneticField[i] = event.values[i];
-			}
-			break;
-		}
-
-		boolean success = SensorManager.getRotationMatrix(
-				matrixR,
-				matrixI,
-				valuesAccelerometer,
-				valuesMagneticField);
-
-		if(success){
-			SensorManager.getOrientation(matrixR, matrixValues);
-			float degree = (float) Math.toDegrees(matrixValues[0]);
-			//    	   double azimuth = Math.toDegrees(matrixValues[0]);
-			//    	   double pitch = Math.toDegrees(matrixValues[1]);
-			//    	   double roll = Math.toDegrees(matrixValues[2]);
-
-			// TODO Need to calculate relative to coords of current tag
-			double lat = currentTag.getLocation().getLatitude();
-			double lon = currentTag.getLocation().getLongitude();
-
-			// create a rotation animation (reverse turn degree degrees)
-			RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
-					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-
-			// how long the animation will take place
-			ra.setDuration(210);
-
-			// set the animation after the end of the reservation status
-			ra.setFillAfter(true);
-
-			// Start the animation
-			compassTriangle.startAnimation(ra);
-			currentDegree = degree; 
-
-			//myCompass.update(matrixValues[0]);
-		}
-
-	}
 
 	private void spencerOnSensorChanged(SensorEvent event) 
 	{
@@ -1127,16 +1077,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	 */
 	private class MyLocationListener implements LocationListener
 	{
-		private double lat = 0;
-		private double lon = 0;
-		
-		public double getLatitude() {
-			return lat;
-		}
-		
-		private double getLongitude() {
-			return lon;
-		}
 		/*
 		 * Logs when the location has changed and then updates the user's current location
 		 * and the user's distance to the tag whenever the user's current location
@@ -1147,8 +1087,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		{
 			if(location != null)
 			{
-				lat = location.getLatitude();
-				lon = location.getLongitude();
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
