@@ -76,7 +76,7 @@ import android.location.LocationProvider;
 public class TagViewActivity extends Activity implements SensorEventListener 
 {
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
-			 txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
+	txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
 	ImageView img_tagImage, img_commentImage, commentrow_thumbnail, compassTriangle;
 	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
@@ -87,46 +87,46 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	ProgressDialog PD;
 	ListView commentList;
 	String url;
-	
+
 	private DecimalFormat ddf  = new DecimalFormat("#.00");
 	private DecimalFormat lldf = new DecimalFormat("#.000000");
-	
+
 	private int currentTagIndex;
 	private ArrayList<Tag> tagList;
 	private Tag currentTag;
 	private TagHandler tagHandler;
 	private Runnable addComment, loadComments;
-	
+
 	//fields needed for the location on tag
 	private LocationManager locationManager;
-	private LocationListener locationListener;
+	private MyLocationListener locationListener;
 	private Location tagLocation;
 	private GeoLocation geo;
-	
+
 	//fields needed for the compass
 	private SensorManager sensorManager;
-	//private Sensor sensorAccelerometer;
-	//private Sensor sensorMagneticField; 
-	//private float[] valuesAccelerometer;
-	//private float[] valuesMagneticField;
-	//private float[] matrixR;
-	//private float[] matrixI;
-	//private float[] matrixValues;
+	private Sensor sensorAccelerometer;
+	private Sensor sensorMagneticField; 
+	private float[] valuesAccelerometer;
+	private float[] valuesMagneticField;
+	private float[] matrixR;
+	private float[] matrixI;
+	private float[] matrixValues;
 	//private float pivotX = 0;
 	//private float pivotY = 0;
 	private float currentDegree;
 	//private Compass myCompass;
-	
+
 	private ArrayList<Comment> comments = null;
 	private CommentAdapter CA;
-	
+
 	private ImageHandler imageHandler;
 	private File CURRENT_IMAGE, TEMP_IMAGE;
 	private Uri CUR_IMGURI, TMP_IMGURI;
-	
+
 	private HashMap<String, Bitmap> thumbCache;
 
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) 
@@ -134,7 +134,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//hide title bar
 		setContentView(R.layout.activity_tag_view);
-		
+
 		//set up commentlist
 		comments = new ArrayList<Comment>();
 		this.CA = new CommentAdapter(this, R.layout.commentrow, comments);
@@ -145,21 +145,21 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		imageHandler = new ImageHandler(this);
 		commentBtn = (Button) findViewById(R.id.tagview_commentbtn);
 		commentTxt = (EditText) findViewById(R.id.tagview_commenttxt);
-			
+
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
 		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
 		thumbCache = new HashMap<String, Bitmap>();
-		
+
 		//pivotX = compassTriangle.getWidth()/2;
 		//pivotY = compassTriangle.getHeight()/2;
-		
+
 		//LOCATION INITIALIZATION
-		
+
 		//initialize components needed for location handling
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		locationListener = (LocationListener) new MyLocationListener();
+		locationListener = new MyLocationListener();
 		//text that will be used for user's current location
 		txt_currentLoc = (TextView) findViewById(R.id.tagview_currentlocationtxt);
 		//text that will be used for the user's distance to tag
@@ -167,35 +167,36 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		txt_distance.bringToFront();			// had to do programmatically because I couldn't change the order in XML without it crashing
 		//request the latest location
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L,500.0f, locationListener);
 		//the location that is used for the location of the tag
 		tagLocation = new Location("");
-		
+
 		//END LOCATION INITIALIZATION
 		//COMPASS INITIALIZATION
-		
+
 		//create the compass defined in Compass.java
 		//myCompass = (Compass) findViewById(R.id.mycompass);
 		//initialize the sensors for the compass
 		sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
-	    //sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-	    //sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-	    //the values that grab the direction of the device  
-	    //valuesAccelerometer = new float[3];
-	    //valuesMagneticField = new float[3];
-	    //the values that update the direction of the device
-	    //matrixR = new float[9];
-	    //matrixI = new float[9];
-	    //matrixValues = new float[3];
-    	currentDegree = 0;
-	    
-	    //END COMPASS INITIALIZATION
-		
+		sensorAccelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+		sensorMagneticField = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+		// the values that grab the direction of the device  
+		valuesAccelerometer = new float[3];
+		valuesMagneticField = new float[3];
+		//the values that update the direction of the device
+		matrixR = new float[9];
+		matrixI = new float[9];
+		matrixValues = new float[3];
+		currentDegree = 0;
+
+		//END COMPASS INITIALIZATION
+
 		//set dialog activity to fullscreen
 		LayoutParams params = getWindow().getAttributes();
-	        params.height = LayoutParams.MATCH_PARENT;
-	        params.width = LayoutParams.MATCH_PARENT;
-	        getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
-	        
+		params.height = LayoutParams.MATCH_PARENT;
+		params.width = LayoutParams.MATCH_PARENT;
+		getWindow().setAttributes((android.view.WindowManager.LayoutParams) params);
+
 		Intent i = getIntent();
 		//if a taglist and start index were passed to the activity, load them
 		if(i != null && i.hasExtra("startPos") && i.hasExtra("tagList")){
@@ -209,9 +210,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				Log.d("TagView OnCreate", "Unable to deserialize taglist");
 				ex.printStackTrace();
 			}
-		    //display the tag info in the activity
-		    displayTag();
-		    retrieveComments();
+			//display the tag info in the activity
+			displayTag();
+			retrieveComments();
 
 			//go to add tags menu when add button is clicked
 			btnRating.setOnClickListener(new OnClickListener() 
@@ -235,17 +236,17 @@ public class TagViewActivity extends Activity implements SensorEventListener
 							int curRating = currentTag.getRatingScore();
 							switch (r)
 							{
-								case 1: if(curRating > 0)
-									currentTag.setRatingScore(curRating - 1);
-									break;
-								case 2: //neutral, do nothing
-									break;
-								case 3:
-									currentTag.setRatingScore(curRating + 1);
-									break;
-								case 4:
-									currentTag.setRatingScore(curRating + 2);
-									break;
+							case 1: if(curRating > 0)
+								currentTag.setRatingScore(curRating - 1);
+							break;
+							case 2: //neutral, do nothing
+								break;
+							case 3:
+								currentTag.setRatingScore(curRating + 1);
+								break;
+							case 4:
+								currentTag.setRatingScore(curRating + 2);
+								break;
 							}
 							updateRating();
 							Toast t = Toast.makeText(getBaseContext(), "Thank you for rating!", Toast.LENGTH_SHORT);
@@ -274,7 +275,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			});
 		}	
 	} //end onCreate
-	
+
 	/*
 	 * Implemented so that the sensors for the compass are only working when the 
 	 * application is active and not just running in the background which would affect
@@ -291,7 +292,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				SensorManager.SENSOR_DELAY_GAME);
 		super.onResume();
 	}
-	
+
 	/*
 	 * Implemented so that the sensors for the compass are only working when the 
 	 * application is active and not just running in the background which would affect
@@ -307,7 +308,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		sensorManager.unregisterListener(this);
 		super.onPause();
 	}
-	
+
 	/*
 	 * Method must be defined to implement SensorEventListener
 	 * @see android.hardware.SensorEventListener#onAccuracyChanged(android.hardware.Sensor, int)
@@ -317,7 +318,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	/*
 	 * This method detects whenever the sensors pick up a change
 	 * in location and/or position. When a change is detected, the compass
@@ -328,7 +329,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	 * 
 	 * @see android.hardware.SensorEventListener#onSensorChanged(android.hardware.SensorEvent)
 	 */
-	
+
 	/*
 	@Override
 	public void onSensorChanged(SensorEvent event) 
@@ -348,10 +349,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		  		}
 		  		break;
 		  }
-		    
+
 		  boolean success = SensorManager.getRotationMatrix(matrixR, matrixI,
 		       valuesAccelerometer, valuesMagneticField);
-		    
+
 		  if(success) //if the rotation matrix was found above, update the compass
 		  {  
 			  SensorManager.getOrientation(matrixR, matrixValues);
@@ -359,26 +360,167 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			  compassTriangle.setRotation(matrixValues[0]);
 		  }
 	}*/
-	
-    @Override
+
+
+	@Override
 	public void onSensorChanged(SensorEvent event) 
-    {
-    	// get the angle around the z-axis rotated
-	    float degree = Math.round(event.values[0]);
-		 
-	    // create a rotation animation (reverse turn degree degrees)
-	    RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
-	    		Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-	 
-	    // how long the animation will take place
-	    ra.setDuration(210);
-	 
-	    // set the animation after the end of the reservation status
-	    ra.setFillAfter(true);
-	 
-	    // Start the animation
-	    compassTriangle.startAnimation(ra);
-	    currentDegree = -degree; 
+	{
+		//spencerOnSensorChanged(event);
+		emilyOnSensorChanged2(event);
+	}
+
+	private void emilyOnSensorChanged2(SensorEvent event) 
+	{
+		float degree = currentDegree;
+		boolean success = false;
+		double x = 0;
+		double y = 0;
+
+
+
+		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
+			// assume flat, position is x & y
+			x = event.values[0];
+			y = event.values[1];
+
+			success = true;
+		} else {
+			switch(event.sensor.getType()){
+			case Sensor.TYPE_ACCELEROMETER:
+				for(int i =0; i < 3; i++){
+					valuesAccelerometer[i] = event.values[i];
+				}
+				break;
+			case Sensor.TYPE_MAGNETIC_FIELD:
+				for(int i =0; i < 3; i++){
+					valuesMagneticField[i] = event.values[i];
+				}
+				break;
+			}
+
+			success = SensorManager.getRotationMatrix(
+					matrixR,
+					matrixI,
+					valuesAccelerometer,
+					valuesMagneticField);
+
+			if(success){
+				SensorManager.getOrientation(matrixR, matrixValues);
+				x = Math.toDegrees(matrixValues[0]);
+				y = Math.toDegrees(matrixValues[1]);
+			}
+		}
+		//
+
+		//    	   double azimuth = Math.toDegrees(matrixValues[0]);
+		//    	   double pitch = Math.toDegrees(matrixValues[1]);
+		//    	   double roll = Math.toDegrees(matrixValues[2]);
+
+		Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+		if (location != null) { // success
+			x = this.locationListener.getLatitude();
+			y = this.locationListener.getLongitude();
+			success = true;
+		}
+
+		if (success) {
+			// TODO Need to calculate relative to coords of current tag
+			double lat = currentTag.getLocation().getLatitude();
+			double lon = currentTag.getLocation().getLongitude();
+
+			//http://stackoverflow.com/questions/3309617/calculating-degrees-between-2-points-with-inverse-y-axis
+			degree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
+
+			// create a rotation animation (reverse turn degree degrees)
+			RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
+					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+			// how long the animation will take place
+			ra.setDuration(210);
+
+			// set the animation after the end of the reservation status
+			ra.setFillAfter(true);
+
+			// Start the animation
+			compassTriangle.startAnimation(ra);
+			currentDegree = degree; 
+
+			//myCompass.update(matrixValues[0]);
+
+		}
+
+
+	}
+
+	private void emilyOnSensorChanged(SensorEvent event) 
+	{
+		switch(event.sensor.getType()){
+		case Sensor.TYPE_ACCELEROMETER:
+			for(int i =0; i < 3; i++){
+				valuesAccelerometer[i] = event.values[i];
+			}
+			break;
+		case Sensor.TYPE_MAGNETIC_FIELD:
+			for(int i =0; i < 3; i++){
+				valuesMagneticField[i] = event.values[i];
+			}
+			break;
+		}
+
+		boolean success = SensorManager.getRotationMatrix(
+				matrixR,
+				matrixI,
+				valuesAccelerometer,
+				valuesMagneticField);
+
+		if(success){
+			SensorManager.getOrientation(matrixR, matrixValues);
+			float degree = (float) Math.toDegrees(matrixValues[0]);
+			//    	   double azimuth = Math.toDegrees(matrixValues[0]);
+			//    	   double pitch = Math.toDegrees(matrixValues[1]);
+			//    	   double roll = Math.toDegrees(matrixValues[2]);
+
+			// TODO Need to calculate relative to coords of current tag
+			double lat = currentTag.getLocation().getLatitude();
+			double lon = currentTag.getLocation().getLongitude();
+
+			// create a rotation animation (reverse turn degree degrees)
+			RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
+					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+			// how long the animation will take place
+			ra.setDuration(210);
+
+			// set the animation after the end of the reservation status
+			ra.setFillAfter(true);
+
+			// Start the animation
+			compassTriangle.startAnimation(ra);
+			currentDegree = degree; 
+
+			//myCompass.update(matrixValues[0]);
+		}
+
+	}
+
+	private void spencerOnSensorChanged(SensorEvent event) 
+	{
+		// get the angle around the z-axis rotated
+		float degree = Math.round(event.values[0]);
+
+		// create a rotation animation (reverse turn degree degrees)
+		RotateAnimation ra = new RotateAnimation(currentDegree, -degree,
+				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+
+		// how long the animation will take place
+		ra.setDuration(210);
+
+		// set the animation after the end of the reservation status
+		ra.setFillAfter(true);
+
+		// Start the animation
+		compassTriangle.startAnimation(ra);
+		currentDegree = -degree; 
 	}
 
 	/*
@@ -397,7 +539,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			menu.add(1,1,1,"Remove Comment");
 		}
 	} 
-			
+
 	/*
 	 * Implements the click listeners for selecting an item from the context menu
 	 */
@@ -413,11 +555,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		}
 		return true;
 	}
-	
+
 	/*
 	 * FUNCTIONS
 	 */
-			
+
 	/*
 	 * Removes a comment from a tag
 	 */
@@ -452,11 +594,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		Thread thread = new Thread(null, deleteTag, "DeleteTagThread");
 		thread.start();
 		PD = ProgressDialog.show(TagViewActivity.this,
-					"Please Wait", "Removing Comment...", true);
+				"Please Wait", "Removing Comment...", true);
 	}
 
 	Integer position = null; //Is this necessary? -SK 9/2
-	
+
 	/*
 	 * Adds a comment to a tag 
 	 */
@@ -465,7 +607,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		if (!commentTxt.getText().toString().isEmpty()) 
 		{
 			final String comment = commentTxt.getText().toString();
-			
+
 			// create new thread to add comment
 			addComment = new Runnable() 
 			{
@@ -536,9 +678,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					Toast.LENGTH_SHORT).show();
 		}
 	}
-	
+
 	// setup separate thread to retrieve comments
-	
+
 	/*
 	 * Retrieves the comment for the tag by creating a new thread
 	 */
@@ -589,11 +731,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					comments.add(c);
 				}
 			}
-			
+
 			loadImagesToCache();
 		}
 	}
-		
+
 	private Runnable returnRes = new Runnable() 
 	{
 		@Override
@@ -609,7 +751,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			CA.notifyDataSetChanged();
 		}
 	};
-	
+
 	/*
 	 * Updates the rating of a tag
 	 */
@@ -617,7 +759,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	{
 		txt_Rating.setText(Integer.toString(currentTag.getRatingScore()));
 	}
-	
+
 	/*
 	 * Displays the tag for viewing by the user
 	 */
@@ -630,7 +772,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		txt_tagLocation = (TextView) findViewById(R.id.tagview_locationtxt);
 		txt_tagDescription = (TextView) findViewById(R.id.tagview_descriptiontxt);
 		txt_Rating = (TextView) findViewById(R.id.tagview_ratingtxt);
-		
+
 		//if a taglist is available, display the tag from the current position
 		if (tagList != null)
 		{
@@ -642,34 +784,34 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			txt_Rating.setText(Integer.toString(currentTag.getRatingScore()));
 			//show owner name and date/time of tag
 			Date date = currentTag.getCreatedDateTime();
-        	SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
-        	SimpleDateFormat tf = new SimpleDateFormat(Constants.TIME_FORMAT);
-        	String fDate = df.format(date);
-        	String fTime = tf.format(date);
-        	String ownerTime = "By: " + currentTag.getOwnerName() + ". "
-        			+ fTime + " on " + fDate + ".";
-        	txt_ownerAndTime.setText(ownerTime);
-        	
-        	//get the location of the tag that was specified in the creation of the tag
-        	geo = currentTag.getLocation();
-        	double lat = geo.getLatitude();
-        	double lon = geo.getLongitude();
-        	//show tag location
-        	txt_latLong.setText(lldf.format(lat) + ", " + lldf.format(lon));
-        	//show tag location description
-        	txt_tagLocation.setText(currentTag.getLocationString());
-        	//show tag description
-        	txt_tagDescription.setText(currentTag.getDescription());
-        	//load image into image view
-        	if(currentTag.getImageUrl() != null)
-        	{
-        		String url = currentTag.getImageUrl();
-        		loadImage(url);
-        	}
-			
+			SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+			SimpleDateFormat tf = new SimpleDateFormat(Constants.TIME_FORMAT);
+			String fDate = df.format(date);
+			String fTime = tf.format(date);
+			String ownerTime = "By: " + currentTag.getOwnerName() + ". "
+					+ fTime + " on " + fDate + ".";
+			txt_ownerAndTime.setText(ownerTime);
+
+			//get the location of the tag that was specified in the creation of the tag
+			geo = currentTag.getLocation();
+			double lat = geo.getLatitude();
+			double lon = geo.getLongitude();
+			//show tag location
+			txt_latLong.setText(lldf.format(lat) + ", " + lldf.format(lon));
+			//show tag location description
+			txt_tagLocation.setText(currentTag.getLocationString());
+			//show tag description
+			txt_tagDescription.setText(currentTag.getDescription());
+			//load image into image view
+			if(currentTag.getImageUrl() != null)
+			{
+				String url = currentTag.getImageUrl();
+				loadImage(url);
+			}
+
 		}
 	}
-		
+
 	/*
 	 * Load the tag's image from the URL and into the ImageView
 	 */
@@ -691,10 +833,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				{
 					runOnUiThread(new Runnable()
 					{
-					    public void run()
-					    {
-					        img_tagImage.setImageBitmap(b);
-					    }
+						public void run()
+						{
+							img_tagImage.setImageBitmap(b);
+						}
 					});
 				}		
 			}
@@ -702,12 +844,12 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		Thread thread = new Thread(null, loadImage, "LoadImageThread");
 		thread.start();
 	}
-	
-	
+
+
 	/*
 	 * EVENT HANDLERS
 	 */
-	
+
 	/*
 	 * Creates the options menu for the application allowing the user to logout or go
 	 * back to the home screen
@@ -723,10 +865,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		{
 			menu.add(1, 3, 3, "Delete Tag");
 		}
-		
+
 		return true;
 	}
-	
+
 	/*
 	 * Handles the event of a user clicking on an item in the options menu
 	 */
@@ -735,30 +877,30 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	{
 		switch (item.getItemId())
 		{
-			case 1: 
-				//log out the user, then open the login screen
-				UserSession.logout(this);
-				Intent i = new Intent(getBaseContext(), LoginActivity.class);
-				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-						Intent.FLAG_ACTIVITY_CLEAR_TASK |
-						Intent.FLAG_ACTIVITY_NEW_TASK);
-				startActivity(i);
-				finish();
-				return true;
-			case 2: //return to the list and delete this tag
-				Intent homeIntent = new Intent(getBaseContext(), HomeActivity.class); 
-				startActivity(homeIntent);
-				finish();
-			case 3: //return to the list and delete this tag
-				Intent returnIntent = new Intent();
-				returnIntent.putExtra("Delete", currentTagIndex);
-				setResult(RESULT_OK, returnIntent); 
-				finish();
+		case 1: 
+			//log out the user, then open the login screen
+			UserSession.logout(this);
+			Intent i = new Intent(getBaseContext(), LoginActivity.class);
+			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+					Intent.FLAG_ACTIVITY_CLEAR_TASK |
+					Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(i);
+			finish();
+			return true;
+		case 2: //return to the list and delete this tag
+			Intent homeIntent = new Intent(getBaseContext(), HomeActivity.class); 
+			startActivity(homeIntent);
+			finish();
+		case 3: //return to the list and delete this tag
+			Intent returnIntent = new Intent();
+			returnIntent.putExtra("Delete", currentTagIndex);
+			setResult(RESULT_OK, returnIntent); 
+			finish();
 		}
-		
+
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	private void openCamera()
 	{
 		Intent i_Cam = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -771,9 +913,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			i_Cam.putExtra(MediaStore.EXTRA_OUTPUT, TMP_IMGURI);
 		}
 		//open camera to take pic when camera button is clicked				
-        startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
+		startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
 	}
-	
+
 	/*
 	 * Upload an image to the server and set the URL
 	 */
@@ -783,7 +925,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		Bitmap b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
-		
+
 		int height = options.outHeight;
 		int width = options.outWidth;
 		Log.d("Image Size", "H, W = " + height + ", " + width);
@@ -792,7 +934,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			options.inSampleSize = 4;
 		else if(height > 1024 || width > 1024)
 			options.inSampleSize = 2;
-		
+
 		//get bitmap pixels
 		options.inJustDecodeBounds = false;
 		b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
@@ -811,41 +953,41 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			return null;
 		}	
 	}
-	
+
 	/*
 	 * When the image is selected in the gallery, show it in the ImageView
 	 */
 	public void onActivityResult(int requestCode, int resultCode, Intent data) 
 	{
-        if (resultCode == RESULT_OK)
-        {	
-        	switch(requestCode)
-            {
-                //if new picture is taken, show that in the image view
-        		case Constants.CAPTURE_IMG:
-        			//if the image was saved to the device use the URI to populate image view and set the current image
-        			if (TMP_IMGURI != null)
-        			{        				
-        				CUR_IMGURI = TMP_IMGURI;
-        				CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
-        				TMP_IMGURI = null;
-        				
-        				img_commentImage.setImageURI(CUR_IMGURI);
-        				HAS_IMAGE = true;
-        			}
-        			break;
-            }
-        }
-        //if user backed out of the camera without saving picture, discard empty image file
-        else
-        {
-        	if (TEMP_IMAGE != null)
-        		TEMP_IMAGE.delete();
-        	
-        	TMP_IMGURI = null;
-        }
-    }
-	
+		if (resultCode == RESULT_OK)
+		{	
+			switch(requestCode)
+			{
+			//if new picture is taken, show that in the image view
+			case Constants.CAPTURE_IMG:
+				//if the image was saved to the device use the URI to populate image view and set the current image
+				if (TMP_IMGURI != null)
+				{        				
+					CUR_IMGURI = TMP_IMGURI;
+					CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
+					TMP_IMGURI = null;
+
+					img_commentImage.setImageURI(CUR_IMGURI);
+					HAS_IMAGE = true;
+				}
+				break;
+			}
+		}
+		//if user backed out of the camera without saving picture, discard empty image file
+		else
+		{
+			if (TEMP_IMAGE != null)
+				TEMP_IMAGE.delete();
+
+			TMP_IMGURI = null;
+		}
+	}
+
 	private void loadImagesToCache() {
 		// retrieve the tags in separate thread
 		Runnable loadImages = new Runnable() 
@@ -858,10 +1000,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				for (Comment c : comments) 
 				{
 					Log.d("cache1test", c.getText());
-					
+
 					if(c != null)
 					{
-						
+
 						String url = c.getImageURL();
 						// if tag has image url, download image and cache it
 						if (url != null && !url.equals("")) 
@@ -882,7 +1024,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		Thread thread = new Thread(null, loadImages, "LoadImageThread");
 		thread.start();
 	}
-	
+
 	/*
 	 * This class extends ArrayAdapter to bind comments to a list view
 	 */
@@ -919,7 +1061,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				LayoutInflater vi = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				row = vi.inflate(R.layout.commentrow, null);
 			}
-				
+
 			Comment comment = comments.get(position);
 			if (comment != null) 
 			{
@@ -927,10 +1069,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				TextView timeTxt = (TextView) row.findViewById(R.id.commentrow_txtTime);
 				TextView commentTxt = (TextView) row.findViewById(R.id.commentrow_txtdesc);
 				ImageView commentImg = (ImageView) row.findViewById(R.id.commentrow_thumbnail);
-				
+
 				if (nameTxt != null) 
 					nameTxt.setText(comment.getUsername()); 
-				
+
 				if(timeTxt != null)
 				{
 					Date date = comment.getCreatedDateTime();
@@ -938,11 +1080,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					String formatted = df.format(date);
 					timeTxt.setText(formatted);
 				}
-						
+
 				if(commentTxt != null)
 					commentTxt.setText(comment.getText().toString());
-				
-				
+
+
 				if (commentImg != null) 
 				{
 					if (comment.getImageURL() != null) 
@@ -950,7 +1092,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 						String url = comment.getImageURL();
 						// first try to get image from cache
 						Log.d("loadImageNull", "URL: " + url);
-						
+
 						if(!url.equals(""))
 						{							
 							if (thumbCache.containsKey(url)) 
@@ -975,13 +1117,23 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			return row;
 		}
 	}
-	
+
 	/*
 	 * MyLocationListener implements LocationListener to request updates about the user's
 	 * current location for use in determining the user's distance to the tag
 	 */
 	private class MyLocationListener implements LocationListener
 	{
+		private double lat = 0;
+		private double lon = 0;
+		
+		public double getLatitude() {
+			return lat;
+		}
+		
+		private double getLongitude() {
+			return lon;
+		}
 		/*
 		 * Logs when the location has changed and then updates the user's current location
 		 * and the user's distance to the tag whenever the user's current location
@@ -992,6 +1144,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		{
 			if(location != null)
 			{
+				lat = location.getLatitude();
+				lon = location.getLongitude();
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
@@ -1002,9 +1156,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				String unit = "m";
 				if (dist >= 1000)
 				{	unit = "km";
-					dist /= 1000;
+				dist /= 1000;
 				}
 				txt_distance.setText(ddf.format(dist) + " " + unit);
+				
 			}
 		}
 
