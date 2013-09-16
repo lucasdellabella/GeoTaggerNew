@@ -110,7 +110,12 @@ public class LoginActivity extends Activity
 
 			}
 		});
-
+		if (Constants.LIMIT_HOME_TO_ADVENTURE)
+		{
+			regBtn.setVisibility(Button.INVISIBLE);
+			regBtn.setEnabled(false);
+		}
+		
 	}//end oncreate
 
 
