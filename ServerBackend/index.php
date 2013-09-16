@@ -117,6 +117,7 @@
     	case 'getAdventureByOwnerId':
     			getAdventureById($operation, $db);
     		break;
+        case 'getTagsByAdvId':
     	case 'getAllAdventureTags':
     			getAllAdventureTags($operation, $db);
     		break;
