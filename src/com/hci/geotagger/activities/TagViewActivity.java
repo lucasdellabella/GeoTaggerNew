@@ -291,6 +291,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//sensorManager.registerListener(this, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
 		sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), 
 				SensorManager.SENSOR_DELAY_GAME);
+		locationListener = new MyLocationListener();
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		super.onResume();
