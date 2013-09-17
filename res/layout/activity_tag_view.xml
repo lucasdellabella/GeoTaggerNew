@@ -8,6 +8,22 @@
     android:paddingTop="3dp"
     tools:context=".TagViewActivity" >
 
+    <TextView
+        android:id="@+id/tagview_nametxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="false"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="Tag Name"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/pageheader_textsize"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,35 +50,17 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/tagview_nametxt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerHorizontal="false"
-        android:layout_marginTop="20dp"
-        android:shadowColor="@android:color/black"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="2"
-        android:text="Tag Name"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@android:color/white"
-        android:textStyle="bold"
-        android:typeface="sans" />
-
-    <TextView
         android:id="@+id/tagview_ownertimetxt"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tagview_nametxt"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        android:gravity="center"
+        android:gravity="left"
         android:text="Tagged by: User at 01/01/2000"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/light_gray"
         android:textColorHint="@color/light_gray" />
-
+    
     <ScrollView
         android:id="@+id/scrollView1"
         android:layout_width="fill_parent"
@@ -83,49 +81,13 @@
                 android:id="@+id/tagview_imageview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:adjustViewBounds="true"
                 android:maxHeight="400dp"
                 android:maxWidth="400dp"
                 android:scaleType="fitXY"
                 android:src="@drawable/icon" />
             
-            <TextView
-                android:id="@+id/tagview_latlongtxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Latitude, Longitude"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-
-            <TextView
-                android:id="@+id/tagview_locationtxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Location"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-            
-            <TextView
-                android:id="@+id/tagview_currentlocationtxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Current Location"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-            
-            <TextView
-                android:id="@+id/tagview_distancetotxt"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="Distance to Tag"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/light_gray" />
-
             <TextView
                 android:id="@+id/tagview_descriptiontxt"
                 android:layout_width="wrap_content"
@@ -136,14 +98,69 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
             
-              <ImageView
-                  android:id="@+id/compassTriangle"
-                  android:layout_height="200sp"
-                  android:layout_width="200sp"
-                  android:contentDescription="Triangle for Compass"
-                  android:src="@drawable/arrow"
-                   />
+            <TextView
+                android:id="@+id/tagview_locationtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:text="Location"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light_gray" />
+            
+            <TextView
+                android:id="@+id/tagview_latlongtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:text="Latitude, Longitude"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light_gray" />
 
+            <TextView
+                android:id="@+id/tagview_currentlocationtxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location Not Available"
+                android:textSize="18sp"
+                android:textStyle="italic"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/light_gray" 
+                android:layout_marginBottom="10dp" />
+            
+            <RelativeLayout 
+                android:layout_width="wrap_content"
+			    android:layout_height="100dp"
+			    android:id="@+id/superCompass"
+                android:layout_marginTop="10dp"
+	            >
+	            
+	            <TextView
+	                android:id="@+id/tagview_distancetotxt"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:gravity="center"
+	                android:text="@string/unknown_distance"
+	                android:textColor="@android:color/white"
+					android:textSize="@dimen/pageheader_textsize"
+					android:textAppearance="@style/ShadowText"
+					android:textStyle="bold"
+					android:typeface="sans"
+	                />
+
+	            <ImageView
+	                android:id="@+id/compassTriangle"
+	                android:layout_height="fill_parent"
+	                android:layout_width="fill_parent"
+	                android:scaleType="centerInside"
+	                android:contentDescription="Triangle for Compass"
+	                android:src="@drawable/arrow" />
+                
+	            
+	        </RelativeLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -198,7 +215,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_above="@+id/commentbar"
-                    android:layout_weight="1" >
+                    android:layout_weight="1" 
+                    android:transcriptMode="alwaysScroll">
 
                 </ListView>
 
@@ -245,13 +263,13 @@
 
                     <Button
                         android:id="@+id/tagview_commentbtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_width="@dimen/button_height"
+                        android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
                         android:background="@drawable/greenbutton"
                         android:minHeight="@dimen/button_height"
                         android:minWidth="0dp"
-                        android:text="+" />
+                        android:text="Add" />
                 </LinearLayout>
 
             </RelativeLayout>

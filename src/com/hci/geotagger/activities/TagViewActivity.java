@@ -167,6 +167,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		txt_distance.bringToFront();			// had to do programmatically because I couldn't change the order in XML without it crashing
 		//request the latest location
 		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		//locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000L,500.0f, locationListener);
 		//the location that is used for the location of the tag
 		tagLocation = new Location("");
@@ -290,6 +291,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//sensorManager.registerListener(this, sensorMagneticField, SensorManager.SENSOR_DELAY_NORMAL);
 		sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ORIENTATION), 
 				SensorManager.SENSOR_DELAY_GAME);
+		locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
+		locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 		super.onResume();
 	}
 
@@ -306,6 +309,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//sensorManager.unregisterListener(this, sensorAccelerometer);
 		//sensorManager.unregisterListener(this, sensorMagneticField);
 		sensorManager.unregisterListener(this);
+		locationManager.removeUpdates(locationListener);
+		locationListener = null;
 		super.onPause();
 	}
 
@@ -415,44 +420,45 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			double x = location.getLatitude();
 			double y = location.getLongitude();
 
-			// TODO Need to calculate relative to coords of current tag
-			double lat = currentTag.getLocation().getLatitude();
-			double lon = currentTag.getLocation().getLongitude();
-
-			//http://stackoverflow.com/questions/3309617/calculating-degrees-between-2-points-with-inverse-y-axis
-			//Suppose you're at (a, b) and the object is at (c, d). 
-			//The relative position of the object to you is (x, y) = (c - a, d - b).
-			//var theta = Math.atan2(-y, x); b - d, c - a
-			float toDegree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
-			// from device to tag
-			
-			// now need to account for orientation of device (xo, yo)
-			float devDegree = (float) Math.toDegrees(Math.atan2(-yo, xo));
-			degree = devDegree - toDegree;
-
-			// create a rotation animation (reverse turn degree degrees)
-			RotateAnimation ra = 
-					new RotateAnimation(currentDegree, degree, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-					//new RotateAnimation(currentDegree, degree);
-
-			// how long the animation will take place
-			ra.setDuration(210);
-
-			// set the animation after the end of the reservation status
-			ra.setFillAfter(true);
-
-			// Start the animation
-			compassTriangle.startAnimation(ra);
-			currentDegree = degree; 
-
-			//myCompass.update(matrixValues[0]);
-
-		} else {
-			// TO DO some kind of error message or wait
-			String msg = "Loading tag location...";
-			Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-			Log.d("LoginPostExecute", msg);
-	 	}
+			if (success) {
+				double lat = currentTag.getLocation().getLatitude();
+				double lon = currentTag.getLocation().getLongitude();
+	
+				//http://stackoverflow.com/questions/3309617/calculating-degrees-between-2-points-with-inverse-y-axis
+				//Suppose you're at (a, b) and the object is at (c, d). 
+				//The relative position of the object to you is (x, y) = (c - a, d - b).
+				//var theta = Math.atan2(-y, x); b - d, c - a
+				float toDegree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
+				// from device to tag
+				
+				// now need to account for orientation of device (xo, yo)
+				float devDegree = (float) Math.toDegrees(Math.atan2(-yo, xo));
+				degree = devDegree - toDegree;
+	
+				// create a rotation animation (reverse turn degree degrees)
+				RotateAnimation ra = 
+						new RotateAnimation(currentDegree, degree, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+						//new RotateAnimation(currentDegree, degree);
+	
+				// how long the animation will take place
+				ra.setDuration(210);
+	
+				// set the animation after the end of the reservation status
+				ra.setFillAfter(true);
+	
+				// Start the animation
+				compassTriangle.startAnimation(ra);
+				currentDegree = degree; 
+	
+				//myCompass.update(matrixValues[0]);
+	
+			} else {
+				// TO DO some kind of error message or wait
+				String msg = "Loading tag location...";
+				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+				Log.d("LoginPostExecute", msg);
+		 	}
+		}
 	}
 
 
@@ -475,6 +481,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		compassTriangle.startAnimation(ra);
 		currentDegree = -degree; 
 	}
+	
 
 	/*
 	 * Creates the context menu that allows the user to delete tags
@@ -591,7 +598,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 						{
 							msg = "Comment added!";
 							sb.append(msg);
-							Comment comm = tagHandler.CreateCommentFromJson(response);
+							Comment comm = new Comment(response.getInt("cID"), currentTag.getId(), comment, UserSession.CURRENT_USER.getuName(), new Date());//tagHandler.CreateCommentFromJson(response);
 							comments.add(comm);
 							position = comments.size()-1;
 						}
@@ -609,6 +616,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 							{
 								CA.add(comments.get(position));
 								CA.notifyDataSetChanged();
+								commentList.setSelection(position);
 							}
 							position = null;
 							commentTxt.setText("");
@@ -699,6 +707,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				CA.notifyDataSetChanged();
 				for (int i = 0; i < comments.size(); i++)
 					CA.add(comments.get(i));
+				commentList.setSelection(comments.size()-1);
 			}
 			PD.dismiss();
 			CA.notifyDataSetChanged();
@@ -959,7 +968,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 						String url = c.getImageURL();
 						// if tag has image url, download image and cache it
-						if (url != null && !url.equals("")) 
+						if (url != null && !url.equals("") && !thumbCache.containsKey(url)) 
 						{
 							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
 									url, R.dimen.thumbnail_width,
@@ -1077,6 +1086,18 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	 */
 	private class MyLocationListener implements LocationListener
 	{
+		private double lat = 0;
+		private double lon = 0;
+		private Location lastBestLocation;
+		
+		public double getLatitude() {
+			return lat;
+		}
+		
+		private double getLongitude() {
+			return lon;
+		}
+
 		/*
 		 * Logs when the location has changed and then updates the user's current location
 		 * and the user's distance to the tag whenever the user's current location
@@ -1085,7 +1106,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		@Override
 		public void onLocationChanged(Location location) 
 		{
-			if(location != null)
+			if (isBetterLocation(location, lastBestLocation))
+				lastBestLocation = location;
+			
+			if (lastBestLocation != null)
 			{
 				Log.d("LOCATION CHANGED", location.getLatitude() + "");
 				Log.d("LOCATION CHANGED", location.getLongitude() + "");
@@ -1125,6 +1149,63 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				txt_currentLoc.setTypeface(null, Typeface.ITALIC);
 			}
 			else txt_currentLoc.setTypeface(null, Typeface.NORMAL);
+		}
+
+		//http://developer.android.com/guide/topics/location/strategies.html
+		private static final int TWO_MINUTES = 1000 * 60 * 2;
+
+		/** Determines whether one Location reading is better than the current Location fix
+		  * @param location  The new Location that you want to evaluate
+		  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+		  */
+		protected boolean isBetterLocation(Location location, Location currentBestLocation) {
+		    if (currentBestLocation == null) {
+		        // A new location is always better than no location
+		        return true;
+		    }
+
+		    // Check whether the new location fix is newer or older
+		    long timeDelta = location.getTime() - currentBestLocation.getTime();
+		    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+		    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+		    boolean isNewer = timeDelta > 0;
+
+		    // If it's been more than two minutes since the current location, use the new location
+		    // because the user has likely moved
+		    if (isSignificantlyNewer) {
+		        return true;
+		    // If the new location is more than two minutes older, it must be worse
+		    } else if (isSignificantlyOlder) {
+		        return false;
+		    }
+
+		    // Check whether the new location fix is more or less accurate
+		    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+		    boolean isLessAccurate = accuracyDelta > 0;
+		    boolean isMoreAccurate = accuracyDelta < 0;
+		    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+
+		    // Check if the old and new location are from the same provider
+		    boolean isFromSameProvider = isSameProvider(location.getProvider(),
+		            currentBestLocation.getProvider());
+
+		    // Determine location quality using a combination of timeliness and accuracy
+		    if (isMoreAccurate) {
+		        return true;
+		    } else if (isNewer && !isLessAccurate) {
+		        return true;
+		    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+		        return true;
+		    }
+		    return false;
+		}
+
+		/** Checks whether two providers are the same */
+		private boolean isSameProvider(String provider1, String provider2) {
+		    if (provider1 == null) {
+		      return provider2 == null;
+		    }
+		    return provider1.equals(provider2);
 		}
 	}
 }
