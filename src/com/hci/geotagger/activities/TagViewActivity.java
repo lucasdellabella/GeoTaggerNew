@@ -149,15 +149,15 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		navBtn.setOnClickListener(new OnClickListener()
 		{	@Override
 			public void onClick(View arg0) {
-				if (currentTag == null)
-					return;
-				String gps = "geo:0,0?q=" + currentTag.getLocation().getLatitude() + ","
-										  + currentTag.getLocation().getLongitude() + " (" 
-										  + currentTag.getName() + ")";
-				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(gps));
-				intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
-				startActivity(intent);
-			}
+			if (currentTag == null)
+				return;
+			String gps = "geo:0,0?q=" + currentTag.getLocation().getLatitude() + ","
+					+ currentTag.getLocation().getLongitude() + " (" 
+					+ currentTag.getName() + ")";
+			Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(gps));
+			intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+			startActivity(intent);
+		}
 		});
 
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
@@ -386,21 +386,22 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	public void onSensorChanged(SensorEvent event) 
 	{
 		//spencerOnSensorChanged(event);
-		emilyOnSensorChanged2(event);
+		//emilyOnSensorChanged(event);
 	}
 
-	private void emilyOnSensorChanged2(SensorEvent event) 
+	private void emilyOnSensorChanged(SensorEvent event) 
 	{
 		float degree = currentDegree;
 		boolean success = false;
 		double xo = 0;
 		double yo = 0;
+		double zo = 0;
 
 		if (event.sensor.getType() == Sensor.TYPE_ORIENTATION) {
 			// assume flat, position is x & y
 			xo = event.values[0];
 			yo = event.values[1];
-
+			zo = event.values[2];
 			success = true;
 		} else {
 			switch(event.sensor.getType()){
@@ -426,6 +427,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				SensorManager.getOrientation(matrixR, matrixValues);
 				xo = Math.toDegrees(matrixValues[0]);
 				yo = Math.toDegrees(matrixValues[1]);
+				zo = Math.toDegrees(matrixValues[2]);
 				success = true;
 			}
 		}
@@ -435,47 +437,55 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			double x = location.getLatitude();
 			double y = location.getLongitude();
 
+
 			if (success) {
 				double lat = currentTag.getLocation().getLatitude();
 				double lon = currentTag.getLocation().getLongitude();
-	
+
 				//http://stackoverflow.com/questions/3309617/calculating-degrees-between-2-points-with-inverse-y-axis
 				//Suppose you're at (a, b) and the object is at (c, d). 
 				//The relative position of the object to you is (x, y) = (c - a, d - b).
 				//var theta = Math.atan2(-y, x); b - d, c - a
 				float toDegree = (float) Math.toDegrees(Math.atan2(y - lon, lat - x));
 				// from device to tag
-				
+
 				// now need to account for orientation of device (xo, yo)
 				float devDegree = (float) Math.toDegrees(Math.atan2(-yo, xo));
 				degree = devDegree - toDegree;
-	
+
+				// for debugging the sensors - WHICH ISN'T WORKING
+				//String msg = "dev loc: [" + x + ", " + y + "] (" + toDegree + ")\n";
+				//msg += "tag loc: [" + lat + ", " + lon + "]\n";
+				//msg += "dev o: [" + xo + ", " + yo + ", " + zo + "] (" + devDegree + ")\n";
+				//msg += "degree: " + degree + "\n";
+				//Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+				//Log.d("LoginPostExecute", msg);
+
 				// create a rotation animation (reverse turn degree degrees)
 				RotateAnimation ra = 
 						new RotateAnimation(currentDegree, degree, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-						//new RotateAnimation(currentDegree, degree);
-	
+				//new RotateAnimation(currentDegree, degree);
+
 				// how long the animation will take place
 				ra.setDuration(210);
-	
+
 				// set the animation after the end of the reservation status
 				ra.setFillAfter(true);
-	
+
 				// Start the animation
 				compassTriangle.startAnimation(ra);
 				currentDegree = degree; 
-	
+
 				//myCompass.update(matrixValues[0]);
-	
+
 			} else {
 				// TO DO some kind of error message or wait
 				String msg = "Loading tag location...";
 				Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 				Log.d("LoginPostExecute", msg);
-		 	}
+			}
 		}
 	}
-
 
 	private void spencerOnSensorChanged(SensorEvent event) 
 	{
@@ -496,7 +506,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		compassTriangle.startAnimation(ra);
 		currentDegree = -degree; 
 	}
-	
+
 
 	/*
 	 * Creates the context menu that allows the user to delete tags
@@ -749,7 +759,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		txt_tagLocation = (TextView) findViewById(R.id.tagview_locationtxt);
 		txt_tagDescription = (TextView) findViewById(R.id.tagview_descriptiontxt);
 		txt_Rating = (TextView) findViewById(R.id.tagview_ratingtxt);
-
+		
 		//if a taglist is available, display the tag from the current position
 		if (tagList != null)
 		{
@@ -759,14 +769,16 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			//txt_tagName.setPaintFlags(txt_tagName.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			//show tag rating
 			txt_Rating.setText(Integer.toString(currentTag.getRatingScore()));
+			//txt_currentLoc.setText((currentTag == null || currentTag.getLocationString() == null ? "Name Not Specified" : ""));
 			//show owner name and date/time of tag
 			Date date = currentTag.getCreatedDateTime();
 			SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
 			SimpleDateFormat tf = new SimpleDateFormat(Constants.TIME_FORMAT);
-			String fDate = df.format(date);
+			String fDate = df.format(date); 
 			String fTime = tf.format(date);
-			String ownerTime = "By: " + currentTag.getOwnerName() + ". "
-					+ fTime + " on " + fDate + ".";
+			String ownerTime = "";
+			ownerTime += (currentTag.getOwnerName() != null ? currentTag.getOwnerName() + ": " : "") + 
+					fTime + " on " + fDate;
 			txt_ownerAndTime.setText(ownerTime);
 
 			//get the location of the tag that was specified in the creation of the tag
@@ -1104,11 +1116,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		private double lat = 0;
 		private double lon = 0;
 		private Location lastBestLocation;
-		
+
 		public double getLatitude() {
 			return lat;
 		}
-		
+
 		private double getLongitude() {
 			return lon;
 		}
@@ -1123,11 +1135,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		{
 			if (isBetterLocation(location, lastBestLocation))
 				lastBestLocation = location;
-			
+
 			if (lastBestLocation != null)
 			{
-//				Log.d("LOCATION CHANGED", location.getLatitude() + "");
-//				Log.d("LOCATION CHANGED", location.getLongitude() + "");
+				//				Log.d("LOCATION CHANGED", location.getLatitude() + "");
+				//				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
 				txt_currentLoc.setText(str);
 				tagLocation.setLatitude(geo.getLatitude());
@@ -1138,8 +1150,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				{	unit = "km";
 				dist /= 1000;
 				}
-				txt_distance.setText(ddf.format(dist) + " " + unit);
-				
+				txt_distance.setText("Distance:\n" + ddf.format(dist) + " " + unit);
 			}
 		}
 
@@ -1170,57 +1181,57 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		private static final int TWO_MINUTES = 1000 * 60 * 2;
 
 		/** Determines whether one Location reading is better than the current Location fix
-		  * @param location  The new Location that you want to evaluate
-		  * @param currentBestLocation  The current Location fix, to which you want to compare the new one
-		  */
+		 * @param location  The new Location that you want to evaluate
+		 * @param currentBestLocation  The current Location fix, to which you want to compare the new one
+		 */
 		protected boolean isBetterLocation(Location location, Location currentBestLocation) {
-		    if (currentBestLocation == null) {
-		        // A new location is always better than no location
-		        return true;
-		    }
+			if (currentBestLocation == null) {
+				// A new location is always better than no location
+				return true;
+			}
 
-		    // Check whether the new location fix is newer or older
-		    long timeDelta = location.getTime() - currentBestLocation.getTime();
-		    boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
-		    boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
-		    boolean isNewer = timeDelta > 0;
+			// Check whether the new location fix is newer or older
+			long timeDelta = location.getTime() - currentBestLocation.getTime();
+			boolean isSignificantlyNewer = timeDelta > TWO_MINUTES;
+			boolean isSignificantlyOlder = timeDelta < -TWO_MINUTES;
+			boolean isNewer = timeDelta > 0;
 
-		    // If it's been more than two minutes since the current location, use the new location
-		    // because the user has likely moved
-		    if (isSignificantlyNewer) {
-		        return true;
-		    // If the new location is more than two minutes older, it must be worse
-		    } else if (isSignificantlyOlder) {
-		        return false;
-		    }
+			// If it's been more than two minutes since the current location, use the new location
+			// because the user has likely moved
+			if (isSignificantlyNewer) {
+				return true;
+				// If the new location is more than two minutes older, it must be worse
+			} else if (isSignificantlyOlder) {
+				return false;
+			}
 
-		    // Check whether the new location fix is more or less accurate
-		    int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
-		    boolean isLessAccurate = accuracyDelta > 0;
-		    boolean isMoreAccurate = accuracyDelta < 0;
-		    boolean isSignificantlyLessAccurate = accuracyDelta > 200;
+			// Check whether the new location fix is more or less accurate
+			int accuracyDelta = (int) (location.getAccuracy() - currentBestLocation.getAccuracy());
+			boolean isLessAccurate = accuracyDelta > 0;
+			boolean isMoreAccurate = accuracyDelta < 0;
+			boolean isSignificantlyLessAccurate = accuracyDelta > 200;
 
-		    // Check if the old and new location are from the same provider
-		    boolean isFromSameProvider = isSameProvider(location.getProvider(),
-		            currentBestLocation.getProvider());
+			// Check if the old and new location are from the same provider
+			boolean isFromSameProvider = isSameProvider(location.getProvider(),
+					currentBestLocation.getProvider());
 
-		    // Determine location quality using a combination of timeliness and accuracy
-		    if (isMoreAccurate) {
-		        return true;
-		    } else if (isNewer && !isLessAccurate) {
-		        return true;
-		    } else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
-		        return true;
-		    }
-		    return false;
+			// Determine location quality using a combination of timeliness and accuracy
+			if (isMoreAccurate) {
+				return true;
+			} else if (isNewer && !isLessAccurate) {
+				return true;
+			} else if (isNewer && !isSignificantlyLessAccurate && isFromSameProvider) {
+				return true;
+			}
+			return false;
 		}
 
 		/** Checks whether two providers are the same */
 		private boolean isSameProvider(String provider1, String provider2) {
-		    if (provider1 == null) {
-		      return provider2 == null;
-		    }
-		    return provider1.equals(provider2);
+			if (provider1 == null) {
+				return provider2 == null;
+			}
+			return provider1.equals(provider2);
 		}
 	}
 }

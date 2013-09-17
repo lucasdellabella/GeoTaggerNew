@@ -28,7 +28,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true" >
+        android:layout_alignParentTop="true" 
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/tagview_ratingbtn"
@@ -179,50 +180,66 @@
 	                android:gravity="right"
 	                android:textSize="14sp"
 	                android:layout_weight="2"
-	                android:textStyle="italic"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" 
 	                />
 	        </LinearLayout>
             
-            <RelativeLayout 
-                android:layout_width="wrap_content"
-			    android:layout_height="100dp"
-			    android:id="@+id/superCompass"
-                android:layout_marginTop="10dp"
-	            >
-	            
-	            <TextView
-	                android:id="@+id/tagview_distancetotxt"
+            <LinearLayout
+                android:layout_width="match_parent"
+	            android:orientation="horizontal" 
+	            android:layout_height="wrap_content">
+                
+	            <RelativeLayout 
+	                android:layout_width="wrap_content"
+				    android:layout_height="100dp"
+				    android:id="@+id/superCompass"
+	                android:layout_marginTop="10dp"
+	                android:layout_weight="1"
+		            >
+		            
+		            <TextView
+		                android:id="@+id/tagview_distancetotxt"
+		                android:layout_width="fill_parent"
+		                android:layout_height="fill_parent"
+		                android:gravity="center"
+		                android:text="@string/unknown_distance"
+		                android:textColor="@android:color/white"
+						android:textSize="@dimen/pageheader_textsize"
+						android:textAppearance="@style/ShadowText"
+						android:textStyle="bold"
+						android:typeface="sans"
+		                />
+	
+		            <ImageView
+		                android:id="@+id/compassTriangle"
+		                android:layout_height="fill_parent"
+		                android:layout_width="fill_parent"
+		                android:scaleType="centerInside"
+		                android:contentDescription="Triangle for Compass"
+		                android:src="@drawable/arrow"
+		                android:visibility="invisible"
+						/>
+		        </RelativeLayout>
+
+				<Button
+	                android:id="@+id/tagview_mapsnavbtn"
 	                android:layout_width="fill_parent"
 	                android:layout_height="fill_parent"
-	                android:gravity="center"
-	                android:text="@string/unknown_distance"
+	                android:background="@drawable/graybutton"
+	                android:minHeight="@dimen/button_height"
+	                android:minWidth="0dp"
+	                android:layout_marginTop="10dp"
+	                android:layout_weight="1"
 	                android:textColor="@android:color/white"
 					android:textSize="@dimen/pageheader_textsize"
 					android:textAppearance="@style/ShadowText"
 					android:textStyle="bold"
 					android:typeface="sans"
-	                />
-
-	            <ImageView
-	                android:id="@+id/compassTriangle"
-	                android:layout_height="fill_parent"
-	                android:layout_width="fill_parent"
-	                android:scaleType="centerInside"
-	                android:contentDescription="Triangle for Compass"
-	                android:src="@drawable/arrow" />
-	        </RelativeLayout>
+					android:text="Google   \/   Map" />
+	            
+            </LinearLayout>
 	        
-            <Button
-                android:id="@+id/tagview_mapsnavbtn"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/button_height"
-                android:background="@drawable/graybutton"
-                android:minHeight="@dimen/button_height"
-                android:minWidth="0dp"
-                android:text="Open Location in Google Maps" />
-            
         </LinearLayout>
     </ScrollView>
 
