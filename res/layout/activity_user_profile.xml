@@ -28,8 +28,8 @@
 
         <ImageButton
             android:id="@+id/profileview_editBtn"
-            android:layout_width="60dp"
-            android:layout_height="36dp"
+            android:layout_width="@dimen/menubar_button_width"
+            android:layout_height="@dimen/menubar_button_height"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="22dp"
@@ -78,7 +78,9 @@
                     android:id="@+id/profile_locationlbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Location:"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="2dp"
+                    android:text="Location"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
@@ -87,18 +89,20 @@
                     android:id="@+id/profileview_locationtxt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Location: "
+                    android:layout_marginLeft="20dp"
+                    android:paddingBottom="10dp"
+                    android:text="Location"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textColor="@color/light_gray"
+                    android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/profile_descriptionlbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="About Me:"
+                    android:layout_marginBottom="2dp"
+                    android:text="About Me"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
@@ -107,19 +111,21 @@
                     android:id="@+id/profileview_aboutme"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="20dp"
                     android:maxLines="5"
-                    android:text="About Me:"
+                    android:paddingBottom="10dp"
+                    android:text="About Me"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textColor="@color/light_gray"
+                    android:textStyle="normal" />
 
                 <TextView
                     android:id="@+id/profileview_quotelbl"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
-                    android:text="Favorite Quote:"
+                    android:layout_marginBottom="2dp"
+                    android:text="Favorite Quote"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@android:color/white"
                     android:textStyle="bold" />
@@ -128,11 +134,11 @@
                     android:id="@+id/profileview_quote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:text="Favorite Quote:"
+                    android:layout_marginLeft="20dp"
+                    android:text="Favorite Quote"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
+                    android:textColor="@color/light_gray"
+                    android:textStyle="normal" />
 
             </LinearLayout>
 
