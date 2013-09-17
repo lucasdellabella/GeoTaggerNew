@@ -80,7 +80,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	ImageView img_tagImage, img_commentImage, commentrow_thumbnail, compassTriangle;
 	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
-	Button commentBtn;
+	Button commentBtn, navBtn;
 	EditText commentTxt;
 	Dialog ratingDialog;
 	RatingBar ratingBar;
@@ -145,6 +145,20 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		imageHandler = new ImageHandler(this);
 		commentBtn = (Button) findViewById(R.id.tagview_commentbtn);
 		commentTxt = (EditText) findViewById(R.id.tagview_commenttxt);
+		navBtn = (Button) findViewById(R.id.tagview_mapsnavbtn);
+		navBtn.setOnClickListener(new OnClickListener()
+		{	@Override
+			public void onClick(View arg0) {
+				if (currentTag == null)
+					return;
+				String gps = "geo:0,0?q=" + currentTag.getLocation().getLatitude() + ","
+										  + currentTag.getLocation().getLongitude() + " (" 
+										  + currentTag.getName() + ")";
+				Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(gps));
+				intent.setClassName("com.google.android.apps.maps", "com.google.android.maps.MapsActivity");
+				startActivity(intent);
+			}
+		});
 
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
@@ -1112,8 +1126,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			
 			if (lastBestLocation != null)
 			{
-				Log.d("LOCATION CHANGED", location.getLatitude() + "");
-				Log.d("LOCATION CHANGED", location.getLongitude() + "");
+//				Log.d("LOCATION CHANGED", location.getLatitude() + "");
+//				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
 				txt_currentLoc.setText(str);
 				tagLocation.setLatitude(geo.getLatitude());
