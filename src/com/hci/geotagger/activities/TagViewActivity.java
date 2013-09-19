@@ -77,7 +77,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 {
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
 	txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
-	ImageView img_tagImage, img_commentImage, commentrow_thumbnail, compassTriangle;
+	ImageView img_tagImage, commentrow_thumbnail, compassTriangle;
+	ImageView img_commentImage;
 	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
 	Button commentBtn, navBtn;

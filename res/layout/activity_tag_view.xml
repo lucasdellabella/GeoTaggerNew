@@ -312,7 +312,7 @@
                     
                     <ImageView
                      android:id="@+id/tagview_commentimg"
-                     android:layout_width="15dp"
+                     android:layout_width="@dimen/button_height"
                      android:layout_height="@dimen/button_height"
                      android:contentDescription="uploadImg"
                      android:adjustViewBounds="true"
@@ -320,22 +320,21 @@
                      android:cropToPadding="false"
                      android:focusable="true"
                      android:focusableInTouchMode="true"
-                     android:maxHeight="10dp"
-                     android:maxWidth="10dp"
                      android:scaleType="fitCenter"
                      android:layout_weight="1"
-                     android:padding="@dimen/image_padding"
+                     android:paddingRight="2dp"
+                     android:paddingLeft="4dp"
                      android:src="@drawable/icon" />
 
                     <EditText
                         android:id="@+id/tagview_commenttxt"
                         android:layout_width="wrap_content"
-                        android:layout_height="@dimen/button_height"
-                        android:layout_weight="1"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="2"
                         android:ems="10"
                         android:hint="Add a comment"
                         android:inputType="textCapSentences"
-                        android:maxLines="2" >
+                        android:maxLines="5" >
 
                         <requestFocus />
                     </EditText>
@@ -346,7 +345,6 @@
                         android:layout_height="@dimen/button_height"
                         android:layout_weight="1"
                         android:background="@drawable/greenbutton"
-                        android:minHeight="@dimen/button_height"
                         android:minWidth="0dp"
                         android:text="Add" />
                 </LinearLayout>
