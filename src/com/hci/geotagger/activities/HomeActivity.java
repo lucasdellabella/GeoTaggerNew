@@ -6,6 +6,7 @@ import com.hci.geotagger.common.UserSession;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,7 +17,7 @@ import android.widget.TextView;
 
 public class HomeActivity extends Activity {
 	TextView homeLabel;
-	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut1, btnSignOut2, btnAdventures, btnAddTag;
+	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut1, btnSignOut2, btnAdventures, btnAddTag, btnComments;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,6 +101,16 @@ public class HomeActivity extends Activity {
 				Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
 				//tell the profile to open the current user's adventure list
 				i.putExtra("id", UserSession.CURRENTUSER_ID);
+				startActivity(i);
+			}
+		});
+		
+		btnComments = (Button) findViewById(R.id.home_btnComments);
+		btnComments.setOnClickListener(new OnClickListener() {
+			public void onClick(View view0) {
+				// open the comments/suggestions webpage
+				String strURL = "https://docs.google.com/forms/d/1CRSXqdzy3C98JgCbXEwHLj374sTHVnTMiA04blExXp8/viewform";
+				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(strURL));
 				startActivity(i);
 			}
 		});		

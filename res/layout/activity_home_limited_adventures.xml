@@ -51,5 +51,13 @@
         	android:text="Logout"
         	android:textColor="@android:color/white"        
         	android:textStyle="bold" />
-	</LinearLayout>
+		<Button
+        	android:id="@+id/home_btnComments"                               
+        	android:layout_width="match_parent"
+        	android:layout_height="70dp"        
+        	android:background="@drawable/graybuttondark"        
+        	android:text="Geotagger Comments/Suggestions"
+        	android:textColor="@color/light_gray"        
+        	android:textStyle="bold" />
+			</LinearLayout>
 </RelativeLayout>
