@@ -117,6 +117,7 @@
     	case 'getAdventureByOwnerId':
     			getAdventureById($operation, $db);
     		break;
+        case 'getTagsByAdvId':
     	case 'getAllAdventureTags':
     			getAllAdventureTags($operation, $db);
     		break;
@@ -131,6 +132,10 @@
     		break;
     	case 'removeUserFromAdventure':
     			removeUserFromAdventure($operation, $db);
+    		break;
+
+    	case 'getEverything':
+    			getEverything($operation, $db);
     		break;
 
 
@@ -556,6 +561,16 @@
 		$uId = mysql_real_escape_string($_GET['uId']);
 		$advId = mysql_real_escape_string($_GET['advId']);
 		$result = $db->removeUserFromAdventure($uId, $advId);
+		echo json_encode($result);
+	}
+
+
+
+	// Experimental function returns EVERYTHING about a user
+	function getEverything($operation, $db) {
+		$username = mysql_real_escape_string($_GET['username']);
+		$password = mysql_real_escape_string($_GET['password']);
+		$result = $db->getEverything($username, $password);
 		echo json_encode($result);
 	}
 

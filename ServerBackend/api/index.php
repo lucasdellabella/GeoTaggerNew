@@ -616,7 +616,7 @@ http://hci.montclair.edu/geotagger/?operation=getTagsByIdWOComments&tId=35
 
 
 					<h2 class="lead"><a name="addTagComment" class="text-warning">addTagComment</a></h2>
-					<p>This request adds a comment to a tag. The variables necessary include the tag id (<span class="text-error">tagId</span>), a title for the comment (<span class="text-error">title</span>), the comment itself (<span class="text-error">comment</span>), and the username of the user who made the comment (<span class="text-error">uName</span>). The response will be the tag itself with all of the attached attached comments.</p>
+					<p>This request adds a comment to a tag. The variables necessary include the tag id (<span class="text-error">tagId</span>), a title for the comment (<span class="text-error">title</span>), the comment itself (<span class="text-error">comment</span>), and the username of the user who made the comment (<span class="text-error">uName</span>). You can also add an image to the comment. To do this, use the uploadImage function first, and then send the url from the response with this call. The parameter for this is (<span class="text-error">imageUrl</span>). The response will be the tag itself with all of the attached comments.</p>
 
 <pre>
 <code>
@@ -643,6 +643,7 @@ http://hci.montclair.edu/geotagger/?operation=addTagComment&tagId=82&uName=bwayn
 			Username: "Failsj",
 			Title: null,
 			Text: "Hey, nice tag",
+			ImageUrl: "test3Image.url",
 			CreatedDateTime: "2013-08-19 12:29:38",
 			RatingScore: "0"
 		},
@@ -652,6 +653,7 @@ http://hci.montclair.edu/geotagger/?operation=addTagComment&tagId=82&uName=bwayn
 			Username: "bwayne",
 			Title: "GoodJob",
 			Text: "good job on this find",
+			ImageUrl: "test3Image.url",
 			CreatedDateTime: "2013-08-21 02:12:07",
 			RatingScore: "0"
 		}
@@ -676,6 +678,7 @@ http://hci.montclair.edu/geotagger/?operation=getTagComments&tagId=82
 	Username: "Failsj",
 	Title: null,
 	Text: "Hey, nice tag",
+	ImageUrl: "test3Image.url",
 	CreatedDateTime: "2013-08-19 12:29:38",
 	RatingScore: "0"
  },
@@ -685,6 +688,7 @@ http://hci.montclair.edu/geotagger/?operation=getTagComments&tagId=82
 	Username: "bwayne",
 	Title: "GoodJob",
 	Text: "good job on this find",
+	ImageUrl: "test3Image.url",
 	CreatedDateTime: "2013-08-21 02:12:07",
 	RatingScore: "0"
 }]

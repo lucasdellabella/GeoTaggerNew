@@ -134,6 +134,9 @@
     			removeUserFromAdventure($operation, $db);
     		break;
 
+    	case 'getEverything':
+    			getEverything($operation, $db);
+    		break;
 
     	// Default Error
     	default:
@@ -410,13 +413,13 @@
 		$title = mysql_real_escape_string($_POST['title']);
 		$comment = mysql_real_escape_string($_POST['comment']);
 		$uName = mysql_real_escape_string($_POST['uName']);
-		$tagUrl = "";
+		$imgUrl = "";
 
-		if (isset($_POST['tagUrl'])) {
-			$tagUrl = mysql_real_escape_string($_POST['tagUrl']);
+		if (isset($_POST['imgUrl'])) {
+			$imgUrl = mysql_real_escape_string($_POST['imgUrl']);
 		}
 
-		$result = $db->addTagComment($tID, $uName, $title, $comment, $tagUrl);
+		$result = $db->addTagComment($tID, $uName, $title, $comment, $imgUrl);
 		echo json_encode($result);
 	}
 
@@ -557,6 +560,14 @@
 		$uId = mysql_real_escape_string($_POST['uId']);
 		$advId = mysql_real_escape_string($_POST['advId']);
 		$result = $db->removeUserFromAdventure($uId, $advId);
+		echo json_encode($result);
+	}
+
+	// Experimental function returns EVERYTHING about a user
+	function getEverything($operation, $db) {
+		$username = mysql_real_escape_string($_POST['username']);
+		$password = mysql_real_escape_string($_POST['password']);
+		$result = $db->getEverything($username, $password);
 		echo json_encode($result);
 	}
 

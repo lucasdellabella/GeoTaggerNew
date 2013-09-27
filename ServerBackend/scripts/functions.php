@@ -183,11 +183,12 @@ class DBFunctions
 */
 
 	// Function adds a comment to a tag - returns tag with all of its comments
-	function addTagComment($tID, $uName, $title, $comment, $tagUrl) {
-		$result = mysql_query("INSERT INTO tagcomments(ParentTagID, Username, Title, Text, ImageUrl, CreatedDateTime) VALUES(".$tID.", '".$uName."', '".$title."', '".$comment."', '".$tagUrl."', now())");
+	function addTagComment($tID, $uName, $title, $comment, $imgUrl) {
+		$result = mysql_query("INSERT INTO tagcomments(ParentTagID, Username, Title, Text, ImageUrl, CreatedDateTime) VALUES(".$tID.", '".$uName."', '".$title."', '".$comment."', '".$imgUrl."', now())");
 
 		if ($result)
-			$data = $this->getAllInfoOnTag($tID);
+			$data = array('success'=>1, 'cID'=>mysql_insert_id());
+			//$data = $this->getAllInfoOnTag($tID);
 		else
 			$data = array('error'=>1, 'error_msg'=>'An error has occurred!');
 
@@ -245,6 +246,8 @@ class DBFunctions
 		while ($tag = mysql_fetch_array($result)) {
 			$comments = $this->getTagComments($id);
 			$data = array('TagID'=>$tag['TagID'],'OwnerID'=>$tag['OwnerID'], 'Name'=>$tag['Name'], 'Description'=>$tag['Description'], 'ImageUrl'=>$tag['ImageUrl'], 'Visibility'=>$tag['Visibility'], 'Location'=>$tag['Location'], 'Latitude'=>$tag['Latitude'], 'Longitude'=>$tag['Longitude'], 'Category'=>$tag['Category'], 'CreatedDateTime'=>$tag['CreatedDateTime'], 'RatingScore'=>$tag['RatingScore'], 'comment'=>$comments);
+			//$data = array('ID'=>$tag['TagID'],'ParentTagID'=>$tag['OwnerID'], 'Username'=>$tag['Name'], 'Text'=>$tag['Description'], 'ImageUrl'=>$tag['ImageUrl'], 'Visibility'=>$tag['Visibility'], 'Location'=>$tag['Location'], 'Latitude'=>$tag['Latitude'], 'Longitude'=>$tag['Longitude'], 'Category'=>$tag['Category'], 'CreatedDateTime'=>$tag['CreatedDateTime'], 'RatingScore'=>$tag['RatingScore'], 'comment'=>$comments);
+			//$data = array('ID'=>$tag['ID'], 'ParentTagID'=>$tag['ParentTagID'], 'Username'=>$tag['Username'], 'Title'=>$tag['Title'], 'Text'=>$tag['Text'], 'ImageUrl'=>$tag['ImageUrl'], 'CreatedDateTime'=>$tag['CreatedDateTime'], 'RatingScore'=>$tag['RatingScore']);
 		}
 
 		return $data;
@@ -445,7 +448,7 @@ class DBFunctions
 
     // Returns all the adventures and tags associated with it
     public function getAllAdventuresUserPartOf($id) {
-		$res = mysql_query("SELECT * FROM adventures WHERE ID IN (SELECT DISTINCT(AdvID) FROM adventuretags WHERE TagID IN (SELECT TagID FROM tags WHERE OwnerID=".$id."))");
+		$res = mysql_query("SELECT * FROM adventures WHERE ID IN (SELECT DISTINCT AdvID FROM adventuremembers WHERE uID=".$id." UNION SELECT ID AS AdvID FROM adventures WHERE OwnerID=".$id.")");
 		$nums = mysql_num_rows($res);
 
 		if ($nums > 0) {
@@ -453,20 +456,8 @@ class DBFunctions
 				$data[] = array('ID'=>$row['ID'],'OwnerID'=>$row['OwnerID'], 'Name'=>$row['Name'], 'Description'=>$row['Description'], 'Visibility'=>$row['Visibility'], 'CreatedDateTime'=>$row['CreatedDateTime']);
 			}
 		}
-		else {
-			$res = mysql_query("SELECT * FROM adventures WHERE OwnerID=".$id);
-			$nums = mysql_num_rows($res);
-
-			if ($res > 0) {
-
-				$tags = array();
-				while ($row = mysql_fetch_array($res)) {
-					$data[] = array('ID'=>$row['ID'],'OwnerID'=>$row['OwnerID'], 'Name'=>$row['Name'], 'Description'=>$row['Description'], 'Visibility'=>$row['Visibility'], 'CreatedDateTime'=>$row['CreatedDateTime'], 'Tag'=>$tags);
-				}
-			} else {
-				$data = array();
-			}
-		}
+		else
+			$data = array();
 
 	    return $data;
     }
@@ -666,6 +657,66 @@ class DBFunctions
 
 
 
-}
+/*
+	** One function to rule them all
+	** This one function will pull everybit of information on the user based on their login
+*/
 
+	public function getEverything($username, $password) {
+		$user = array();
+
+		$result = mysql_query("SELECT * FROM accounts WHERE Username='".$username."' AND Password=MD5('".$password."')");
+		$nums = mysql_num_rows($result);
+
+		if ($nums < 1) {
+			// Login failed
+			$user = array();
+		} else {
+			// Login successful
+			$user = mysql_fetch_assoc($result);
+
+			// Get all tags & their tag comments
+			$result = mysql_query("SELECT * FROM tags WHERE OwnerID=".$user['AccountID']);
+			while($r=mysql_fetch_assoc($result)){
+				$tagcomments = array();
+				$res = mysql_query("SELECT * FROM tagcomments WHERE ParentTagID=".$r['TagID']);
+				while ($q=mysql_fetch_assoc($res)) { $tagcomments[] = $q; }
+				$r['tagcomment']=$tagcomments; $user['tag'][]=$r;
+			}
+
+			// Get all adventures & their associated tag ids and the members inside the adventure
+			$result = mysql_query("SELECT * FROM adventures WHERE ID IN (SELECT DISTINCT AdvID FROM adventuremembers WHERE uID=".$user['AccountID']." UNION SELECT ID AS AdvID FROM adventures WHERE OwnerID=".$user['AccountID'].")");
+			if (mysql_num_rows($result) < 1) { $result = mysql_query("SELECT * FROM adventures WHERE OwnerID=".$user['AccountID']); }
+			while($r=mysql_fetch_assoc($result)){
+				$advtags = array();
+				$members = array();
+				$userMembers = array();
+
+				// Get all tagIDs that are associated with the adventures
+				$res = mysql_query("SELECT TagID FROM adventuretags WHERE AdvID=".$r['ID']);
+				while ($q=mysql_fetch_array($res)) { $advtags[]=$q['TagID']; }
+				$r['tags']=$advtags;
+
+				//Get all members in this adventure
+				$res = mysql_query("SELECT uID FROM adventuremembers WHERE AdvID=".$r['ID']);
+				while ($q=mysql_fetch_array($res)) { $members[] = $q['uID']; }
+				foreach ($members as $mID) {
+					$res = mysql_query("SELECT * FROM accounts WHERE AccountID=".$mID);
+					while ($q=mysql_fetch_assoc($res)) { $q['Password']=""; $userMembers[] = $q; }
+				}
+				$r['members']=$userMembers;
+				$user['adventure'][]=$r;
+			}
+
+			// Get all info on users friends (except the friend's password)
+			$result = mysql_query("SELECT fID FROM friendassociations WHERE uID=".$user['AccountID']);
+			while ($r=mysql_fetch_array($result)) {
+				$res = mysql_query("SELECT * FROM accounts WHERE AccountID=".$r['fID']);
+				while ($q=mysql_fetch_assoc($res)) { $q['Password']=""; $user['friend'][]=$q; }
+			}
+		}
+		return $user;
+	}
+
+}
 ?>
