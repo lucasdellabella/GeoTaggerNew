@@ -33,6 +33,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
 
 public class ImageHandler {
 	JSONParser jsonParser;
@@ -52,6 +53,9 @@ public class ImageHandler {
 	{
 		//encode image to base64
 		String encodedImg = EncodeImage(b);
+		String imgUrl = null;
+		JSONObject response = null;
+		String returnCode = null;
 		
 		  // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -59,16 +63,16 @@ public class ImageHandler {
         params.add(new BasicNameValuePair("imageString", encodedImg));
 		try
 		{
-			JSONObject response = jsonParser.getJSONFromUrl(Constants.IMAGE_URL, params);
+			response = jsonParser.getJSONFromUrl(Constants.IMAGE_URL, params);
 			System.out.println("JSON Response from PHP: " + response.toString());
 			
-			String returnCode = response.getString(Constants.SUCCESS);
+			returnCode = response.getString(Constants.SUCCESS);
 			//if the upload was successful, return image url
 			if (returnCode != null)
 			{
 				if (Integer.parseInt(returnCode) == 1)
 				{
-					String imgUrl = response.getString("url");
+					imgUrl = response.getString("url");
 					return imgUrl;	
 				}	
 			}
@@ -76,17 +80,19 @@ public class ImageHandler {
 			{
 				//if there was a problem, return null
 				Log.d("ImageUpload", "Problem uploading image.");
-				return null;
+				Toast.makeText(c, "Couldn't upload image!", Toast.LENGTH_SHORT).show();
+				return imgUrl;
 			}
 		}
 		catch (Exception ex)
 		{
 			Log.d("ImageHandler Upload", "Exception occurred during upload, returning null. ");
+			Toast.makeText(c, "Couldn't upload image!", Toast.LENGTH_SHORT).show();
 			ex.printStackTrace();
-			return null;
+			return imgUrl;
 		}
 		
-		return null;
+		return imgUrl;
 	}
 	//return image as base64 encoded string
 	public String EncodeImage(Bitmap b)

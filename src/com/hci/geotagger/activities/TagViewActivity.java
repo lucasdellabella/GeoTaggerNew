@@ -39,6 +39,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -79,7 +80,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
 	ImageView img_tagImage, commentrow_thumbnail, compassTriangle;
 	ImageView img_commentImage;
-	private boolean HAS_IMAGE = false;
 	ImageView btnRating;
 	Button commentBtn, navBtn;
 	EditText commentTxt;
@@ -88,6 +88,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	ProgressDialog PD;
 	ListView commentList;
 	String url;
+	
+	private Drawable icon;
 
 	private DecimalFormat ddf  = new DecimalFormat("#.00");
 	private DecimalFormat lldf = new DecimalFormat("#.000000");
@@ -122,8 +124,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private CommentAdapter CA;
 
 	private ImageHandler imageHandler;
-	private File CURRENT_IMAGE, TEMP_IMAGE;
-	private Uri CUR_IMGURI, TMP_IMGURI;
+	private File camCurrImageFile, camTempImageFile;
+	private Uri camCurrImageURI, camTempImageURI;
+	private boolean commentHasImage = false;
 
 	private HashMap<String, Bitmap> thumbCache;
 
@@ -135,6 +138,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//hide title bar
 		setContentView(R.layout.activity_tag_view);
+		
+		icon = getResources().getDrawable( R.drawable.icon );
 
 		//set up commentlist
 		comments = new ArrayList<Comment>();
@@ -289,7 +294,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					addComment();	
 				}
 			});
-		}	
+		}
+		clearCameraVars();
 	} //end onCreate
 
 	/*
@@ -602,13 +608,16 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				{
 					final StringBuilder sb = new StringBuilder();
 					JSONObject response;
-					if(HAS_IMAGE == true)
+					if(commentHasImage == true)
 					{
-						String url = uploadImage(CURRENT_IMAGE);
+						String url = uploadImage(camCurrImageFile);
 						Log.d("TagViewActivity", "url: " + url);
 						response = tagHandler.AddTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName(), url);
 						Log.d("TagViewActivity", "Picture Added");
+						
+						//reset image
+						clearCameraVars();
 					}
 					else
 					{
@@ -649,6 +658,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 							PD.dismiss();			
 							Toast.makeText(TagViewActivity.this, sb.toString(),
 									Toast.LENGTH_LONG).show();
+							img_commentImage.setImageDrawable(icon);
 						}
 					});
 
@@ -891,16 +901,27 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		return super.onOptionsItemSelected(item);
 	}
 
+	private void clearCameraVars()
+	{
+		commentHasImage = false;
+		imageHandler = new ImageHandler(this);
+		camCurrImageFile = null;
+		camTempImageFile = null;
+		camCurrImageURI = null;
+		camTempImageURI = null;
+	}
+	
 	private void openCamera()
 	{
+		clearCameraVars();
 		Intent i_Cam = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		//create a file to save an image in
 		File f = imageHandler.makeImageFile();
 		if (f != null)
 		{
-			TMP_IMGURI = Uri.fromFile(f);
+			camTempImageURI = Uri.fromFile(f);
 			//if file was created, pass the URI to the camera app
-			i_Cam.putExtra(MediaStore.EXTRA_OUTPUT, TMP_IMGURI);
+			i_Cam.putExtra(MediaStore.EXTRA_OUTPUT, camTempImageURI);
 		}
 		//open camera to take pic when camera button is clicked				
 		startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
@@ -927,6 +948,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 		//get bitmap pixels
 		options.inJustDecodeBounds = false;
+		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 		b = BitmapFactory.decodeFile(f.getAbsolutePath(), options);
 		height = b.getHeight();
 		width = b.getWidth();
@@ -935,13 +957,16 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		{
 			String url = imageHandler.UploadImageToServer(b);
 			b.recycle();
+			b = null;
 			Log.d("AddImageTask", "Got response, img url = " + url);
 			return url;
 		}
 		else
 		{
+			b.recycle();
+			b = null;
 			return null;
-		}	
+		}
 	}
 
 	/*
@@ -956,14 +981,14 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			//if new picture is taken, show that in the image view
 			case Constants.CAPTURE_IMG:
 				//if the image was saved to the device use the URI to populate image view and set the current image
-				if (TMP_IMGURI != null)
+				if (camTempImageURI != null)
 				{        				
-					CUR_IMGURI = TMP_IMGURI;
-					CURRENT_IMAGE = new File(CUR_IMGURI.getPath());
-					TMP_IMGURI = null;
+					camCurrImageURI = camTempImageURI;
+					camCurrImageFile = new File(camCurrImageURI.getPath());
+					camTempImageURI = null;
 
-					img_commentImage.setImageURI(CUR_IMGURI);
-					HAS_IMAGE = true;
+					img_commentImage.setImageURI(camCurrImageURI);
+					commentHasImage = true;
 				}
 				break;
 			}
@@ -971,10 +996,10 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		//if user backed out of the camera without saving picture, discard empty image file
 		else
 		{
-			if (TEMP_IMAGE != null)
-				TEMP_IMAGE.delete();
+			if (camTempImageFile != null && camTempImageFile.exists())
+				camTempImageFile.delete();
 
-			TMP_IMGURI = null;
+			camTempImageURI = null;
 		}
 	}
 
