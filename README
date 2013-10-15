@@ -1,2 +1,11 @@
 - to run, need to add google-play-services.jar to build path
 - recommend github app for committing -- auto-detects changes from eclipse to local repo
+
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
+
+As of 10/15/13 this is the most up to date working verison of geotagger. All
+changes made from this date on are modifcations and changes that have been 
+discussed and posted on http://www.hostedredmine.com/ 
+
+- David 10/15/13
