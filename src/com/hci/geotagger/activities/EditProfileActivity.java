@@ -44,7 +44,7 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class EditProfileActivity extends BaseActivity {
 	private TextView profileTxt;
-	private EditText locTxt, descTxt, quoteTxt;
+	private EditText locTxt, descTxt, quoteTxt, emailTxt;
 	private Button saveBtn, cancelBtn;
 	private ProgressDialog PD;
 	private ImageView imgView;
@@ -67,6 +67,7 @@ public class EditProfileActivity extends BaseActivity {
 		locTxt = (EditText) findViewById(R.id.editprofile_location);
 		descTxt = (EditText) findViewById(R.id.editprofile_desc);
 		quoteTxt= (EditText) findViewById(R.id.editprofile_quote);
+		emailTxt = (EditText) findViewById(R.id.editprofile_email);
 		
 		saveBtn = (Button) findViewById(R.id.editprofile_saveBtn);
 		cancelBtn = (Button) findViewById(R.id.editprofile_cancelBtn);

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="3dp" >
+    
+    <ImageView
+        android:id="@+id/commentExtended_commentImg"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:contentDescription="commentImg"
+        android:src="@drawable/icon"
+        android:layout_centerHorizontal="true" >
+    </ImageView>
+    
+    <TextView
+        android:id="@+id/commentExtended_commentTag"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/commentExtended_commentImg"
+        android:text="Tag Comment"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@android:color/white"
+        android:textStyle="bold">
+    </TextView>
+
+</RelativeLayout>

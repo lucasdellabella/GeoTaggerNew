@@ -113,6 +113,9 @@
             android:label="@string/title_activity_editAdventure"           
             android:theme="@android:style/Theme.Black.NoTitleBar" >  >
         </activity> 
+        <activity
+            android:name="com.hci.geotagger.activities.CommentViewActivity" >
+        </activity>
                
     </application>
 

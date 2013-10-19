@@ -60,6 +60,7 @@ import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
 
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -129,6 +130,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private boolean commentHasImage = false;
 
 	private HashMap<String, Bitmap> thumbCache;
+	
+	private Intent extendedComment;
+	private Context c;
 
 
 	@SuppressWarnings("unchecked")
@@ -140,6 +144,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		setContentView(R.layout.activity_tag_view);
 		
 		icon = getResources().getDrawable( R.drawable.icon );
+		
+		c = getBaseContext();
+		extendedComment = new Intent(c, CommentViewActivity.class);
 
 		//set up commentlist
 		comments = new ArrayList<Comment>();
@@ -147,6 +154,19 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		commentList = (ListView) findViewById(R.id.commentList);
 		commentList.setAdapter(this.CA);
 		registerForContextMenu(commentList);
+		commentList.setOnItemClickListener(new OnItemClickListener()
+		{
+			@Override
+			public void onItemClick(AdapterView<?> av, View v, int position,
+					long id) 
+			{
+				Comment comment = comments.get(position);
+				Log.d("Posi", Integer.toString(position));
+				Log.d("Clicky", comment.getText().toString());
+				extendedComment.putExtra("commentText", comment.getText().toString());
+				startActivity(extendedComment);
+			}
+		});
 		tagHandler = new TagHandler();
 		imageHandler = new ImageHandler(this);
 		commentBtn = (Button) findViewById(R.id.tagview_commentbtn);
@@ -169,6 +189,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
+		
 		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
 		thumbCache = new HashMap<String, Bitmap>();
 
@@ -1097,7 +1118,9 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				}
 
 				if(commentTxt != null)
+				{
 					commentTxt.setText(comment.getText().toString());
+				}
 
 
 				if (commentImg != null) 
