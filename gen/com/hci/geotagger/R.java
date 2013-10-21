@@ -415,6 +415,8 @@ containing a value of this type.
     }
     public static final class string {
         public static final int action_settings=0x7f060016;
+        public static final int add=0x7f060046;
+        public static final int add_comment_hint=0x7f060045;
         public static final int app_name=0x7f060015;
         /**   Title for notification shown when GooglePlayServices needs to be
         enabled for a application to work. [CHAR LIMIT=70] 
@@ -439,6 +441,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f06000f;
+        public static final int comments_text=0x7f060043;
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -494,19 +497,33 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f06000e;
+        public static final int current_gps=0x7f06003f;
+        public static final int description_text=0x7f06003a;
         public static final int dlg_tagimg_title=0x7f06002b;
         public static final int dummy_button=0x7f060020;
         public static final int dummy_content=0x7f060021;
+        public static final int google_map=0x7f060042;
+        public static final int gps_location=0x7f06003d;
         public static final int hello_world=0x7f060017;
+        public static final int image_description=0x7f060044;
         public static final int invalid_login=0x7f06001b;
+        public static final int lat_long_text=0x7f06003e;
         public static final int list_no_advPeople=0x7f06002a;
         public static final int list_no_adventures=0x7f060029;
         public static final int list_no_friends=0x7f060034;
         public static final int list_no_tags=0x7f060028;
+        public static final int location=0x7f06003c;
+        public static final int location_text=0x7f06003b;
+        public static final int location_unavailable=0x7f060040;
         public static final int ok=0x7f06001a;
+        public static final int rating_text=0x7f060038;
         public static final int str_Pass=0x7f060024;
         public static final int str_Pass_Confirm=0x7f060025;
         public static final int str_Username=0x7f060023;
+        /**  activity_tag_view 
+         */
+        public static final int tag_name=0x7f060037;
+        public static final int tagged_by=0x7f060039;
         public static final int title_activity_add_tag=0x7f060026;
         public static final int title_activity_adventureView=0x7f06002d;
         public static final int title_activity_adventurelist=0x7f06002c;
@@ -522,6 +539,7 @@ containing a value of this type.
         public static final int title_section1=0x7f060030;
         public static final int title_section2=0x7f060031;
         public static final int title_section3=0x7f060032;
+        public static final int triangle_description=0x7f060041;
         public static final int unknown_distance=0x7f060036;
         public static final int unknown_error=0x7f06001c;
         public static final int unknown_error_response_null=0x7f06001d;

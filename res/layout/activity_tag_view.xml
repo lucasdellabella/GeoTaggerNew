@@ -18,7 +18,7 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="2"
-        android:text="Tag Name"
+        android:text="@string/tag_name"
         android:textColor="@android:color/white"
         android:textSize="@dimen/pageheader_textsize"
         android:textStyle="bold"
@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" 
-        android:visibility="invisible">
+        android:visibility="invisible" >
 
         <ImageView
             android:id="@+id/tagview_ratingbtn"
@@ -43,11 +43,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:text="0"
+            android:text="@string/rating_text"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textSize="25sp"
             android:textStyle="bold" />
+        
     </LinearLayout>
 
     <TextView
@@ -57,7 +58,7 @@
         android:layout_below="@+id/tagview_nametxt"
         android:layout_centerHorizontal="true"
         android:gravity="left"
-        android:text="Tagged by: User at 01/01/2000"
+        android:text="@string/tagged_by"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:textColor="@color/light_gray"
         android:textColorHint="@color/light_gray" />
@@ -87,7 +88,8 @@
                 android:maxHeight="400dp"
                 android:maxWidth="400dp"
                 android:scaleType="fitXY"
-                android:src="@drawable/icon" />
+                android:src="@drawable/icon"
+                android:contentDescription="@string/image_description" />
             
             <TextView
                 android:id="@+id/tagview_descriptiontxt"
@@ -95,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"
-                android:text="Description of the android tag"
+                android:text="@string/description_text"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:textColor="@android:color/white" />
             
@@ -103,7 +105,7 @@
                 android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:orientation="horizontal" >
-                >
+	            
 	            <TextView
 	                android:id="@+id/tagview_locationlabel"
 	                android:layout_width="wrap_content"
@@ -112,9 +114,10 @@
 	                android:gravity="left"
 	                android:textSize="18sp"
 	                android:layout_weight="1"
-	                android:text="Location: "
+	                android:text="@string/location_text"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" />
+	            
 	            <TextView
 	                android:id="@+id/tagview_locationtxt"
 	                android:layout_width="wrap_content"
@@ -123,15 +126,17 @@
 	                android:gravity="right"
 	                android:textSize="18sp"
 	                android:layout_weight="2"
-	                android:text="Location"
+	                android:text="@string/location"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" />
+	            
 			</LinearLayout>
+			
             <LinearLayout 
                 android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:orientation="horizontal" >
-                >
+
 	            <TextView
 	                android:id="@+id/tagview_locationGPSlabel"
 	                android:layout_width="wrap_content"
@@ -140,9 +145,10 @@
 	                android:gravity="left"
 	                android:textSize="14sp"
 	                android:layout_weight="1"
-	                android:text="GPS Location: "
+	                android:text="@string/gps_location"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" />
+	            
 	            <TextView
 	                android:id="@+id/tagview_latlongtxt"
 	                android:layout_width="wrap_content"
@@ -152,16 +158,17 @@
 	                android:gravity="right"
 	                android:textSize="14sp"
 	                android:layout_weight="2"
-	                android:text="Latitude, Longitude"
+	                android:text="@string/lat_long_text"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" />
+	            
 	        </LinearLayout>
 
             <LinearLayout 
                 android:layout_width="match_parent"
 	            android:layout_height="match_parent"
 	            android:orientation="horizontal" >
-                >
+	            
 	            <TextView
 	                android:id="@+id/tagview_curGPSlabel"
 	                android:layout_width="wrap_content"
@@ -169,34 +176,34 @@
 	                android:gravity="left"
 	                android:textSize="14sp"
 	                android:layout_weight="1"
-	                android:text="Current GPS: "
+	                android:text="@string/current_gps"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
 	                android:textColor="@color/light_gray" />
+	            
 	            <TextView
 	                android:id="@+id/tagview_currentlocationtxt"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:text="Location Not Available"
+	                android:text="@string/location_unavailable"
 	                android:gravity="right"
 	                android:textSize="14sp"
 	                android:layout_weight="2"
 	                android:textAppearance="?android:attr/textAppearanceMedium"
-	                android:textColor="@color/light_gray" 
-	                />
+	                android:textColor="@color/light_gray" />
+	            
 	        </LinearLayout>
             
             <LinearLayout
                 android:layout_width="match_parent"
 	            android:orientation="horizontal" 
-	            android:layout_height="wrap_content">
+	            android:layout_height="wrap_content" >
                 
 	            <RelativeLayout 
 	                android:layout_width="wrap_content"
 				    android:layout_height="100dp"
 				    android:id="@+id/superCompass"
 	                android:layout_marginTop="10dp"
-	                android:layout_weight="1"
-		            >
+	                android:layout_weight="1" >
 		            
 		            <TextView
 		                android:id="@+id/tagview_distancetotxt"
@@ -208,18 +215,17 @@
 						android:textSize="@dimen/pageheader_textsize"
 						android:textAppearance="@style/ShadowText"
 						android:textStyle="bold"
-						android:typeface="sans"
-		                />
+						android:typeface="sans" />
 	
 		            <ImageView
 		                android:id="@+id/compassTriangle"
 		                android:layout_height="fill_parent"
 		                android:layout_width="fill_parent"
 		                android:scaleType="centerInside"
-		                android:contentDescription="Triangle for Compass"
+		                android:contentDescription="@string/triangle_description"
 		                android:src="@drawable/arrow"
-		                android:visibility="invisible"
-						/>
+		                android:visibility="invisible" />
+		            
 		        </RelativeLayout>
 
 				<Button
@@ -236,13 +242,14 @@
 					android:textAppearance="@style/ShadowText"
 					android:textStyle="bold"
 					android:typeface="sans"
-					android:text="Google   \/   Map" />
+					android:text="@string/google_map" />
 	            
             </LinearLayout>
-	        
         </LinearLayout>
     </ScrollView>
 
+    <!-- SLIDING DRAWER STUFF -->
+    
     <SlidingDrawer
         android:id="@+id/slidingDrawer1"
         android:layout_width="match_parent"
@@ -264,95 +271,72 @@
             android:minWidth="50dp"
             android:paddingLeft="3dp"
             android:paddingRight="3dp"
-            android:text="Comments " />
+            android:text="@string/comments_text" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/content"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:background="@drawable/purplebutton"
             android:orientation="vertical" >
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
-
-                <TextView
-                    android:id="@+id/CommentLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_above="@+id/commentList"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginTop="6dp"
-                    android:text="Comments"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@android:color/white"
-                    android:textStyle="bold" />
-
-                <ListView
-                    android:id="@+id/commentList"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_above="@+id/commentbar"
-                    android:layout_weight="1" 
-                    android:transcriptMode="alwaysScroll">
-
-                </ListView>
-
-                <LinearLayout
-                    android:id="@+id/commentbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginBottom="3dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_weight="4"
-                    android:gravity="bottom"
-                    android:paddingTop="3dp" >
+            
+            <ListView
+            	android:id="@+id/commentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:transcriptMode="alwaysScroll"
+                android:layout_above="@+id/commentbar"
+                android:layout_alignParentTop="true">
+           	</ListView>
+                
+            <LinearLayout
+            	android:id="@+id/commentbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="10dp"
+                android:gravity="bottom"
+                android:paddingTop="3dp"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:weightSum="6" >
                     
-                    <ImageView
-                     android:id="@+id/tagview_commentimg"
-                     android:layout_width="@dimen/button_height"
-                     android:layout_height="@dimen/button_height"
-                     android:contentDescription="uploadImg"
-                     android:adjustViewBounds="true"
-                     android:clickable="true"
-                     android:cropToPadding="false"
-                     android:focusable="true"
-                     android:focusableInTouchMode="true"
-                     android:scaleType="fitCenter"
-                     android:layout_weight="1"
-                     android:paddingRight="2dp"
-                     android:paddingLeft="4dp"
-                     android:src="@drawable/icon" />
+                <ImageView
+                	android:id="@+id/tagview_commentimg"
+                    android:layout_width="@dimen/button_height"
+                   	android:layout_height="@dimen/button_height"
+                   	android:contentDescription="@string/image_description"
+                   	android:adjustViewBounds="true"
+                   	android:clickable="true"
+                   	android:cropToPadding="false"
+                   	android:focusable="true"
+                   	android:focusableInTouchMode="true"
+                   	android:scaleType="fitCenter"
+                   	android:paddingRight="2dp"
+                   	android:paddingLeft="4dp"
+                 	android:src="@drawable/icon" 
+                 	android:layout_weight="1"/>
 
-                    <EditText
-                        android:id="@+id/tagview_commenttxt"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="2"
-                        android:ems="10"
-                        android:hint="Add a comment"
-                        android:inputType="textCapSentences"
-                        android:maxLines="5" >
+                 <EditText
+                    android:id="@+id/tagview_commenttxt"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:ems="10"
+                    android:hint="@string/add_comment_hint"
+                    android:inputType="textCapSentences"
+                    android:maxLines="5"
+                    android:layout_weight="4" />
 
-                        <requestFocus />
-                    </EditText>
-
-                    <Button
-                        android:id="@+id/tagview_commentbtn"
-                        android:layout_width="@dimen/button_height"
-                        android:layout_height="@dimen/button_height"
-                        android:layout_weight="1"
-                        android:background="@drawable/greenbutton"
-                        android:minWidth="0dp"
-                        android:text="Add" />
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </LinearLayout>
-
+                 <Button
+                    android:id="@+id/tagview_commentbtn"
+                    android:layout_width="@dimen/button_height"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/greenbutton"
+                    android:minWidth="0dp"
+                    android:text="@string/add"
+                    android:layout_weight="1" />
+                 
+        	</LinearLayout>
+        </RelativeLayout>
     </SlidingDrawer>
-
 </RelativeLayout>

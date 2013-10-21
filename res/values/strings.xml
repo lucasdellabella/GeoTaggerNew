@@ -40,5 +40,23 @@
     <string name="list_no_friends">No friends have been added yet. Click the + to search!</string>
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="unknown_distance">\?\?.\?\? m</string>
+    
+    <!-- activity_tag_view -->
+    <string name="tag_name">Tag Name</string>
+    <string name="rating_text">0</string>
+    <string name="tagged_by">Tagged by: User at 01/01/2000</string>
+    <string name="description_text">Description of the Tag</string>
+    <string name="location_text">Location: </string>
+    <string name="location">Location</string>
+    <string name="gps_location">GPS Location: </string>
+    <string name="lat_long_text">Latitude, Longitude</string>
+    <string name="current_gps">Current GPS: </string>
+    <string name="location_unavailable">Location Not Available</string>
+    <string name="triangle_description">Triangle for Compass</string>
+    <string name="google_map">Google   \/   Map</string>
+    <string name="comments_text">Comments</string>
+    <string name="image_description">uploadImg</string>
+    <string name="add_comment_hint">Add a comment</string>
+    <string name="add">Add</string>
 
 </resources>
