@@ -6,7 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_home">Home</string>
     <string name="title_activity_register">Sign Up</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="invalid_login">Username or Password was incorrect. Please try again.</string>
     <string name="unknown_error">Unknown error. Please try again.</string>
     <string name="unknown_error_response_null">Response is null.</string>
@@ -41,13 +41,22 @@
     <string name="title_activity_edit_profile">EditProfileActivity</string>
     <string name="unknown_distance">\?\?.\?\? m</string>
     
+    <!-- activity_add_tag -->
+    <string name="new_tag">New Tag</string>
+    <string name="cancel">Cancel</string>
+    <string name="name">Name</string>
+    <string name="picture">Picture</string>
+    <string name="add_tag_image">Add Tag Activity Image</string>
+    <string name="description">Description</string>
+    <string name="tag_description">Tag Description</string>
+    <string name="use_gps">Use GPS Location</string>
+    <string name="tag_location">Tag Location Description</string>
+    
     <!-- activity_tag_view -->
-    <string name="tag_name">Tag Name</string>
     <string name="rating_text">0</string>
     <string name="tagged_by">Tagged by: User at 01/01/2000</string>
     <string name="description_text">Description of the Tag</string>
     <string name="location_text">Location: </string>
-    <string name="location">Location</string>
     <string name="gps_location">GPS Location: </string>
     <string name="lat_long_text">Latitude, Longitude</string>
     <string name="current_gps">Current GPS: </string>
@@ -57,6 +66,29 @@
     <string name="comments_text">Comments</string>
     <string name="image_description">uploadImg</string>
     <string name="add_comment_hint">Add a comment</string>
+    
+    <!-- activity_adventure_view_wtabs -->
+    <string name="temp_name">Temp Name</string>
+    <string name="edit">Edit</string>
+    
+    <!-- activity_adventurelist -->
+    <string name="username_adventures">Username\&apos;s Adventures</string>
+    <string name="create_adventure">Create New Adventure</string>
+    
+    <!-- activity_comment_extended_view -->
+    <string name="comment_img_description">Comment Extended View Image</string>
+    <string name="tag_comment">Tag Comment</string>
+    
+    <!-- activity_edit_adv_people_tab -->
+    <string name="add_user">Add User</string>
+    
+    <!-- activity_edit_adv_tag_tab -->
+    <string name="add_new_tag">Add New Tag</string>
+    <string name="add_existing_tag">Add Existing Tag</string>
+    
+    <!-- Common Strings Between Layouts -->
     <string name="add">Add</string>
+    <string name="tag_name">Tag Name</string>
+    <string name="location">Location</string>
 
 </resources>

@@ -26,7 +26,7 @@
                 style="@style/ShadowText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="New Tag"
+                android:text="@string/new_tag"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
 
@@ -46,7 +46,7 @@
                     android:height="32dp"
                     android:minHeight="32dp"
                     android:minWidth="75dip"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@android:color/black" />
 
                 <Button
@@ -58,7 +58,7 @@
                     android:background="@drawable/greenbutton"
                     android:minHeight="32dp"
                     android:minWidth="75dip"
-                    android:text="Add" />
+                    android:text="@string/add" />
 
             </LinearLayout>
 
@@ -87,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
@@ -100,7 +100,7 @@
                     android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="left"
-                    android:hint="Tag Name"
+                    android:hint="@string/tag_name"
                     android:inputType="textCapSentences"
                     android:maxLength="35"
                     android:maxLines="1"
@@ -116,7 +116,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Picture"
+                    android:text="@string/picture"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
@@ -136,14 +136,15 @@
                     android:maxWidth="400dp"
                     android:padding="@dimen/image_padding"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/icon" />
+                    android:src="@drawable/icon" 
+                    android:contentDescription="@string/add_tag_image"/>
 
                 <TextView
                     android:id="@+id/addtag_lbldesc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
@@ -156,7 +157,7 @@
                     android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="top"
-                    android:hint="Tag Description"
+                    android:hint="@string/tag_description"
                     android:inputType="textCapSentences|textMultiLine"
                     android:lines="4"
                     android:paddingLeft="@dimen/textfield_padding"
@@ -174,7 +175,7 @@
                         android:id="@+id/addtag_lblloc"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Location"
+                        android:text="@string/location"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@android:color/white" />
 
@@ -183,7 +184,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/Scrollview_Leftmargin"
-                        android:text="Use GPS Location"
+                        android:text="@string/use_gps"
                         android:textColor="@android:color/white" />
                 </LinearLayout>
 
@@ -195,7 +196,7 @@
                     android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="left"
-                    android:hint="Tag Location Description"
+                    android:hint="@string/tag_location"
                     android:maxLines="1"
                     android:paddingLeft="@dimen/textfield_padding"
                     android:paddingRight="@dimen/textfield_padding"
@@ -204,5 +205,4 @@
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
-
 </RelativeLayout>

@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"                
-                android:text="Temp Name"
+                android:text="@string/temp_name"
 				android:paddingLeft="10dp"
             	android:paddingRight="10dp"
                 android:textStyle="bold"
@@ -43,7 +43,7 @@
 				android:layout_marginLeft="22dp"
 				android:layout_marginRight="5dp"
 				android:background="@drawable/greenbutton"
-				android:text="Edit" />
+				android:text="@string/edit" />
         </RelativeLayout>
 
         <LinearLayout
@@ -68,7 +68,7 @@
 		           android:layout_marginBottom="10dp"
 		           android:layout_weight="2.11"
 		           android:ems="10"
-		           android:text="Location"
+		           android:text="@string/location"
 		           android:scrollbars="vertical"
 		           android:textAppearance="?android:attr/textAppearanceMedium"
 		           android:textColor="@color/light_gray"
