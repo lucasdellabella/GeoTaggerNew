@@ -164,6 +164,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				Log.d("Posi", Integer.toString(position));
 				Log.d("Clicky", comment.getText().toString());
 				extendedComment.putExtra("commentText", comment.getText().toString());
+				extendedComment.putExtra("imgURL", comment.getImageURL().toString());
 				startActivity(extendedComment);
 			}
 		});
@@ -1031,15 +1032,12 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			@Override
 			public void run() 
 			{
-
 				// loop through tags and cache their images if they have them
 				for (Comment c : comments) 
 				{
-					Log.d("cache1test", c.getText());
-
+					Log.d("uploading", "Uploading: " + c);
 					if(c != null)
 					{
-
 						String url = c.getImageURL();
 						// if tag has image url, download image and cache it
 						if (url != null && !url.equals("") && !thumbCache.containsKey(url)) 
@@ -1187,8 +1185,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 			if (lastBestLocation != null)
 			{
-				//				Log.d("LOCATION CHANGED", location.getLatitude() + "");
-				//				Log.d("LOCATION CHANGED", location.getLongitude() + "");
+				//Log.d("LOCATION CHANGED", location.getLatitude() + "");
+				//Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
 				txt_currentLoc.setText(str);
 				tagLocation.setLatitude(geo.getLatitude());

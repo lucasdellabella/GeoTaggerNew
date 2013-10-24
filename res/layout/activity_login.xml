@@ -21,7 +21,7 @@
             android:layout_centerInParent="true"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="10dp"
-            android:text="LOGIN"
+            android:text="@string/login"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:textColor="@android:color/white"
             android:textSize="30sp"
@@ -85,7 +85,7 @@
             android:layout_centerInParent="true"
             android:layout_marginTop="18dp"
             android:background="@drawable/greenbutton"
-            android:text="Login"
+            android:text="@string/login"
             android:textColor="@android:color/white"
             android:textStyle="bold"
             android:typeface="sans" />
@@ -99,7 +99,7 @@
             android:layout_marginTop="15dp"
             android:clickable="false"
             android:onClick="@string/title_activity_register"
-            android:text="New? Click here to start!"
+            android:text="@string/new_user"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@android:color/white"
             android:textStyle="bold" />
@@ -113,7 +113,8 @@
             android:adjustViewBounds="true"
             android:maxHeight="180dp"
             android:maxWidth="274dp"
-            android:src="@drawable/icon" />
+            android:src="@drawable/icon"
+            android:contentDescription="@string/login_img_desc" />
 
     </RelativeLayout>
  

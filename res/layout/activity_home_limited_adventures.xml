@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="10dp"        
-        android:text="Welcome"
+        android:text="@string/welcome"
         android:textColor="@android:color/white"
         android:textSize="@dimen/pageheader_textsize"
         android:textStyle="bold"
@@ -30,7 +30,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="140dp"        	
 	    	android:background="@drawable/greenbutton"
-	    	android:text="Adventures"
+	    	android:text="@string/adventures"
 	    	android:textColor="@android:color/white"
         	android:textSize="@dimen/home_page_button_textsize"
 	    	android:textStyle="bold" />		    	
@@ -39,7 +39,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="140dp"        
         	android:background="@drawable/greenbutton"        
-        	android:text="My Profile"
+        	android:text="@string/my_profile"
         	android:textColor="@android:color/white"        
         	android:textSize="@dimen/home_page_button_textsize"
         	android:textStyle="bold" />		
@@ -48,7 +48,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="70dp"        
         	android:background="@drawable/graybutton"        
-        	android:text="Logout"
+        	android:text="@string/logout"
         	android:textColor="@android:color/white"        
         	android:textStyle="bold" />
 		<Button
@@ -56,7 +56,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="70dp"        
         	android:background="@drawable/graybuttondark"        
-        	android:text="Geotagger Comments/Suggestions"
+        	android:text="@string/feedback"
         	android:textColor="@color/light_gray"        
         	android:textStyle="bold" />
 			</LinearLayout>

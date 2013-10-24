@@ -13,7 +13,7 @@
         android:paddingBottom="2dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
-        android:text="Username&apos;s Friends"
+        android:text="@string/friends_header"
         android:textColor="@android:color/white"
         android:textSize="@dimen/pageheader_textsize"
         android:textStyle="bold" />

@@ -27,7 +27,7 @@
                 android:layout_height="50dp"                
                 android:layout_alignParentLeft="true"
                 android:background="@drawable/graybutton"                
-                android:text="Cancel" />
+                android:text="@string/cancel" />
 
             <Button
                 android:id="@+id/adventureEdit_btnOk"
@@ -35,7 +35,7 @@
                 android:layout_height="50dp"  
                 android:layout_alignParentRight="true"                                                               
                 android:background="@drawable/greenbutton"                
-                android:text="Save" />
+                android:text="@string/save" />
 
             <TextView
                 android:id="@+id/adventureEdit_nametxt"
@@ -44,7 +44,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/adventureEdit_btnOk"
-                android:text="Temp Name"
+                android:text="@string/temp_name"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@android:color/white" />
 
@@ -73,7 +73,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="fill"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Name"
+                    android:text="@string/name"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
@@ -86,7 +86,7 @@
                     android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="left"
-                    android:hint="Adventure Name"
+                    android:hint="@string/adventure_name_hint"
                     android:inputType="textCapSentences"
                     android:maxLength="35"
                     android:maxLines="1"
@@ -102,7 +102,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/scrollview_topmargin"
-                    android:text="Description"
+                    android:text="@string/description"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@android:color/white" />
 
@@ -115,7 +115,7 @@
                     android:background="@drawable/select_text"
                     android:ems="10"
                     android:gravity="top"
-                    android:hint="Adventure Description"
+                    android:hint="@string/adventure_description"
                     android:inputType="textCapSentences|textMultiLine"
                     android:lines="4"
                     android:paddingLeft="@dimen/textfield_padding"

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:padding="10dp"        
-        android:text="Welcome"
+        android:text="@string/welcome"
         android:textColor="@android:color/white"
         android:textSize="@dimen/pageheader_textsize"
         android:textStyle="bold"
@@ -31,7 +31,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        	        	            	
         	android:background="@drawable/greenbutton"
-        	android:text="My Tags"
+        	android:text="@string/my_tags"
         	android:textColor="@android:color/white"
         	android:textStyle="bold" />
     	<Button
@@ -39,7 +39,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        	        	            	
         	android:background="@drawable/greenbutton"
-        	android:text="Add Tag"
+        	android:text="@string/add_tag"
         	android:textColor="@android:color/white"
         	android:textStyle="bold" />		
 		<Button
@@ -47,7 +47,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        	
 	    	android:background="@drawable/greenbutton"
-	    	android:text="Adventures"
+	    	android:text="@string/adventures"
 	    	android:textColor="@android:color/white"
 	    	android:textStyle="bold" />		    	
 	</LinearLayout>
@@ -64,7 +64,7 @@
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        	
 	    	android:background="@drawable/greenbutton"
-	    	android:text="Friends"
+	    	android:text="@string/friends"
 	    	android:textColor="@android:color/white"
 	    	android:textStyle="bold" />
 		<Button
@@ -72,14 +72,8 @@
         	android:layout_width="match_parent"
         	android:layout_height="100dp"        
         	android:background="@drawable/greenbutton"        
-        	android:text="My Profile"
+        	android:text="@string/my_profile"
         	android:textColor="@android:color/white"        
         	android:textStyle="bold" />		
 	</LinearLayout>
-</RelativeLayout>	         
-
-
-
-
-    
-
+</RelativeLayout>

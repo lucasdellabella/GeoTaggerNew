@@ -30,7 +30,7 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginTop="10dp"
                 android:gravity="center"
-                android:text="Please fill in the fields below to create an account and get started!"
+                android:text="@string/new_user_label"
                 android:textColor="@android:color/white"
                 android:textColorHint="@android:color/white"
                 android:textSize="20sp"
@@ -93,7 +93,7 @@
                     android:background="@drawable/purplebutton"
                     android:includeFontPadding="true"
                     android:shadowColor="@android:color/black"
-                    android:text="Cancel"
+                    android:text="@string/cancel"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
                     android:typeface="sans" />
@@ -107,7 +107,7 @@
                     android:background="@drawable/greenbutton"
                     android:includeFontPadding="true"
                     android:shadowColor="@android:color/black"
-                    android:text="Submit"
+                    android:text="@string/submit"
                     android:textColor="@android:color/white"
                     android:textStyle="bold"
                     android:typeface="sans" />
