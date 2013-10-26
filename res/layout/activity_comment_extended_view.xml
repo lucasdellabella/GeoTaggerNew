@@ -9,8 +9,8 @@
     
     <ImageView
         android:id="@+id/commentExtended_commentImg"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:contentDescription="@string/comment_img_description"
         android:src="@drawable/icon"
         android:layout_centerHorizontal="true" >
