@@ -164,7 +164,16 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				Log.d("Posi", Integer.toString(position));
 				Log.d("Clicky", comment.getText().toString());
 				extendedComment.putExtra("commentText", comment.getText().toString());
-				extendedComment.putExtra("imgURL", comment.getImageURL().toString());
+
+				if(comment.getImageURL() != null)
+				{
+					Log.d("getImage", comment.getImageURL());
+					extendedComment.putExtra("imgURL", comment.getImageURL());
+				}
+				else
+				{
+					extendedComment.putExtra("imgURL", "");
+				}
 				startActivity(extendedComment);
 			}
 		});

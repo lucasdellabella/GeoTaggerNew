@@ -24,7 +24,8 @@
         android:text="@string/tag_comment"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@android:color/white"
-        android:textStyle="bold">
+        android:textStyle="bold"
+        android:gravity="center">
     </TextView>
 
 </RelativeLayout>

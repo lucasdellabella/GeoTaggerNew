@@ -114,7 +114,9 @@
             android:theme="@android:style/Theme.Black.NoTitleBar" >  >
         </activity> 
         <activity
-            android:name="com.hci.geotagger.activities.CommentViewActivity" >
+            android:name="com.hci.geotagger.activities.CommentViewActivity" 
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
         </activity>
                
     </application>
