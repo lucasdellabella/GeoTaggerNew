@@ -247,10 +247,110 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    
+    <Button
+        android:id="@+id/handle"
+        android:layout_height="@dimen/button_height"
+        android:layout_width="fill_parent"
+        android:minHeight="0dp"
+        android:minWidth="50dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/greenbutton"
+        android:drawableRight="@drawable/ic_largecomment"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="@string/comments_text" />
+    
+	<Button 
+        android:id="@+id/revealedHandle"
+        android:layout_height="@dimen/button_height"
+        android:layout_width="fill_parent"
+        android:minHeight="0dp"
+        android:minWidth="50dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="gone"
+        android:background="@drawable/greenbutton"
+        android:drawableRight="@drawable/ic_largecomment"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="@string/comments_text"/>
+    
+   	<RelativeLayout
+    	android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@drawable/purplebutton"
+        android:orientation="vertical"
+        android:layout_below="@+id/revealedHandle"
+        android:visibility="gone" >
+            
+        <ListView
+            android:id="@+id/commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:transcriptMode="alwaysScroll"
+            android:layout_above="@+id/commentbar"       
+            android:layout_alignParentTop="true">
+        </ListView>
+                
+        <LinearLayout
+        	android:id="@+id/commentbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="10dp"
+            android:gravity="bottom"
+            android:paddingTop="3dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:weightSum="6" >
+                    
+            <ImageView
+                android:id="@+id/tagview_commentimg"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:contentDescription="@string/image_description"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:cropToPadding="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scaleType="fitCenter"
+                android:paddingRight="2dp"
+                android:paddingLeft="4dp"
+                android:src="@drawable/icon" 
+                android:layout_weight="1"/>
 
+             <EditText
+             	android:id="@+id/tagview_commenttxt"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:ems="10"
+                android:hint="@string/add_comment_hint"
+                android:inputType="textCapSentences"
+                android:maxLines="5"
+                android:layout_weight="4" />
+
+             <Button
+             	android:id="@+id/tagview_commentbtn"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:background="@drawable/greenbutton"
+                android:minWidth="0dp"
+                android:text="@string/add"
+                android:layout_weight="1" />
+              
+		</LinearLayout>
+	</RelativeLayout>
+    
+    
+    
     <!-- SLIDING DRAWER STUFF -->
     
-    <SlidingDrawer
+    <!--  <SlidingDrawer
         android:id="@+id/slidingDrawer1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -338,5 +438,5 @@
                  
         	</LinearLayout>
         </RelativeLayout>
-    </SlidingDrawer>
+    </SlidingDrawer>-->
 </RelativeLayout>

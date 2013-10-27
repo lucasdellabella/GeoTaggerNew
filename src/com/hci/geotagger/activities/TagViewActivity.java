@@ -67,6 +67,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -82,7 +83,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	ImageView img_tagImage, commentrow_thumbnail, compassTriangle;
 	ImageView img_commentImage;
 	ImageView btnRating;
-	Button commentBtn, navBtn;
+	Button commentBtn, navBtn, handle, revealedHandle;
+	RelativeLayout drawer;
 	EditText commentTxt;
 	Dialog ratingDialog;
 	RatingBar ratingBar;
@@ -161,8 +163,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					long id) 
 			{
 				Comment comment = comments.get(position);
-				Log.d("Posi", Integer.toString(position));
-				Log.d("Clicky", comment.getText().toString());
 				extendedComment.putExtra("commentText", comment.getText().toString());
 
 				if(comment.getImageURL() != null)
@@ -202,7 +202,32 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		
 		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
 		thumbCache = new HashMap<String, Bitmap>();
+		
+		drawer = (RelativeLayout) findViewById(R.id.content);
 
+		handle = (Button) findViewById(R.id.handle);
+		handle.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View arg0) 
+			{
+				drawer.setVisibility(View.VISIBLE);
+				revealedHandle.setVisibility(View.VISIBLE);
+				handle.setVisibility(View.GONE);
+			}
+		});
+		revealedHandle = (Button) findViewById(R.id.revealedHandle);
+		revealedHandle.setOnClickListener(new OnClickListener()
+		{
+			@Override
+			public void onClick(View v) 
+			{
+				drawer.setVisibility(View.GONE);
+				revealedHandle.setVisibility(View.GONE);
+				handle.setVisibility(View.VISIBLE);
+			}
+		});
+		
 		//pivotX = compassTriangle.getWidth()/2;
 		//pivotY = compassTriangle.getHeight()/2;
 
