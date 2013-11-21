@@ -334,7 +334,7 @@ public class EditAdventureActivity extends TabActivity
 			try 
 			{				
 				//add adventure to db
-				response = handler.AddAdventure(a);
+				response = handler.addAdventure(a);
 				Log.d("AddAdvTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
 			} 
 			catch (JSONException e) 

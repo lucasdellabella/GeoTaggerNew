@@ -334,7 +334,7 @@ public class FriendListActivity extends ListActivity {
 			public void run() {
 				
 				final StringBuilder sb = new StringBuilder();
-				JSONObject response = accountHandler.AddFriend(UserSession.CURRENTUSER_ID, uName);
+				JSONObject response = accountHandler.addFriend(UserSession.CURRENTUSER_ID, uName);
 				try {
 					String msg;
 					int successCode = response.getInt(Constants.SUCCESS);
@@ -402,7 +402,7 @@ public class FriendListActivity extends ListActivity {
 			public void run() {
 				// after we have the username, get the user's tags and display
 				// them in the list
-				GetFriends();
+				getFriends();
 			}
 		};
 		Thread thread = new Thread(null, loadFriends, "GetFriendsThread");
@@ -411,7 +411,7 @@ public class FriendListActivity extends ListActivity {
 				"Retrieving friends...", true);
 	}
 	//get the friends from the database, then create UA objects for them and add them to the array list
-	private void GetFriends()
+	private void getFriends()
 	{
 		friends = new ArrayList<UserAccount>();
 		JSONObject obj;
@@ -435,7 +435,7 @@ public class FriendListActivity extends ListActivity {
 				
 				if (obj != null)
 				{
-					UserAccount a = accountHandler.CreateAccountFromJSON(obj);
+					UserAccount a = accountHandler.createAccountFromJSON(obj);
 					friends.add(a);
 				}
 			}
@@ -455,7 +455,7 @@ public class FriendListActivity extends ListActivity {
 					//retrieve the UA as json from the db
 					JSONObject json = accountHandler.getUser(friendAdded);
 					//get the user account object
-					UserAccount acct = accountHandler.CreateAccountFromJSON(json);
+					UserAccount acct = accountHandler.createAccountFromJSON(json);
 					acctToAdd = acct;
 					runOnUiThread(new Runnable(){
 						public void run(){

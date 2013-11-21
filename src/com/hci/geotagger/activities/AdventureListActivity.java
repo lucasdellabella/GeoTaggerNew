@@ -138,7 +138,7 @@ public class AdventureListActivity extends ListActivity {
 			public void run() {
 				// first get the username of the user whose adventures are being
 				// viewed
-				GetUsername();
+				getUsername();
 				if (!userName.isEmpty() && userName != null) {
 					// update the owner's name on the ui thread
 					final String str = userName + "'s Adventures";
@@ -150,7 +150,7 @@ public class AdventureListActivity extends ListActivity {
 				}
 				// after we have the username, get the user's adventures and display
 				// them in the list
-				GetAdventures();
+				getAdventures();
 				
 			}
 		};
@@ -274,14 +274,14 @@ public class AdventureListActivity extends ListActivity {
 	 */
 
 	// Get the username from the given ID
-	private void GetUsername() {
-		userName = accountHandler.GetUsernameFromId(userID);
+	private void getUsername() {
+		userName = accountHandler.getUsernameFromId(userID);
 		Log.d("AdventureListActivity", "Username: " + userName + " ID: " + userID);
 	}
 
 	// get the adventures from the database, then create adventure objects for them and add
 	// them to the array list
-	private void GetAdventures() {
+	private void getAdventures() {
 		adventures = new ArrayList<Adventure>();
 		JSONObject obj;
 		JSONArray adventureData = adventureHandler.getAllAdventuresUserPartOf(userID);

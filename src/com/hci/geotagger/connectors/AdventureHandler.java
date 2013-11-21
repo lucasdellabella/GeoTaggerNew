@@ -32,7 +32,7 @@ public class AdventureHandler
 	/*
 	 * Add an Adventure to the database
 	 */
-	public JSONObject AddAdventure(Adventure a)
+	public JSONObject addAdventure(Adventure a)
 	{
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -251,7 +251,7 @@ public class AdventureHandler
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the tags for the given adventure ID.
 	 */	
-	public JSONArray GetPeopleInAdventure(long aId)
+	public JSONArray getPeopleInAdventure(long aId)
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETPEOPLE_BYID));

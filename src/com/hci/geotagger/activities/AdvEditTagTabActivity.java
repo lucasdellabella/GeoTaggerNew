@@ -152,7 +152,7 @@ public class AdvEditTagTabActivity extends ListActivity
 			public void run() {								
 				// get the user's adventure tags and display
 				// them in the list
-				GetTags();
+				getTags();
 				// after getting tags, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -170,7 +170,7 @@ public class AdvEditTagTabActivity extends ListActivity
 
 	// get the tags from the database, then create tag objects for them and add
 	// them to the array list
-	private void GetTags()  
+	private void getTags()  
 	{
 		tags = new ArrayList<Tag>();
 		JSONObject obj;		

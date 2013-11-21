@@ -74,9 +74,9 @@ public class RegisterActivity extends Activity {
 							//make sure passwords match
 							if (pw.equals(pw2))
 							{
-								if (UsernameFollowsRules(uName))
+								if (usernameFollowsRules(uName))
 								{
-									if(PasswordFollowsRules(pw))
+									if(passwordFollowsRules(pw))
 									{
 										//attempt to register in an async task
 										new RegisterTask(c).execute(uName, pw); 
@@ -118,7 +118,7 @@ public class RegisterActivity extends Activity {
 	}//end oncreate
 	
 	//enforce username rules
-	private boolean UsernameFollowsRules(String username)
+	private boolean usernameFollowsRules(String username)
 	{
 		//Username can only contain letters and numbers
 		//must start with letter
@@ -126,7 +126,7 @@ public class RegisterActivity extends Activity {
 		return username.matches("^[A-Za-z][A-Za-z0-9]{3,14}");
 	}
 	//enforce password rules
-	private boolean PasswordFollowsRules(String password)
+	private boolean passwordFollowsRules(String password)
 	{
 		//Password must be 6-20 characters
 		return (password.length() >= 6 && password.length() <= 20);

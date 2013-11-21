@@ -164,7 +164,7 @@ public class LoginActivity extends Activity
 						AccountHandler handler = new AccountHandler();
 						//CREATE USER ACCOUNT OBJECT
 						Log.d("LoginPostExecute", response.toString());
-						MyUserAccount loginAccount = handler.CreateMyAccountFromJSON(response);
+						MyUserAccount loginAccount = handler.createMyAccountFromJSON(response);
 						if(loginAccount != null)
 						{
 							UserSession.login(c.getApplicationContext(), loginAccount);

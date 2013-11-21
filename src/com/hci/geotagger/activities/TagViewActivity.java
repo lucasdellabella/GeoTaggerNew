@@ -668,7 +668,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					{
 						String url = uploadImage(camCurrImageFile);
 						Log.d("TagViewActivity", "url: " + url);
-						response = tagHandler.AddTagComment(currentTag.getId(), comment,
+						response = tagHandler.addTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName(), url);
 						Log.d("TagViewActivity", "Picture Added");
 						
@@ -677,7 +677,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 					}
 					else
 					{
-						response = tagHandler.AddTagComment(currentTag.getId(), comment,
+						response = tagHandler.addTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName());
 					}
 					try 
@@ -745,7 +745,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			@Override
 			public void run() 
 			{
-				GetComments();
+				getComments();
 			}
 		};
 		Thread thread = new Thread(null, loadComments, "GetCommentsThread");
@@ -755,7 +755,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	}
 
 	// get the comments from the database,
-	private void GetComments() 
+	private void getComments() 
 	{
 		comments = new ArrayList<Comment>();
 		JSONObject obj;
@@ -780,7 +780,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 				if (obj != null) 
 				{
-					Comment c = tagHandler.CreateCommentFromJson(obj);
+					Comment c = tagHandler.createCommentFromJson(obj);
 					comments.add(c);
 				}
 			}
@@ -1011,7 +1011,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		Log.d("New Image Size", "H, W = " + height + ", " + width);
 		if(height > 0 && width > 0)
 		{
-			String url = imageHandler.UploadImageToServer(b);
+			String url = imageHandler.uploadImageToServer(b);
 			b.recycle();
 			b = null;
 			Log.d("AddImageTask", "Got response, img url = " + url);

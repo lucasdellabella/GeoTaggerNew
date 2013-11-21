@@ -49,10 +49,10 @@ public class ImageHandler {
 	}
 	
 	//@Return image url
-	public String UploadImageToServer(Bitmap b)
+	public String uploadImageToServer(Bitmap b)
 	{
 		//encode image to base64
-		String encodedImg = EncodeImage(b);
+		String encodedImg = encodeImage(b);
 		String imgUrl = null;
 		JSONObject response = null;
 		String returnCode = null;
@@ -95,7 +95,7 @@ public class ImageHandler {
 		return imgUrl;
 	}
 	//return image as base64 encoded string
-	public String EncodeImage(Bitmap b)
+	public String encodeImage(Bitmap b)
 	{
 		// Compress the image to JPEG to make size smaller,
 		ByteArrayOutputStream os = new ByteArrayOutputStream();

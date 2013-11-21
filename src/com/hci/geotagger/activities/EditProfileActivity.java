@@ -330,7 +330,7 @@ public class EditProfileActivity extends BaseActivity {
 				{
 					//if edit successful, update the currentuser object
 					JSONObject json = accountHandler.getUser(UserSession.CURRENT_USER.getuName());
-					UserAccount account = accountHandler.CreateAccountFromJSON(json);
+					UserAccount account = accountHandler.createAccountFromJSON(json);
 					UserSession.CURRENT_USER = account;
 				}
 					runOnUiThread(new Runnable() {
@@ -402,7 +402,7 @@ public class EditProfileActivity extends BaseActivity {
 			Log.d("New Image Size", "H, W = " + height + ", " + width);
 			if(height > 0 && width > 0)
 			{
-				String url = imageHandler.UploadImageToServer(b);
+				String url = imageHandler.uploadImageToServer(b);
 				b.recycle();
 				Log.d("EditProfile uploadImage", "Got response, img url = " + url);
 				return url;

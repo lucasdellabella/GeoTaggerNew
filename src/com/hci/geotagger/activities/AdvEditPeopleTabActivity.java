@@ -137,7 +137,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 			public void run() {								
 				// get the user's adventure people and display
 				// them in the list
-				GetPeople();
+				getPeople();
 				// after getting users, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -155,12 +155,12 @@ public class AdvEditPeopleTabActivity extends ListActivity
 
 	// get the users from the database, then create user objects for them and add
 	// them to the array list
-	private void GetPeople()  
+	private void getPeople()  
 	{
 		ah = new AccountHandler();
 		ua = new ArrayList<UserAccount>();
 		JSONObject obj;		
-		JSONArray peopleData = advHandler.GetPeopleInAdventure(adventure.getId());
+		JSONArray peopleData = advHandler.getPeopleInAdventure(adventure.getId());
 			if (peopleData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)
@@ -174,7 +174,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 					e.printStackTrace();
 				}
 				if (obj != null) {
-					UserAccount u = ah.CreateAccountFromJSON(obj);
+					UserAccount u = ah.createAccountFromJSON(obj);
 					ua.add(u);
 				}
 			}

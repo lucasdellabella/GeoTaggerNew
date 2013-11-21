@@ -131,7 +131,7 @@ public class TagListActivity extends ListActivity {
 			public void run() {
 				// first get the username of the user whose tags are being
 				// viewed
-				GetUsername();
+				getUsername();
 				if (!userName.isEmpty() && userName != null) {
 					// update the owner's name on the ui thread
 					final String str = userName + "'s Tags";
@@ -143,7 +143,7 @@ public class TagListActivity extends ListActivity {
 				}
 				// after we have the username, get the user's tags and display
 				// them in the list
-				GetTags();
+				getTags();
 				// after getting tags, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -341,17 +341,17 @@ public class TagListActivity extends ListActivity {
 	 */
 
 	// Get the username from the given ID
-	private void GetUsername() {
-		userName = accountHandler.GetUsernameFromId(userID);
+	private void getUsername() {
+		userName = accountHandler.getUsernameFromId(userID);
 		Log.d("TagListActivity", "Username: " + userName + " ID: " + userID);
 	}
 
 	// get the tags from the database, then create tag objects for them and add
 	// them to the array list
-	private void GetTags() {
+	private void getTags() {
 		tags = new ArrayList<Tag>();
 		JSONObject obj;
-		JSONArray tagData = tagHandler.GetTagsById(userID);
+		JSONArray tagData = tagHandler.getTagsById(userID);
 		if (tagData != null) {
 			// loop through each entry in the json array (each tag encoded as
 			// JSON)

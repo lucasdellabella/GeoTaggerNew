@@ -38,7 +38,7 @@ public class TagHandler {
 	/*
 	 * Add a tag to the database
 	 */
-	public JSONObject AddTag(Tag t)
+	public JSONObject addTag(Tag t)
 	{
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -78,7 +78,7 @@ public class TagHandler {
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the tags for the given user ID
 	 */
-	public JSONArray GetTagsById(int oId)
+	public JSONArray getTagsById(int oId)
 	{
 		 // Building Parameters
         List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
@@ -178,7 +178,7 @@ public class TagHandler {
 	/*
 	 * Add a tag comment to the database
 	 */
-	public JSONObject AddTagComment(Long tagID, String text, String username)
+	public JSONObject addTagComment(Long tagID, String text, String username)
 	{
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -204,7 +204,7 @@ public class TagHandler {
 	/*
 	 * Add a tag comment to the database with picture
 	 */
-	public JSONObject AddTagComment(Long tagID, String text, String username, String imgURL)
+	public JSONObject addTagComment(Long tagID, String text, String username, String imgURL)
 	{
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -228,7 +228,7 @@ public class TagHandler {
 		}
 	}
 	
-	public Comment CreateCommentFromJson(JSONObject json)
+	public Comment createCommentFromJson(JSONObject json)
 	{
 		Date d = new Date();
     	try 

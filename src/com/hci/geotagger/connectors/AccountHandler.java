@@ -107,7 +107,7 @@ public class AccountHandler {
      * @in json: JSONObject
      * @out UserAccount
      */
-    public MyUserAccount CreateMyAccountFromJSON(JSONObject json)
+    public MyUserAccount createMyAccountFromJSON(JSONObject json)
     {
     	Date d = new Date();
     	try 
@@ -137,7 +137,7 @@ public class AccountHandler {
     	return null;
     }
     
-    public UserAccount CreateAccountFromJSON(JSONObject json)
+    public UserAccount createAccountFromJSON(JSONObject json)
     {
     	Date d = new Date();
     	try 
@@ -170,7 +170,7 @@ public class AccountHandler {
      * @param id
      * @return username
      * */
-    public String GetUsernameFromId(int id)
+    public String getUsernameFromId(int id)
     {
             // Create post params
         	try
@@ -191,7 +191,7 @@ public class AccountHandler {
     }
     
     //Attempt to add friend
-    public JSONObject AddFriend(int userId, String friendName){
+    public JSONObject addFriend(int userId, String friendName){
         // Create post params
     	try
     	{
