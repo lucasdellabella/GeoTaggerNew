@@ -14,6 +14,7 @@ import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.MyUserAccount;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -30,8 +31,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ProgressDialog;
-
-import org.json.JSONObject;
 
 public class LoginActivity extends Activity 
 {
@@ -121,9 +120,9 @@ public class LoginActivity extends Activity
 
 	/*
 	 * Login task: Asynchronous task to make the web request and get the 
-	 * json account object. This is called from the LoginBtn_Click handler
+	 * account object. This is called from the LoginBtn_Click handler
 	 */
-	class LoginTask extends AsyncTask<String, Void, JSONObject> 
+	class LoginTask extends AsyncTask<String, Void, ReturnInfo> 
 	{
 		ProgressDialog progressDialog;
 		Context c;
@@ -150,39 +149,26 @@ public class LoginActivity extends Activity
 		 * and move to next activity, if not show error. 
 		 */
 		@Override
-		protected void onPostExecute(JSONObject response) {
+		protected void onPostExecute(ReturnInfo response) {
 			String msg = "success";
 
-			if(response != null && response.has(Constants.SUCCESS)) {
-				try {
-				String returnCode = response.getString(Constants.SUCCESS);
-				//if success = 1, create a user account object from the JSON returned from the database,
-				//set the loggedin flag to true, and open the Home page
-				if (response.getString(Constants.SUCCESS) != null) {
-					if (Integer.parseInt(returnCode) == 1)
-					{
-						AccountHandler handler = new AccountHandler();
-						//CREATE USER ACCOUNT OBJECT
-						Log.d("LoginPostExecute", response.toString());
-						MyUserAccount loginAccount = handler.createMyAccountFromJSON(response);
-						if(loginAccount != null)
-						{
-							UserSession.login(c.getApplicationContext(), loginAccount);
+			if (response != null && response.success) {
+				if (response.object != null && response.object instanceof MyUserAccount) {
+					//set the loggedin flag to true, and open the Home page
+					MyUserAccount loginAccount = (MyUserAccount)response.object;
+					UserSession.login(c.getApplicationContext(), loginAccount);
 
-							Log.d("LoginPostExecute", "Login Success");
-							// create link to home screen
-							Intent i = new Intent(getBaseContext(), HomeActivity.class);
-							i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-							startActivity(i);
-							progressDialog.dismiss();
-							Log.d("LoginPostExecute", "Login Success 2");
-							finish();
-							return;
-						} else { msg = "Could not create User Account Object"; }
-					} else { 	 msg = "Parsing returned JSON object failed: Invalid return code for successful login"; }
-				} else { 		 msg = "Null successful response, Logon Error."; }
-				} catch (Exception ex) { ex.printStackTrace(); }
-			} else { 			 msg = "Null response, Logon Error."; }
+					Log.d("LoginPostExecute", "Login Success");
+					// create link to home screen
+					Intent i = new Intent(getBaseContext(), HomeActivity.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+					progressDialog.dismiss();
+					Log.d("LoginPostExecute", "Login Success 2");
+					finish();
+					return;
+				} else { msg = "Could not create User Account Object"; }
+			} else { msg = "Null successful response, Logon Error."; }
 			
 			progressDialog.dismiss();
 			//TODO under what conditions do we want to notify the user of a login error?
@@ -199,7 +185,7 @@ public class LoginActivity extends Activity
 		 * the provided credentials. 
 		 */
 		@Override
-		protected JSONObject doInBackground(String...loginParams)
+		protected ReturnInfo doInBackground(String...loginParams)
 		{
 			String mode = loginParams[0];
 			String pw = loginParams[2];
@@ -211,45 +197,25 @@ public class LoginActivity extends Activity
 			{
 				int id = Integer.parseInt(loginParams[1]);
 				// attempt login with id and password
-				AccountHandler handler = new AccountHandler();
-				try 
-				{
-					//
-					JSONObject response = handler.login(id, pw);
-					Log.d("LoginTask ID", "Got response, returncode = "/*+ response.getString(Constants.SUCCESS)*/);
-					return response;
-				} 
-				catch (Exception ex)
-				{
-					Log.d("LoginTask ID", "Exception authenticating with ID");
-					ex.printStackTrace();
-					return null;
-				}
+				AccountHandler handler = new AccountHandler(c);
+				ReturnInfo response = handler.login(id, pw);
+				response.print("LoginTask");
+				return response;
 			}
 			// default is to attempt login with username
 			else
 			{
 				// attempt login with uname and password
-				AccountHandler handler = new AccountHandler();
+				AccountHandler handler = new AccountHandler(c);
 				String uName = loginParams[1];
-				try 
+				ReturnInfo response = handler.login(uName, pw);
+				if (response != null) 
 				{
-					JSONObject response = handler.login(uName, pw);
-					if (response != null) 
-					{
-						Log.d("LoginTask", "Got response, returncode = "
-								+ response.getString(Constants.SUCCESS));
-						return response;
-					} 
-					else
-						return null;
+					response.print("LoginTask");
+					return response;
 				} 
-				catch (Exception ex) 
-				{
-					Log.d("LoginTask", "Exception authenticating with Username " + ex);
-					ex.printStackTrace();
+				else
 					return null;
-				}
 			}
 		}// end doInBackground
 	}//end LoginTask

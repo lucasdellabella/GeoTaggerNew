@@ -3,6 +3,7 @@
  * for adventure operations, such as adding and retrieving adventures.
  */
 package com.hci.geotagger.connectors;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -15,24 +16,70 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.hci.geotagger.Objects.Adventure;
+import com.hci.geotagger.Objects.Comment;
+import com.hci.geotagger.Objects.Tag;
+import com.hci.geotagger.Objects.UserAccount;
+import com.hci.geotagger.cache.CacheHandler;
 import com.hci.geotagger.common.Constants;
+import com.hci.geotagger.common.NetworkUtils;
 
 public class AdventureHandler 
 {
-	private JSONParser jsonParser;
-	private static String advOpURL = Constants.ADV_URL;		
+	private static final String TAG = "AdventureHandler";
 	
-	public AdventureHandler()
+	private JSONParser jsonParser;
+	private static String advOpURL = Constants.ADV_URL;
+	private Context context;
+	private CacheHandler cache;
+
+	public AdventureHandler(Context context)
 	{
-        jsonParser = new JSONParser();               
+		this.context = context;
+        jsonParser = new JSONParser();
+        cache = new CacheHandler(context);
     }
-	/*
-	 * Add an Adventure to the database
+	
+	/**
+	 * This method will add an Adventure record to the database.  If the network
+	 * is NOT available then the operation will be cached.
+	 * TODO: Add caching of the operation.
+	 * @param a
+	 * @return
 	 */
-	public JSONObject addAdventure(Adventure a)
+	public ReturnInfo addAdventure(Adventure a) {
+		ReturnInfo result;
+		
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			JSONObject json = addAdventureToServer(a);
+			result =  new ReturnInfo(json);
+			if (result.success) {
+				// Get the Adventure record from the JSON response
+				Adventure ra = createAdventureFromJSON(json);
+						
+				// TODO: add the record to the Cache
+				cache.addAdventure(ra);
+			}
+		} else {
+			// TODO: add the add adventure operation to the cache
+			// TODO: add the record to the Cache
+			
+			result = new ReturnInfo(ReturnInfo.FAIL_NONETWORK);
+		}
+		return result;
+	}
+	
+	/**
+	 * Add an Adventure to the server database
+	 * INSERT INTO adventures(OwnerID, Name, Description)
+	 * if successful, returns:
+	 * array('AdventureID'=>$last_id, 'OwnerID'=>$uId, 'Name'=>$name, 'Description'=>$desc);
+	 */
+	private JSONObject addAdventureToServer(Adventure a)
 	{
 		 // Building Parameters
         List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -45,7 +92,7 @@ public class AdventureHandler
 		try
 		{
 			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
+			Log.d(TAG, "JSON Response from PHP: " + json.toString());
 			return json;
 		}
 		catch (Exception ex)
@@ -58,30 +105,85 @@ public class AdventureHandler
 	//delete an adventure from the db
 	public boolean deleteAdventure(long id)
 	{
-		// Building Parameters
-	    List<NameValuePair> params = new ArrayList<NameValuePair>();
-	    params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_ADV));
-	    params.add(new BasicNameValuePair("id", Long.toString(id)));
-	      
-	    //make webservice call to remove tag from db
-	    try
-		{
-			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
-			return true;
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			// Building Parameters
+			
+		    List<NameValuePair> params = new ArrayList<NameValuePair>();
+		    params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_ADV));
+		    params.add(new BasicNameValuePair("id", Long.toString(id)));
+		      
+		    //make webservice call to remove tag from db
+		    try
+			{
+				JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
+				Log.d(TAG,"JSON Response from PHP: " + json.toString());
+
+				// Tell the cache to delete the Adventure record
+			    cache.deleteAdventure(id);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Log.d(TAG, "deleteAdventure: Exception occurred deleting adventure, returning error.");
+				return false;
+			}
+		} else {
+			//TODO: Add the delete adventure operation to the cache
+			//TODO: Delete the adventure from the cache
 		}
-		catch (Exception ex)
-		{
-			Log.d("AdventureHandler deleteAdventure", "Exception occurred deleting adventure, returning error.");
-			return false;
-		}
+		return false;
 	}
+	
+	/**
+	 * Return an array list with all the adventures for the given user ID 
+	 * The array could come from the cache or from the Server database.
+	 * @param id the adventure ID to use
+	 * @return
+	 */
+	public ArrayList<Adventure> getAllAdventuresUserPartOf(int id)
+	{
+		ArrayList<Adventure> adventures;
+
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			adventures = new ArrayList<Adventure>();
+
+			JSONArray adventureData = getAllAdventuresUserPartOfFromServer(id);
+			JSONObject obj;
+			if (adventureData != null) {
+				// loop through each JSON entry in the JSON array (tags encoded as JSON)
+				for (int i = 0; i < adventureData.length(); i++) {
+					obj = null;
+					try {
+						obj = adventureData.getJSONObject(i);
+					} catch (JSONException e) {
+						Log.d(TAG, "Error getting JSON Object from array.");
+						e.printStackTrace();
+					}
+	
+					if (obj != null) {
+						Adventure a = createAdventureFromJSON(obj); 
+						adventures.add(a);
+
+						// TODO: add/update the record in the cache
+					}
+				}
+			}
+		} else {
+			// If the network was not up then lets check the cache for the records
+			adventures = cache.getAllUserAdventures(id);
+		}
+		return adventures;
+	}
+
+
 	
 	/*
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the adventures for the given user ID
 	 */
-	public JSONArray getAllAdventuresUserPartOf(int id)
+	private JSONArray getAllAdventuresUserPartOfFromServer(int id)
 	{
 		 // Building Parameters
         List<NameValuePair> getAdvsParams = new ArrayList<NameValuePair>();
@@ -100,7 +202,7 @@ public class AdventureHandler
 			}
 			else
 			{
-				Log.d("AdventureHandler GetAdventuresByID", "No Results");
+				Log.d(TAG, "getAllAdventuresUserPartOff: No Results");
 				//parse result into array of jsonobjects and return it
 				return null;
 			}
@@ -108,12 +210,12 @@ public class AdventureHandler
 		}
 		catch (Exception ex)
 		{
-			Log.d("GetAdventuresById", "Exception occurred getting adventures, returning null.");
+			Log.d(TAG, "getAllAdventuresUserPartOff: Exception occurred getting adventures, returning null.");
 			return null;
 		}
 	}
 	
-	public Adventure createAdventureFromJSON(JSONObject json)
+	private Adventure createAdventureFromJSON(JSONObject json)
 	{
 		Date d = new Date();
     	try 
@@ -130,10 +232,10 @@ public class AdventureHandler
 		} 
     	catch (JSONException e) 
     	{
-    		Log.d("AdventureHandler", "CreateTag from JSONObject failed");
+    		Log.d(TAG, "CreateTag from JSONObject failed");
 			e.printStackTrace();
 		} catch (ParseException e) {
-			Log.d("AdventureHandler", "Problem parsing timestamp from JSON");
+			Log.d(TAG, "Problem parsing timestamp from JSON");
 			e.printStackTrace();
 		}
     	return null;
@@ -144,31 +246,82 @@ public class AdventureHandler
 	 */
 	public boolean addTagToAdventure(long tagId, long advId)
 	{
-		// Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("operation", Constants.OP_ADD_TAG));
-        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
-        params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
-               
-        //make webservice call to add tag to adventure
-		try
-		{
-			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
-			return true;
-		}
-		catch (Exception ex)
-		{
-			Log.d("AdventureHandler AddTag", "Exception occurred adding tag, returning null.");
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			// Building Parameters
+	        List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("operation", Constants.OP_ADD_TAG2ADV));
+	        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
+	        params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
+	               
+	        //make webservice call to add tag to adventure
+			try
+			{
+				JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
+				Log.d(TAG, "JSON Response from PHP: " + json.toString());
+				
+				// Add to the cache
+				cache.addTag2Adventure(tagId, advId);
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Log.e(TAG, "addTagToAdventure: Exception occurred adding tag, returning null.");
+				return false;
+			}
+		} else {
+			// TODO: Cache the add tag to adventure operation
 			return false;
 		}
 	}
+
+	/**
+	 * Return an array list with all of the Tags for a given adventure ID.
+	 * The array could come from the cache or from the Server database.
+	 * @param id the adventure ID to use
+	 * @return
+	 */
+	public ArrayList<Tag> getAllAdventureTags(long id)
+	{
+		ArrayList<Tag> tags;
+
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			tags = new ArrayList<Tag>();
+
+			JSONArray tagData = getAllAdventureTagsFromServer(id);
+			JSONObject obj;
+			if (tagData != null) {
+				// loop through each JSON entry in the JSON array (tags encoded as JSON)
+				for (int i = 0; i < tagData.length(); i++) {
+					obj = null;
+					try {
+						obj = tagData.getJSONObject(i);
+					} catch (JSONException e) {
+						Log.e(TAG, "Error getting JSON Object from array.");
+						e.printStackTrace();
+					}
 	
+					if (obj != null) {
+						Tag t = TagHandler.createTagFromJSON(obj);
+						tags.add(t);
+
+						// TODO: add/update the record in the cache
+					}
+				}
+			}
+		} else {
+			// If the network was not up then lets check the cache for the records
+			tags = cache.getAdventureTags(id);
+		}
+		return tags;
+	}
+
 	/*
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the tags for the given adventure ID.
 	 */	
-	public JSONArray getAllAdventureTags(long id)
+	private JSONArray getAllAdventureTagsFromServer(long id)
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETTAGS_BYADVID));
@@ -186,7 +339,7 @@ public class AdventureHandler
 			}
 			else
 			{
-				Log.d("AdventureHandler GetTagsInAdventure", "No Results");
+				Log.d(TAG, "getAllAdventureTagsFromServer: No Results");
 				//parse result into array of jsonobjects and return it
 				return null;
 			}
@@ -194,7 +347,7 @@ public class AdventureHandler
 		}
 		catch (Exception ex)
 		{
-			Log.d("GetTagsInAdventure", "Exception occurred getting tags, returning null.");
+			Log.e(TAG, "Exception occurred getting tags, returning null.");
 			return null;
 		}
 	}	
@@ -202,22 +355,28 @@ public class AdventureHandler
 	//delete a tag from the adventure
 	public boolean removeTagFromAdventure(long tagId, long advId)
 	{
-		// Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
-        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
-        params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
-        
-        //make webservice call to remove tag from adventure
-		try
-		{
-			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
-			return true;
-		}
-		catch (Exception ex)
-		{
-			Log.d("AdventureHandler deleteTag", "Exception occurred deleting tag, returning error.");
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			// Building Parameters
+	        List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
+	        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
+	        params.add(new BasicNameValuePair("tagId", Long.toString(tagId)));
+	        
+	        //make webservice call to remove tag from adventure
+			try
+			{
+				JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
+				Log.d(TAG, "JSON Response from PHP: " + json.toString());
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Log.e(TAG, "removeTagFromAdventure: Exception occurred deleting tag, returning error.");
+				return false;
+			}
+		} else {
+			// TODO: Add remove tag from adventure operation to cache
 			return false;
 		}
 	}
@@ -227,31 +386,72 @@ public class AdventureHandler
 	 */
 	public boolean addUserToAdventureById(int uId, long advId)
 	{
-		// Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("operation", Constants.OP_ADD_PERSON));
-        params.add(new BasicNameValuePair("advId", Long.toString(advId))); 
-        params.add(new BasicNameValuePair("uId", Integer.toString(uId)));
-                
-        //make webservice call to add tag to adventure
-		try
-		{
-			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
-			return true;
-		}
-		catch (Exception ex)
-		{
-			Log.d("AdventureHandler AddPeople", "Exception occurred adding people, returning null.");
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			// Building Parameters
+	        List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("operation", Constants.OP_ADD_PERSON));
+	        params.add(new BasicNameValuePair("advId", Long.toString(advId))); 
+	        params.add(new BasicNameValuePair("uId", Integer.toString(uId)));
+	                
+	        //make webservice call to add tag to adventure
+			try
+			{
+				JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
+				Log.d(TAG, "JSON Response from PHP: " + json.toString());
+				
+				// TODO: Add caching function
+				
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Log.e(TAG, "addUserToaAdventureById: Exception occurred adding people, returning null.");
+				return false;
+			}
+		} else {
+			// TODO: add caching function
 			return false;
 		}
 	}
+
+	public ArrayList<UserAccount> getPeopleInAdventure(long aId) {
+		ArrayList<UserAccount> uaList = new ArrayList<UserAccount>();
+
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			JSONArray uaData = getPeopleInAdventureFromServer(aId);
+			JSONObject obj;
+			if (uaData != null) {
+				// loop through each JSON entry in the JSON array (tags encoded as JSON)
+				for (int i = 0; i < uaData.length(); i++) {
+					obj = null;
+					try {
+						obj = uaData.getJSONObject(i);
+					} catch (JSONException e) {
+						Log.e(TAG, "Error getting JSON Object from array.");
+						e.printStackTrace();
+					}
 	
+					if (obj != null) {
+						UserAccount u = AccountHandler.createAccountFromJSON(obj);
+						uaList.add(u);
+						
+						// TODO: add/update the record in the cache
+					}
+				}
+			}
+		} else {
+			// TODO: If the network was not up then lets check the cache for the records
+		}
+		return uaList;
+	}
+
 	/*
 	 * Return a JSONArray (array of JSON Objects) containing
 	 * all the tags for the given adventure ID.
 	 */	
-	public JSONArray getPeopleInAdventure(long aId)
+	private JSONArray getPeopleInAdventureFromServer(long aId)
 	{
 		List<NameValuePair> getTagsParams = new ArrayList<NameValuePair>();
 		getTagsParams.add(new BasicNameValuePair("operation", Constants.OP_GETPEOPLE_BYID));
@@ -269,7 +469,7 @@ public class AdventureHandler
 			}
 			else
 			{
-				Log.d("AdventureHandler GetPeopleInAdventure", "No Results");
+				Log.d(TAG, "getPeopleInAdventureFromServer: No Results");
 				//parse result into array of jsonobjects and return it
 				return null;
 			}
@@ -277,7 +477,7 @@ public class AdventureHandler
 		}
 		catch (Exception ex)
 		{
-			Log.d("GetTagsInAdventure", "Exception occurred getting tags, returning null.");
+			Log.e(TAG, "Exception occurred getting tags, returning null.");
 			return null;
 		}
 	}	
@@ -285,22 +485,31 @@ public class AdventureHandler
 	//delete a person from the adventure
 	public boolean removeUserFromAdventure(int uId, long advId)
 	{
-		// Building Parameters
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
-        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
-        params.add(new BasicNameValuePair("personId", Integer.toString(uId)));
-        
-        //make webservice call to remove tag from adventure
-		try
-		{
-			JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
-			System.out.println("JSON Response from PHP: " + json.toString());
-			return true;
-		}
-		catch (Exception ex)
-		{
-			Log.d("AdventureHandler deletePeople", "Exception occurred deleting people, returning error.");
+		// If the network is up then try to get the record from the Server DB
+		if (NetworkUtils.isNetworkUp(context)) {
+			// Building Parameters
+	        List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("operation", Constants.OP_DELETE_TAG));
+	        params.add(new BasicNameValuePair("advId", Long.toString(advId)));
+	        params.add(new BasicNameValuePair("personId", Integer.toString(uId)));
+	        
+	        //make webservice call to remove tag from adventure
+			try
+			{
+				JSONObject json = jsonParser.getJSONFromUrl(advOpURL, params);
+				Log.d(TAG, "JSON Response from PHP: " + json.toString());
+				
+				// TODO: remove the user from the adventure in the cache
+				
+				return true;
+			}
+			catch (Exception ex)
+			{
+				Log.e(TAG, "removeUserFromAdventure: Exception occurred deleting people, returning error.");
+				return false;
+			}
+		} else {
+			// TODO: add cache operation for the action
 			return false;
 		}
 	}	

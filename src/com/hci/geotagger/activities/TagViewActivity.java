@@ -11,10 +11,6 @@ import java.util.HashMap;
 
 import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Comment;
 import com.hci.geotagger.Objects.GeoLocation;
@@ -22,6 +18,7 @@ import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.ImageHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 import com.hci.geotagger.connectors.TagHandler;
 
 import android.net.Uri;
@@ -78,6 +75,8 @@ import android.location.LocationProvider;
 
 public class TagViewActivity extends Activity implements SensorEventListener 
 {
+	private static final String TAG = "TagViewActivity";
+	
 	TextView txt_tagName, txt_ownerAndTime, txt_tagLocation, txt_tagDescription, 
 	txt_Rating, txt_currentLoc, txt_distance, txt_latLong;
 	ImageView img_tagImage, commentrow_thumbnail, compassTriangle;
@@ -134,7 +133,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	private HashMap<String, Bitmap> thumbCache;
 	
 	private Intent extendedComment;
-	private Context c;
+	private Context c;	
 
 
 	@SuppressWarnings("unchecked")
@@ -159,8 +158,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		commentList.setOnItemClickListener(new OnItemClickListener()
 		{
 			@Override
-			public void onItemClick(AdapterView<?> av, View v, int position,
-					long id) 
+			public void onItemClick(AdapterView<?> av, View v, int position, long id)
 			{
 				Comment comment = comments.get(position);
 				extendedComment.putExtra("commentText", comment.getText().toString());
@@ -177,7 +175,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				startActivity(extendedComment);
 			}
 		});
-		tagHandler = new TagHandler();
+		tagHandler = new TagHandler(this);
 		imageHandler = new ImageHandler(this);
 		commentBtn = (Button) findViewById(R.id.tagview_commentbtn);
 		commentTxt = (EditText) findViewById(R.id.tagview_commenttxt);
@@ -199,7 +197,6 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		btnRating = (ImageView) findViewById(R.id.tagview_ratingbtn);
 		img_commentImage = (ImageView) findViewById(R.id.tagview_commentimg);
 		commentrow_thumbnail = (ImageView) findViewById(R.id.commentrow_thumbnail);
-		
 		compassTriangle = (ImageView) findViewById(R.id.compassTriangle);
 		thumbCache = new HashMap<String, Bitmap>();
 		
@@ -209,25 +206,28 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		handle.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View arg0) 
+			public void onClick(View arg0)
 			{
 				drawer.setVisibility(View.VISIBLE);
 				revealedHandle.setVisibility(View.VISIBLE);
 				handle.setVisibility(View.GONE);
 			}
 		});
+		
 		revealedHandle = (Button) findViewById(R.id.revealedHandle);
 		revealedHandle.setOnClickListener(new OnClickListener()
 		{
 			@Override
-			public void onClick(View v) 
+			public void onClick(View v)
 			{
 				drawer.setVisibility(View.GONE);
 				revealedHandle.setVisibility(View.GONE);
 				handle.setVisibility(View.VISIBLE);
 			}
 		});
-		
+
+
+
 		//pivotX = compassTriangle.getWidth()/2;
 		//pivotY = compassTriangle.getHeight()/2;
 
@@ -613,14 +613,14 @@ public class TagViewActivity extends Activity implements SensorEventListener
 	 */
 	private void removeComment(final int index)
 	{
-		final TagHandler th = new TagHandler();
+		final TagHandler th = new TagHandler(this);
 		Runnable deleteTag = new Runnable() 
 		{
 			@Override
 			public void run() 
 			{
-				boolean success = th.deleteTagComment(comments.get(index).getId());
-				if (success)
+				ReturnInfo success = th.deleteTagComment(comments.get(index).getId());
+				if (success.success)
 				{
 					runOnUiThread(new Runnable() 
 					{
@@ -663,41 +663,36 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				public void run() 
 				{
 					final StringBuilder sb = new StringBuilder();
-					JSONObject response;
 					if(commentHasImage == true)
 					{
 						String url = uploadImage(camCurrImageFile);
-						Log.d("TagViewActivity", "url: " + url);
-						response = tagHandler.addTagComment(currentTag.getId(), comment,
+						Log.d(TAG, "url: " + url);
+						ReturnInfo response = tagHandler.addTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName(), url);
-						Log.d("TagViewActivity", "Picture Added");
+						Log.d(TAG, "Picture Added");
 						
 						//reset image
 						clearCameraVars();
 					}
 					else
 					{
-						response = tagHandler.addTagComment(currentTag.getId(), comment,
+						ReturnInfo response = tagHandler.addTagComment(currentTag.getId(), comment,
 								UserSession.CURRENT_USER.getuName());
-					}
-					try 
-					{
 						String msg;
-						int successCode = response.getInt(Constants.SUCCESS);
 						// if comment was added successfully
-						if (successCode == 1) 
+						if (response.success) 
 						{
-							msg = "Comment added!";
-							sb.append(msg);
-							Comment comm = new Comment(response.getInt("cID"), currentTag.getId(), comment, UserSession.CURRENT_USER.getuName(), new Date());//tagHandler.CreateCommentFromJson(response);
-							comments.add(comm);
-							position = comments.size()-1;
+							if (response.object != null && response.object instanceof Comment) {
+								Comment comm = (Comment)response.object;
+								msg = "Comment added!";
+								sb.append(msg);
+								comm.setId(currentTag.getId());
+								comments.add(comm);
+								position = comments.size()-1;
+							}
 						}
 					} 
-					catch (JSONException e) 
-					{
-						e.printStackTrace();
-					}
+
 					// show result on the UI thread and close the dialog
 					runOnUiThread(new Runnable() 
 					{
@@ -745,47 +740,26 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			@Override
 			public void run() 
 			{
-				getComments();
+				GetComments();
 			}
 		};
 		Thread thread = new Thread(null, loadComments, "GetCommentsThread");
-		thread.start();
 		PD = ProgressDialog.show(TagViewActivity.this, "Please Wait",
 				"Retrieving comments...", true);
+		thread.start();
 	}
 
 	// get the comments from the database,
-	private void getComments() 
+	private void GetComments() 
 	{
-		comments = new ArrayList<Comment>();
-		JSONObject obj;
-		JSONArray commentData = tagHandler.getTagComments(currentTag.getId());
-
-		if (commentData != null) 
-		{
-			// loop through each JSON entry in the JSON array (tags encoded as JSON)
-			for (int i = 0; i < commentData.length(); i++) 
-			{
-				obj = null;
-				try 
-				{
-					obj = commentData.getJSONObject(i);
-				} 
-				catch (JSONException e) 
-				{
-					Log.d("FriendList GetFriends",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-
-				if (obj != null) 
-				{
-					Comment c = tagHandler.createCommentFromJson(obj);
-					comments.add(c);
-				}
-			}
-
+		comments = tagHandler.getTagComments(currentTag.getId());
+		if (comments != null && comments.size() > 0) {
 			loadImagesToCache();
+		} else {
+			if (PD != null)
+				PD.dismiss();
+
+			Log.d(TAG, "GetComments: No comments found, or network issue");
 		}
 	}
 
@@ -881,7 +855,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			@Override
 			public void run() 
 			{
-				ImageHandler handler = new ImageHandler();
+				ImageHandler handler = new ImageHandler(TagViewActivity.this);
 				//get a scaled version of the image so we don't load the full size unnecessarily
 				final Bitmap b = handler.getScaledBitmapFromUrl(url, R.dimen.image_width,
 						R.dimen.image_height);
@@ -1011,11 +985,11 @@ public class TagViewActivity extends Activity implements SensorEventListener
 		Log.d("New Image Size", "H, W = " + height + ", " + width);
 		if(height > 0 && width > 0)
 		{
-			String url = imageHandler.uploadImageToServer(b);
+			ReturnInfo response = imageHandler.uploadImageToServer(b);
 			b.recycle();
 			b = null;
-			Log.d("AddImageTask", "Got response, img url = " + url);
-			return url;
+			response.print("AddImageTask");
+			return response.url;
 		}
 		else
 		{
@@ -1066,22 +1040,27 @@ public class TagViewActivity extends Activity implements SensorEventListener
 			@Override
 			public void run() 
 			{
+				int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+				int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+
 				// loop through tags and cache their images if they have them
 				for (Comment c : comments) 
 				{
-					Log.d("uploading", "Uploading: " + c);
+					Log.d("cache1test", c.getText());
+
 					if(c != null)
 					{
+
 						String url = c.getImageURL();
 						// if tag has image url, download image and cache it
 						if (url != null && !url.equals("") && !thumbCache.containsKey(url)) 
 						{
-							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
-									url, R.dimen.thumbnail_width,
-									R.dimen.thumbnail_height);
-							Log.d("CacheTest", "Bitmap: " + b.toString() + " URL: " + url);
-							if (b != null)
+
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(url, width, height);
+							if (b != null) {
+								Log.d("CacheTest", "Bitmap: " + b.toString() + " URL: " + url);
 								thumbCache.put(url, b);
+							}
 						}
 					}	
 				}
@@ -1150,9 +1129,7 @@ public class TagViewActivity extends Activity implements SensorEventListener
 				}
 
 				if(commentTxt != null)
-				{
 					commentTxt.setText(comment.getText().toString());
-				}
 
 
 				if (commentImg != null) 
@@ -1219,8 +1196,8 @@ public class TagViewActivity extends Activity implements SensorEventListener
 
 			if (lastBestLocation != null)
 			{
-				//Log.d("LOCATION CHANGED", location.getLatitude() + "");
-				//Log.d("LOCATION CHANGED", location.getLongitude() + "");
+				//				Log.d("LOCATION CHANGED", location.getLatitude() + "");
+				//				Log.d("LOCATION CHANGED", location.getLongitude() + "");
 				String str = lldf.format(location.getLatitude()) + ", " + lldf.format(location.getLongitude());
 				txt_currentLoc.setText(str);
 				tagLocation.setLatitude(geo.getLatitude());

@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.Objects.Adventure;
@@ -101,15 +97,15 @@ public class AdvEditTagTabActivity extends ListActivity
 		});		
 
 		// initialize objects
-		imageHandler = new ImageHandler();
+		imageHandler = new ImageHandler(this);
 		thumbCache = new HashMap<String, Bitmap>();
 		tags = new ArrayList<Tag>();
 		this.TA = new TagAdapter(this, R.layout.row, tags);
 		setListAdapter(this.TA);
 		registerForContextMenu(getListView());
 
-		tagHandler = new TagHandler();
-		advHandler = new AdventureHandler();				
+		tagHandler = new TagHandler(this);
+		advHandler = new AdventureHandler(this);				
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -152,7 +148,7 @@ public class AdvEditTagTabActivity extends ListActivity
 			public void run() {								
 				// get the user's adventure tags and display
 				// them in the list
-				getTags();
+				GetTags();
 				// after getting tags, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -170,29 +166,9 @@ public class AdvEditTagTabActivity extends ListActivity
 
 	// get the tags from the database, then create tag objects for them and add
 	// them to the array list
-	private void getTags()  
+	private void GetTags()  
 	{
-		tags = new ArrayList<Tag>();
-		JSONObject obj;		
-		JSONArray tagData = advHandler.getAllAdventureTags(adventure.getId());
-		if (tagData != null) {
-			// loop through each entry in the json array (each tag encoded as
-			// JSON)
-			for (int i = 0; i < tagData.length(); i++) {
-				obj = null;
-				try {
-					obj = tagData.getJSONObject(i);
-				} catch (JSONException e) {
-					Log.d("TagList GetTags",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-					if (obj != null) {
-					Tag t = tagHandler.createTagFromJSON(obj);
-					tags.add(t);
-				}
-			}
-		}
+		tags = advHandler.getAllAdventureTags(adventure.getId());
 	}
 	
 	@Override
@@ -217,6 +193,9 @@ public class AdvEditTagTabActivity extends ListActivity
 		Runnable loadImages = new Runnable() {
 			@Override
 			public void run() {
+				int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+				int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+
 				// loop through tags and cache their images if they have them
 				for (Tag t : tags) {
 					if(t != null)
@@ -224,9 +203,7 @@ public class AdvEditTagTabActivity extends ListActivity
 						String url = t.getImageUrl();
 						// if tag has image url, download image and cache it
 						if (!url.isEmpty()) {
-							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
-									url, R.dimen.thumbnail_width,
-									R.dimen.thumbnail_height);
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(url, width, height);
 							if (b != null)
 								thumbCache.put(url, b);
 						}

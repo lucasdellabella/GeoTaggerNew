@@ -3,14 +3,12 @@ package com.hci.geotagger.activities;
 import java.util.Date;
 import java.util.ArrayList;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.activities.AddTagActivity.AddTagTask;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AdventureHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 import com.hci.geotagger.connectors.TagHandler;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;
@@ -52,7 +50,7 @@ public class EditAdventureActivity extends TabActivity
 		requestWindowFeature(Window.FEATURE_NO_TITLE);//hide title bar
 		setContentView(R.layout.activity_edit_adventure);
 		
-		advHandler = new AdventureHandler();
+		advHandler = new AdventureHandler(this);
 		
 		Intent intent = getIntent();				
 		if(intent.getBooleanExtra("newAdventure", false) == true)
@@ -238,7 +236,7 @@ public class EditAdventureActivity extends TabActivity
 	 * This class extends AsyncTask and provides the methods to add an adventure via an
 	 * asynchronous task
 	 */
-	class AddAdvTask extends AsyncTask<Adventure, Void, JSONObject> 
+	class AddAdvTask extends AsyncTask<Adventure, Void, ReturnInfo> 
 	{
 		ProgressDialog progressDialog;
 		Context c;
@@ -265,57 +263,32 @@ public class EditAdventureActivity extends TabActivity
 		 * and move to next activity, if not show error. 
 		 */
 		@Override
-		protected void onPostExecute(JSONObject response) 
+		protected void onPostExecute(ReturnInfo response) 
 		{	
 			if(response != null)
 			{
-				try
+				if (response.success)
 				{
-					String returnCode = response.getString(Constants.SUCCESS);
-					//if success = 1, create a user account object from the JSON returned from the database,
-					//set the loggedin flag to true, and open the adventure list page
-					if (returnCode != null)
-					{
-						if (Integer.parseInt(returnCode) == 1)
-						{
-								String msg = "Adventure added!";
-								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-								// return to adventure list screen
-								Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
-								//i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(i);
-								progressDialog.dismiss();
-								finish();
-						}
-						else
-						{
-							progressDialog.dismiss();
-							throw new UnknownErrorException();
-						}
-					}
-					else
-					{	
-						progressDialog.dismiss();
-						Log.d("AddAdvPostExecute", "Null response, Logon Error.");
-						throw new UnknownErrorException();
-					}
+					String msg = "Adventure added!";
+					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+					// return to adventure list screen
+					Intent i = new Intent(getBaseContext(), AdventureListActivity.class);
+					//i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+					progressDialog.dismiss();
+					finish();
 				}
-				catch (UnknownErrorException ex)
-				{	
-					//parser error
-					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, ex.getMessage());
-					Log.d("RegisterPostExecute", "Parsing returned JSON object failed.");
-					ex.printStackTrace();
-				} 
-				catch (JSONException e) 
+				else
 				{
 					progressDialog.dismiss();
 					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, getString(R.string.unknown_error));
-					e.printStackTrace();
-				}	
-				
+					if (response.detail == ReturnInfo.FAIL_JSONERROR) {
+						alert.showAlert(c, null, response.getMessage());
+						response.print("RegisterPostExecute");
+					} else {
+						alert.showAlert(c, null, getString(R.string.unknown_error));
+					}
+				} 
 			}		
 		}//end onPostExecute
 		
@@ -324,26 +297,17 @@ public class EditAdventureActivity extends TabActivity
 		 * the provided credentials. 
 		 */
 		@Override
-		protected JSONObject doInBackground(Adventure...adventure) 
+		protected ReturnInfo doInBackground(Adventure...adventure) 
 		{
 			Adventure a = adventure[0];
 			
 			// attempt to add tag
-			AdventureHandler handler = new AdventureHandler();
-			JSONObject response;
-			try 
-			{				
-				//add adventure to db
-				response = handler.addAdventure(a);
-				Log.d("AddAdvTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
-			} 
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-				return null;
-			}
-			return response;
+			AdventureHandler handler = new AdventureHandler(c);
 
+			//add adventure to db
+			ReturnInfo response = handler.addAdventure(a);
+			response.print("AddAdvTask");
+			return response;
 		}// end doInBackground
 	}//end LoginTask
 }

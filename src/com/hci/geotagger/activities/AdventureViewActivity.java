@@ -1,8 +1,5 @@
 package com.hci.geotagger.activities;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;

@@ -1,6 +1,7 @@
 package com.hci.geotagger.activities;
 
 import com.hci.geotagger.R;
+import com.hci.geotagger.cache.CacheHandler;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 
@@ -113,7 +114,11 @@ public class HomeActivity extends Activity {
 				Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(strURL));
 				startActivity(i);
 			}
-		});		
+		});	
+		
+		// Perform a cache garbage collection
+		CacheHandler ch = new CacheHandler(this);
+		ch.cleanup();
 	}
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

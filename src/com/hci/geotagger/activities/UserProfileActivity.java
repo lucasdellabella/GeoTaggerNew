@@ -179,7 +179,7 @@ public class UserProfileActivity extends Activity {
 		Runnable loadImage = new Runnable() {
 			@Override
 			public void run() {
-				ImageHandler handler = new ImageHandler();
+				ImageHandler handler = new ImageHandler(UserProfileActivity.this);
 				// get a scaled version of the image so we don't load the full
 				// size unnecessarily
 				final Bitmap b = handler.getScaledBitmapFromUrl(url,

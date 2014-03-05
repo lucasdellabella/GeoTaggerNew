@@ -2,8 +2,6 @@ package com.hci.geotagger.activities;
 
 import java.io.File;
 
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.R.layout;
 import com.hci.geotagger.R.menu;
@@ -13,6 +11,7 @@ import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
 import com.hci.geotagger.connectors.ImageHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,7 +43,7 @@ import android.widget.LinearLayout.LayoutParams;
 
 public class EditProfileActivity extends BaseActivity {
 	private TextView profileTxt;
-	private EditText locTxt, descTxt, quoteTxt, emailTxt;
+	private EditText locTxt, descTxt, quoteTxt;
 	private Button saveBtn, cancelBtn;
 	private ProgressDialog PD;
 	private ImageView imgView;
@@ -60,14 +59,13 @@ public class EditProfileActivity extends BaseActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_profile);
-		accountHandler = new AccountHandler();
+		accountHandler = new AccountHandler(this);
 		imageHandler = new ImageHandler(EditProfileActivity.this);
 		
 		profileTxt = (TextView) findViewById(R.id.editprofile_username);
 		locTxt = (EditText) findViewById(R.id.editprofile_location);
 		descTxt = (EditText) findViewById(R.id.editprofile_desc);
 		quoteTxt= (EditText) findViewById(R.id.editprofile_quote);
-		emailTxt = (EditText) findViewById(R.id.editprofile_email);
 		
 		saveBtn = (Button) findViewById(R.id.editprofile_saveBtn);
 		cancelBtn = (Button) findViewById(R.id.editprofile_cancelBtn);
@@ -289,7 +287,7 @@ public class EditProfileActivity extends BaseActivity {
 		Runnable loadImage = new Runnable() {
 			@Override
 			public void run() {
-				ImageHandler handler = new ImageHandler();
+				ImageHandler handler = new ImageHandler(EditProfileActivity.this);
 				// get a scaled version of the image so we don't load the full
 				// size unnecessarily
 				final Bitmap b = handler.getScaledBitmapFromUrl(url,
@@ -329,8 +327,7 @@ public class EditProfileActivity extends BaseActivity {
 				if(success)
 				{
 					//if edit successful, update the currentuser object
-					JSONObject json = accountHandler.getUser(UserSession.CURRENT_USER.getuName());
-					UserAccount account = accountHandler.createAccountFromJSON(json);
+					UserAccount account = accountHandler.getUser(UserSession.CURRENT_USER.getuName());
 					UserSession.CURRENT_USER = account;
 				}
 					runOnUiThread(new Runnable() {
@@ -402,10 +399,10 @@ public class EditProfileActivity extends BaseActivity {
 			Log.d("New Image Size", "H, W = " + height + ", " + width);
 			if(height > 0 && width > 0)
 			{
-				String url = imageHandler.uploadImageToServer(b);
+				ReturnInfo response = imageHandler.uploadImageToServer(b);
 				b.recycle();
-				Log.d("EditProfile uploadImage", "Got response, img url = " + url);
-				return url;
+				response.print("EditProfile uploadImage");
+				return response.url;
 			}
 			else
 			{

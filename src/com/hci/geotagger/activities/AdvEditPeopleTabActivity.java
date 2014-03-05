@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.Objects.Adventure;
@@ -87,14 +83,14 @@ public class AdvEditPeopleTabActivity extends ListActivity
 		});
 				
 		// initialize objects
-		imageHandler = new ImageHandler();
+		imageHandler = new ImageHandler(this);
 		thumbCache = new HashMap<String, Bitmap>();
 		ua = new ArrayList<UserAccount>();
 		this.UA = new UserAdapter(this, R.layout.row, ua);
 		setListAdapter(this.UA);
 		registerForContextMenu(getListView());
 		
-		advHandler = new AdventureHandler();				
+		advHandler = new AdventureHandler(this);				
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -137,7 +133,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 			public void run() {								
 				// get the user's adventure people and display
 				// them in the list
-				getPeople();
+				GetPeople();
 				// after getting users, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -155,30 +151,9 @@ public class AdvEditPeopleTabActivity extends ListActivity
 
 	// get the users from the database, then create user objects for them and add
 	// them to the array list
-	private void getPeople()  
+	private void GetPeople()  
 	{
-		ah = new AccountHandler();
-		ua = new ArrayList<UserAccount>();
-		JSONObject obj;		
-		JSONArray peopleData = advHandler.getPeopleInAdventure(adventure.getId());
-			if (peopleData != null) {
-			// loop through each entry in the json array (each tag encoded as
-			// JSON)
-			for (int i = 0; i < peopleData.length(); i++) {
-				obj = null;
-				try {
-					obj = peopleData.getJSONObject(i);
-				} catch (JSONException e) {
-					Log.d("PeopleList GetPeople",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-				if (obj != null) {
-					UserAccount u = ah.createAccountFromJSON(obj);
-					ua.add(u);
-				}
-			}
-		}
+		ua = advHandler.getPeopleInAdventure(adventure.getId());
 	}
 		
 	@Override
@@ -203,6 +178,9 @@ public class AdvEditPeopleTabActivity extends ListActivity
 		Runnable loadImages = new Runnable() {
 			@Override
 			public void run() {
+				int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+				int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+
 				// loop through users and cache their images if they have them
 				for (UserAccount u : ua) {
 					if(u != null)
@@ -210,9 +188,7 @@ public class AdvEditPeopleTabActivity extends ListActivity
 						String url = u.getImage();
 						// if user has image url, download image and cache it
 						if (!url.isEmpty()) {
-							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
-									url, R.dimen.thumbnail_width,
-									R.dimen.thumbnail_height);
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(url, width, height);
 							if (b != null)
 								thumbCache.put(url, b);
 						}

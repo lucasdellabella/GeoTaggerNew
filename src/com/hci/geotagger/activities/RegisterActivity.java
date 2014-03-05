@@ -1,12 +1,10 @@
 package com.hci.geotagger.activities;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.connectors.AccountHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 import com.hci.geotagger.exceptions.UnknownErrorException;
 import com.hci.geotagger.exceptions.UsernameIsTakenException;
 
@@ -74,9 +72,9 @@ public class RegisterActivity extends Activity {
 							//make sure passwords match
 							if (pw.equals(pw2))
 							{
-								if (usernameFollowsRules(uName))
+								if (UsernameFollowsRules(uName))
 								{
-									if(passwordFollowsRules(pw))
+									if(PasswordFollowsRules(pw))
 									{
 										//attempt to register in an async task
 										new RegisterTask(c).execute(uName, pw); 
@@ -118,7 +116,7 @@ public class RegisterActivity extends Activity {
 	}//end oncreate
 	
 	//enforce username rules
-	private boolean usernameFollowsRules(String username)
+	private boolean UsernameFollowsRules(String username)
 	{
 		//Username can only contain letters and numbers
 		//must start with letter
@@ -126,7 +124,7 @@ public class RegisterActivity extends Activity {
 		return username.matches("^[A-Za-z][A-Za-z0-9]{3,14}");
 	}
 	//enforce password rules
-	private boolean passwordFollowsRules(String password)
+	private boolean PasswordFollowsRules(String password)
 	{
 		//Password must be 6-20 characters
 		return (password.length() >= 6 && password.length() <= 20);
@@ -136,7 +134,7 @@ public class RegisterActivity extends Activity {
 	 * Register task: Asynchronous task to make the web request and get the 
 	 * attempt to register the user account
 	 */
-	class RegisterTask extends AsyncTask<String, Void, JSONObject> 
+	class RegisterTask extends AsyncTask<String, Void, ReturnInfo> 
 	{
 		ProgressDialog progressDialog;
 		Context c;
@@ -163,63 +161,30 @@ public class RegisterActivity extends Activity {
 		 * and move to next activity, if not show error. 
 		 */
 		@Override
-		protected void onPostExecute(JSONObject response) {
+		protected void onPostExecute(ReturnInfo response) {
 			progressDialog.dismiss();
 			if(response != null)
 			{
-				try
+				//if the registration was success, 
+				//set the loggedin flag to true, and open the Home page
+				if (response.success)
 				{
-					String returnCode = response.getString(Constants.SUCCESS);
-					//if success = 1, create a user account object from the JSON returned from the database,
-					//set the loggedin flag to true, and open the Home page
-					if (returnCode != null)
-					{
-						if (Integer.parseInt(returnCode) == 1)
-						{
-								Log.d("RegisterPostExecute", "RegistrationSuccess");
-								//AlertHandler alert = new AlertHandler();
-								//alert.showAlert(c, null, "Registration success!");
-								String msg = "Registration success! Please log in to start.";
-								Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
-								// return to login screen after registration
-								Intent i = new Intent(c, LoginActivity.class);
-								i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-								startActivity(i);
-								finish();
-									
-						}
-						else if (Integer.parseInt(response.getString("error")) == 2)
-						{	
-							//username has been taken
-							String errorMsg = response.getString(Constants.ERROR_MSG);
-							Log.d("LoginPostExecute", "Logon error: " + errorMsg);	
-							throw new UsernameIsTakenException();			
-						}
-						else
-						{
-							throw new UnknownErrorException();
-						}
-					}
-					else
-					{	
-						Log.d("RegisterPostExecute", "Null response, Logon Error.");
-						throw new UnknownErrorException();
-					}
+					Log.d("RegisterPostExecute", "RegistrationSuccess");
+					//AlertHandler alert = new AlertHandler();
+					//alert.showAlert(c, null, "Registration success!");
+					String msg = "Registration success! Please log in to start.";
+					Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+					// return to login screen after registration
+					Intent i = new Intent(c, LoginActivity.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(i);
+					finish();				
 				}
-				catch (UnknownErrorException ex)
-				{	//parser error
+				else
+				{	
+					response.print("RegisterPostExecute");
 					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, ex.getMessage());
-					Log.d("RegisterPostExecute", "Parsing returned JSON object failed.");
-					ex.printStackTrace();
-				} catch (UsernameIsTakenException e) {
-					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, e.getMessage());
-					e.printStackTrace();
-				} catch (JSONException e) {
-					AlertHandler alert = new AlertHandler();
-					alert.showAlert(c, null, getString(R.string.unknown_error));
-					e.printStackTrace();
+					alert.showAlert(c, null, response.getMessage());
 				}	
 				
 			}		
@@ -230,25 +195,17 @@ public class RegisterActivity extends Activity {
 		 * the provided credentials. 
 		 */
 		@Override
-		protected JSONObject doInBackground(String... loginParams) {
+		protected ReturnInfo doInBackground(String... loginParams) {
 			String uName = loginParams[0];
 			String pw = loginParams[1];
 
 			// attempt login
-			AccountHandler handler = new AccountHandler();
-			JSONObject response;
-			try 
-			{
-				response = handler.registerUser(uName, pw);
-				Log.d("RegisterTask", "Got response, returncode = " + response.getString(Constants.SUCCESS));
-			} 
-			catch (JSONException e) 
-			{
-				e.printStackTrace();
-				return null;
-			}
-			return response;
+			AccountHandler handler = new AccountHandler(c);
+			ReturnInfo response;
 
+			response = handler.registerUser(uName, pw);
+			response.print("RegisterTask");
+			return response;
 		}// end doInBackground
 	}//end RegisterTask
 }

@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
@@ -17,6 +13,7 @@ import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
 import com.hci.geotagger.connectors.AdventureHandler;
 import com.hci.geotagger.connectors.ImageHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 import com.hci.geotagger.connectors.TagHandler;
 
 import android.os.Bundle;
@@ -75,15 +72,15 @@ public class TagListActivity extends ListActivity {
 		adventure = (Adventure) bundle.getSerializable("adventure");
 		
 		// initialize objects
-		imageHandler = new ImageHandler();
+		imageHandler = new ImageHandler(this);
 		thumbCache = new HashMap<String, Bitmap>();
 		tags = new ArrayList<Tag>();
 		this.TA = new TagAdapter(this, R.layout.row, tags);
 		setListAdapter(this.TA);
 		registerForContextMenu(getListView());
 
-		tagHandler = new TagHandler();
-		accountHandler = new AccountHandler();
+		tagHandler = new TagHandler(this);
+		accountHandler = new AccountHandler(this);
 		nameTxt = (TextView) findViewById(R.id.taglist_username);
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -131,7 +128,7 @@ public class TagListActivity extends ListActivity {
 			public void run() {
 				// first get the username of the user whose tags are being
 				// viewed
-				getUsername();
+				GetUsername();
 				if (!userName.isEmpty() && userName != null) {
 					// update the owner's name on the ui thread
 					final String str = userName + "'s Tags";
@@ -143,7 +140,7 @@ public class TagListActivity extends ListActivity {
 				}
 				// after we have the username, get the user's tags and display
 				// them in the list
-				getTags();
+				GetTags();
 				// after getting tags, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -252,13 +249,13 @@ public class TagListActivity extends ListActivity {
 	}
 
 	private void deleteTag(final int position) {
-		final TagHandler th = new TagHandler();
+		final TagHandler th = new TagHandler(this);
 		// Handler handler = new Handler();
 		Runnable deleteTag = new Runnable() {
 			@Override
 			public void run() {
-				boolean success = th.deleteTag(tags.get(position).getId());
-				if (success) {
+				ReturnInfo success = th.deleteTag(tags.get(position).getId());
+				if (success.success) {
 					runOnUiThread(new Runnable() {
 						public void run() {
 							PD.dismiss();
@@ -341,37 +338,15 @@ public class TagListActivity extends ListActivity {
 	 */
 
 	// Get the username from the given ID
-	private void getUsername() {
+	private void GetUsername() {
 		userName = accountHandler.getUsernameFromId(userID);
 		Log.d("TagListActivity", "Username: " + userName + " ID: " + userID);
 	}
 
 	// get the tags from the database, then create tag objects for them and add
 	// them to the array list
-	private void getTags() {
-		tags = new ArrayList<Tag>();
-		JSONObject obj;
-		JSONArray tagData = tagHandler.getTagsById(userID);
-		if (tagData != null) {
-			// loop through each entry in the json array (each tag encoded as
-			// JSON)
-			for (int i = 0; i < tagData.length(); i++) {
-				obj = null;
-				try {
-					obj = tagData.getJSONObject(i);
-				} catch (JSONException e) {
-					Log.d("TagList GetTags",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-
-				if (obj != null) {
-					Tag t = tagHandler.createTagFromJSON(obj);
-					tags.add(t);
-				}
-			}
-		}
-
+	private void GetTags() {
+		tags = tagHandler.getTagsById(userID);
 	}
 
 	private void loadImagesToCache() {
@@ -388,9 +363,9 @@ public class TagListActivity extends ListActivity {
 						// if tag has image url, download image and cache it
 						if (!url.isEmpty()) 
 						{
-							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
-									url, R.dimen.thumbnail_width,
-									R.dimen.thumbnail_height);
+							int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+							int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(url, width, height);
 							if (b != null)
 								thumbCache.put(url, b);
 						}

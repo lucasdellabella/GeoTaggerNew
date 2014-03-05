@@ -1,9 +1,6 @@
 package com.hci.geotagger.activities;
 
 import java.util.ArrayList;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
@@ -14,6 +11,7 @@ import com.hci.geotagger.common.UserSession;
 import com.hci.geotagger.connectors.AccountHandler;
 import com.hci.geotagger.connectors.AdventureHandler;
 import com.hci.geotagger.connectors.ImageHandler;
+import com.hci.geotagger.connectors.ReturnInfo;
 import com.hci.geotagger.connectors.TagHandler;
 
 import android.app.AlertDialog;
@@ -75,7 +73,7 @@ public class FriendListActivity extends ListActivity {
 		
 		//initialize objects
 		friends = new ArrayList<UserAccount>();
-		accountHandler = new AccountHandler();
+		accountHandler = new AccountHandler(this);
 		friendListOwnerId = UserSession.CURRENTUSER_ID;
 		
 		this.FA = new FriendAdapter(this, R.layout.friendrow, friends);
@@ -238,7 +236,7 @@ public class FriendListActivity extends ListActivity {
 	//remove a friend from the friends list/db
 	private void removeFriend(final int index)
 	{
-		final AccountHandler ah = new AccountHandler();
+		final AccountHandler ah = new AccountHandler(this);
 		Runnable deleteTag = new Runnable() 
 		{
 			@Override
@@ -334,43 +332,36 @@ public class FriendListActivity extends ListActivity {
 			public void run() {
 				
 				final StringBuilder sb = new StringBuilder();
-				JSONObject response = accountHandler.addFriend(UserSession.CURRENTUSER_ID, uName);
-				try {
-					String msg;
-					int successCode = response.getInt(Constants.SUCCESS);
-					//if friend was added successfully
-					if(successCode == 1)
+				ReturnInfo response = accountHandler.addFriend(UserSession.CURRENTUSER_ID, uName);
+				String msg;
+				//if friend was added successfully
+				if (response.success)
+				{
+					msg = "Added " + uName + " as a friend!";
+					sb.append(msg);
+					friendAdded = uName;
+				}
+				else //find out what went wrong
+				{
+					switch (response.detail)
 					{
-						msg = "Added " + uName + " as a friend!";
-						sb.append(msg);
-						friendAdded = uName;
+						case Constants.ADDFRIEND_ALREADYFRIENDS: 
+							msg = uName + " is already in your friends list!";
+							sb.append(msg);
+							break;
+						case Constants.ADDFRIEND_USERNOTFOUND: 	
+							msg = "Sorry! We can't find that user...please try another name!";
+							sb.append(msg);
+							break;
+						case Constants.ADDFRIEND_ERROR: 	
+							msg = "Oops! Something went wrong...Please search again!";
+							sb.append(msg);
+							break;
+						default: 
+							msg = "Please try again.";
+							sb.append(msg);
+							break;
 					}
-					else //find out what went wrong
-					{
-						int errorCode = response.getInt(Constants.ERROR);
-						switch (errorCode)
-						{
-							case Constants.ADDFRIEND_ALREADYFRIENDS: 
-								msg = uName + " is already in your friends list!";
-								sb.append(msg);
-								break;
-							case Constants.ADDFRIEND_USERNOTFOUND: 	
-								msg = "Sorry! We can't find that user...please try another name!";
-								sb.append(msg);
-								break;
-							case Constants.ADDFRIEND_ERROR: 	
-								msg = "Oops! Something went wrong...Please search again!";
-								sb.append(msg);
-								break;
-							default: 
-								msg = "Please try again.";
-								sb.append(msg);
-								break;
-						}
-					}
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
 				}
 				//show result on the UI thread and close the dialog
 				runOnUiThread(new Runnable() {
@@ -402,7 +393,7 @@ public class FriendListActivity extends ListActivity {
 			public void run() {
 				// after we have the username, get the user's tags and display
 				// them in the list
-				getFriends();
+				GetFriends();
 			}
 		};
 		Thread thread = new Thread(null, loadFriends, "GetFriendsThread");
@@ -411,36 +402,9 @@ public class FriendListActivity extends ListActivity {
 				"Retrieving friends...", true);
 	}
 	//get the friends from the database, then create UA objects for them and add them to the array list
-	private void getFriends()
+	private void GetFriends()
 	{
-		friends = new ArrayList<UserAccount>();
-		JSONObject obj;
-		JSONArray friendData = accountHandler.getFriends(friendListOwnerId);
-		
-		if (friendData != null)
-		{
-			//loop through each entry in the json array (each tag encoded as JSON)
-			for (int i = 0; i < friendData.length(); i ++)
-			{
-				obj = null;
-				try 
-				{
-					obj = friendData.getJSONObject(i);
-				} 
-				catch (JSONException e) 
-				{
-					Log.d("FriendList GetFriends", "Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-				
-				if (obj != null)
-				{
-					UserAccount a = accountHandler.createAccountFromJSON(obj);
-					friends.add(a);
-				}
-			}
-			
-		}
+		friends = accountHandler.getFriends(friendListOwnerId);
 		runOnUiThread(returnRes);    
 	}
 	
@@ -452,10 +416,8 @@ public class FriendListActivity extends ListActivity {
 			loadSingleFriend = new Runnable() {
 				@Override
 				public void run() {
-					//retrieve the UA as json from the db
-					JSONObject json = accountHandler.getUser(friendAdded);
-					//get the user account object
-					UserAccount acct = accountHandler.createAccountFromJSON(json);
+					// get the user account from the database
+					UserAccount acct = accountHandler.getUser(friendAdded);
 					acctToAdd = acct;
 					runOnUiThread(new Runnable(){
 						public void run(){
@@ -544,9 +506,11 @@ public class FriendListActivity extends ListActivity {
 							 @Override
 							 public void run() 
 							 {
-								 ImageHandler handler = new ImageHandler();
-								 final Bitmap b = handler.getScaledBitmapFromUrl(url, R.dimen.thumbnail_width,
-										 R.dimen.thumbnail_height);
+								 int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+								 int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+
+								 ImageHandler handler = new ImageHandler(c);
+								 final Bitmap b = handler.getScaledBitmapFromUrl(url, width, height);
 								 //if the thumbnail gets returned, set it in the image view
 								 if (b != null)
 								 {

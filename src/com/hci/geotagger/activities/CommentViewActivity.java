@@ -63,7 +63,7 @@ public class CommentViewActivity extends Activity
 	 */
 	private class DownloadImage extends AsyncTask<String, Void, Bitmap>
 	{
-		ImageHandler handler = new ImageHandler();
+		ImageHandler handler = new ImageHandler(null);
 		
 		@Override
 		protected Bitmap doInBackground(String... urls) 

@@ -6,10 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.Objects.Adventure;
@@ -65,14 +61,14 @@ public class AdvViewPeopleTabActivity extends ListActivity
 		adventure = (Adventure) bundle.getSerializable("adventure");
 		
 		// initialize objects
-		imageHandler = new ImageHandler();
+		imageHandler = new ImageHandler(this);
 		thumbCache = new HashMap<String, Bitmap>();
 		ua = new ArrayList<UserAccount>();
 		this.UA = new UserAdapter(this, R.layout.row, ua);
 		setListAdapter(this.UA);
 		registerForContextMenu(getListView());
 		
-		advHandler = new AdventureHandler();				
+		advHandler = new AdventureHandler(this);				
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -116,7 +112,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
 			public void run() {								
 				// get the user's adventure people and display
 				// them in the list
-				getPeople();
+				GetPeople();
 				// after getting users, download the images to the cache and
 				// update the ui
 				loadImagesToCache();
@@ -134,30 +130,9 @@ public class AdvViewPeopleTabActivity extends ListActivity
 
 	// get the users from the database, then create user objects for them and add
 	// them to the array list
-	private void getPeople()  
+	private void GetPeople()  
 	{
-		ua = new ArrayList<UserAccount>();
-		JSONObject obj;		
-		JSONArray peopleData = advHandler.getPeopleInAdventure(adventure.getId());
-		if (peopleData != null) {
-			// loop through each entry in the json array (each tag encoded as
-			// JSON)
-			for (int i = 0; i < peopleData.length(); i++) {
-				obj = null;
-				try {
-					obj = peopleData.getJSONObject(i);
-				} catch (JSONException e) {
-					Log.d("PeopleList GetPeople",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-
-				if (obj != null) {
-					UserAccount u = this.createAccountFromJSON(obj);
-					ua.add(u);
-				}
-			}
-		}
+		ua = advHandler.getPeopleInAdventure(adventure.getId());
 	}
 
 	private void loadImagesToCache() {
@@ -165,6 +140,9 @@ public class AdvViewPeopleTabActivity extends ListActivity
 		Runnable loadImages = new Runnable() {
 			@Override
 			public void run() {
+				int width = (int)(getResources().getDimension(R.dimen.thumbnail_width));
+				int height = (int)(getResources().getDimension(R.dimen.thumbnail_height));
+
 				// loop through users and cache their images if they have them
 				for (UserAccount u : ua) {
 					if(u != null)
@@ -172,9 +150,7 @@ public class AdvViewPeopleTabActivity extends ListActivity
 						String url = u.getImage();
 						// if user has image url, download image and cache it
 						if (!url.isEmpty()) {
-							final Bitmap b = imageHandler.getScaledBitmapFromUrl(
-									url, R.dimen.thumbnail_width,
-									R.dimen.thumbnail_height);
+							final Bitmap b = imageHandler.getScaledBitmapFromUrl(url, width, height);
 							if (b != null)
 								thumbCache.put(url, b);
 						}
@@ -207,33 +183,6 @@ public class AdvViewPeopleTabActivity extends ListActivity
 		}
 	};
 	
-	/*
-	 * Added here since UserAccount lacks a handler.
-	 */
-	public UserAccount createAccountFromJSON(JSONObject json)
-	{
-		Date d = new Date();
-    	try 
-    	{
-    		//format the date
-    		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			d = ts.parse(json.getString("CreatedDateTime"));			
-			//instantiate the tag object with properties from JSON
-			UserAccount ua = new UserAccount(json.getInt("id"), json.getString("uName"), 
-					json.getInt("Type"), json.getInt("Visibility"), d);				
-			return ua;			
-		} 
-    	catch (JSONException e) 
-    	{
-    		Log.d("TagHandler", "CreateTag from JSONObject failed");
-			e.printStackTrace();
-		} catch (ParseException e) {
-			Log.d("TagHandler", "Problem parsing timestamp from JSON");
-			e.printStackTrace();
-		}
-    	return null;
-	}
-
 	// arrayadapter to bind users to list view
 	private class UserAdapter extends ArrayAdapter<UserAccount> {
 

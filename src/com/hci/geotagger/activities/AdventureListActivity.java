@@ -4,10 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;
@@ -90,8 +86,8 @@ public class AdventureListActivity extends ListActivity {
 		setListAdapter(this.AA);
 		registerForContextMenu(getListView());		
 
-		adventureHandler = new AdventureHandler(); 
-		accountHandler = new AccountHandler();
+		adventureHandler = new AdventureHandler(this); 
+		accountHandler = new AccountHandler(this);
 		nameTxt = (TextView) findViewById(R.id.adventurelist_username);
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
@@ -138,7 +134,7 @@ public class AdventureListActivity extends ListActivity {
 			public void run() {
 				// first get the username of the user whose adventures are being
 				// viewed
-				getUsername();
+				GetUsername();
 				if (!userName.isEmpty() && userName != null) {
 					// update the owner's name on the ui thread
 					final String str = userName + "'s Adventures";
@@ -150,7 +146,7 @@ public class AdventureListActivity extends ListActivity {
 				}
 				// after we have the username, get the user's adventures and display
 				// them in the list
-				getAdventures();
+				GetAdventures();
 				
 			}
 		};
@@ -240,7 +236,7 @@ public class AdventureListActivity extends ListActivity {
 	}
 
 	private void deleteAdventure(final int position) {
-		final AdventureHandler ah = new AdventureHandler(); 		
+		final AdventureHandler ah = new AdventureHandler(this); 		
 		Runnable deleteAdventure = new Runnable() {
 			@Override
 			public void run() {
@@ -274,38 +270,15 @@ public class AdventureListActivity extends ListActivity {
 	 */
 
 	// Get the username from the given ID
-	private void getUsername() {
+	private void GetUsername() {
 		userName = accountHandler.getUsernameFromId(userID);
 		Log.d("AdventureListActivity", "Username: " + userName + " ID: " + userID);
 	}
 
 	// get the adventures from the database, then create adventure objects for them and add
 	// them to the array list
-	private void getAdventures() {
-		adventures = new ArrayList<Adventure>();
-		JSONObject obj;
-		JSONArray adventureData = adventureHandler.getAllAdventuresUserPartOf(userID);
-
-		if (adventureData != null) {
-			Log.d("AdventureList", adventureData.toString());
-			// loop through each entry in the json array (each tag encoded as
-			// JSON)
-			for (int i = 0; i < adventureData.length(); i++) {
-				obj = null;
-				try {
-					obj = adventureData.getJSONObject(i);
-				} catch (JSONException e) {
-					Log.d("AdventureList GetAdventures",
-							"Error getting JSON Object from array.");
-					e.printStackTrace();
-				}
-
-				if (obj != null) {
-					Adventure a = adventureHandler.createAdventureFromJSON(obj); 
-					adventures.add(a);
-				}
-			}
-		}
+	private void GetAdventures() {
+		adventures = adventureHandler.getAllAdventuresUserPartOf(userID);
 		runOnUiThread(returnRes);
 	}	
 	

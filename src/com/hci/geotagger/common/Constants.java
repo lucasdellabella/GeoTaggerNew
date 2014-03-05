@@ -16,6 +16,7 @@ public final class Constants {
 	public static final String OP_UPLOAD_IMG = "uploadImage";
 	public static final String OP_GETTAGS_BYID = "getTagsById";
 	public static final String OP_GETTAGS_BYADVID = "getTagsByAdvId";
+	public static final String OP_ADD_TAG2ADV = "addTagToAdventure";
 	public static final String OP_GETADVS_BYID = "getAllAdventuresUserPartOf";
 	public static final String OP_GETPEOPLE_BYID = "getPeopleById";
 	public static final String OP_GETNAME_FROMID = "getNameFromId";
@@ -56,7 +57,7 @@ public final class Constants {
 	*/
 	
 	//Live URLs for the server
-	public static final String BASE_URL = "http://hci.montclair.edu/geotagger/";
+	public static final String BASE_URL = "http://hci.montclair.edu/geotaggerdev/";
 	public static final String LOGIN_URL = BASE_URL + "index.php";
 	public static final String REGISTER_URL = BASE_URL + "index.php";
 	public static final String TAGOP_URL = BASE_URL + "index.php";
@@ -84,6 +85,10 @@ public final class Constants {
 	public static final int IMAGE_QUALITY = 90;
 	public static final String IMAGE_EXT = ".jpg";
 	public static final String IMAGE_PREFIX = "img";
+	
+	//Cache Constants
+	public static final String CACHE_DIRECTORY = "Geotagger Cache";
+	public static final String CACHE_FILEPREFIX = "GTCache_";
 	
 	//Image Album Name
 	public static final String ALBUM_NAME = "Geotagger Images";
