@@ -2,9 +2,6 @@ package com.hci.geotagger.activities;
 
 import java.io.File;
 
-import com.hci.geotagger.R;
-import com.hci.geotagger.R.layout;
-import com.hci.geotagger.R.menu;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.BaseActivity;
 import com.hci.geotagger.common.Constants;

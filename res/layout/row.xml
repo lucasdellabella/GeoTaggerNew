@@ -16,44 +16,43 @@
         android:paddingLeft="3dp"
         android:paddingRight="3dp"
         android:paddingTop="3dp" 
-        android:descendantFocusability="blocksDescendants" 
-        >
+        android:descendantFocusability="blocksDescendants" >
+		
+		<RelativeLayout
+	    	android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:paddingBottom="3dp"
+	        android:background="@drawable/listheader"
+	        android:paddingLeft="@dimen/listheader_padding"
+	        android:paddingRight="@dimen/listheader_padding"
+	        android:paddingTop="@dimen/listheader_padding" >
+	   			
+	   			<TextView
+		        	android:id="@+id/row_txtName"
+		        	android:layout_width="fill_parent"
+		        	android:layout_height="wrap_content"
+		        	android:layout_marginTop="0dp"
+		        	android:gravity="left|top"
+		        	android:text="Text"
+		        	android:textColor="@android:color/white"
+		        	android:textSize="15sp"
+		        	android:textStyle="bold" />
+	         
+	         	<TextView
+	            	android:id="@+id/row_txtTime"
+	            	android:layout_width="wrap_content"
+	            	android:layout_height="wrap_content"
+	            	android:layout_alignParentRight="true"
+	            	android:layout_alignParentTop="true"
+	            	android:layout_marginBottom="2dp"
+	            	android:gravity="left"
+	            	android:text="01/01/13 12:00"
+	            	android:textColor="@android:color/darker_gray"
+	            	android:textSize="10sp" />
+	     
+	    </RelativeLayout>
 
-	       <RelativeLayout
-	           android:layout_width="fill_parent"
-	           android:layout_height="wrap_content"
-	           android:paddingBottom="3dp"
-	           android:background="@drawable/listheader"
-	           android:paddingLeft="@dimen/listheader_padding"
-	           android:paddingRight="@dimen/listheader_padding"
-	           android:paddingTop="@dimen/listheader_padding" >
-	          <TextView
-		         android:id="@+id/row_txtName"
-		         android:layout_width="fill_parent"
-		         android:layout_height="wrap_content"
-		         android:layout_marginTop="0dp"
-		         android:gravity="left|top"
-		         android:text="Text"
-		         android:textColor="@android:color/white"
-		         android:textSize="15dp"
-		         android:textStyle="bold" />
-	         <TextView
-	             android:id="@+id/row_txtTime"
-	             android:layout_width="wrap_content"
-	             android:layout_height="wrap_content"
-	             android:layout_alignParentRight="true"
-	             android:layout_alignParentTop="true"
-	             android:layout_marginBottom="2dp"
-	             android:layout_weight="1"
-	             android:gravity="left"
-	             android:text="01/01/13 12:00"
-	             android:textColor="@android:color/darker_gray"
-	             android:textSize="10sp" />
-	     </RelativeLayout>
-
-
-
-        <LinearLayout
+		<LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/listheader_padding" >

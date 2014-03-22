@@ -9,7 +9,7 @@
  */
 package com.hci.geotagger.activities;
 
-import com.hci.geotagger.R;
+import com.actionbarsherlock.app.SherlockActivity;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.MyUserAccount;
 import com.hci.geotagger.common.UserSession;
@@ -32,7 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ProgressDialog;
 
-public class LoginActivity extends Activity 
+public class LoginActivity extends SherlockActivity 
 {
 	Button loginBtn;
 	TextView regBtn;
@@ -96,6 +96,7 @@ public class LoginActivity extends Activity
 			}
 		});
 
+		/*
 		//Register Button Action
 		regBtn = (TextView) findViewById(R.id.login_lblRegister);
 		regBtn.setOnClickListener(new OnClickListener() 
@@ -108,7 +109,7 @@ public class LoginActivity extends Activity
 				startActivity(j);
 
 			}
-		});
+		});*/
 		if (Constants.LIMIT_HOME_TO_ADVENTURE)
 		{
 			regBtn.setVisibility(Button.INVISIBLE);

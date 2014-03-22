@@ -33,7 +33,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
-import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.GeoLocation;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;
