@@ -1427,13 +1427,13 @@ containing a value of this type.
         public static final int action_settings=0x7f090024;
         /**  Common Strings Between Layouts 
          */
-        public static final int add=0x7f09007b;
+        public static final int add=0x7f09007a;
         public static final int add_comment_hint=0x7f090053;
         public static final int add_existing_tag=0x7f09005b;
         /**  activity_edit_adv_tag_tab 
          */
         public static final int add_new_tag=0x7f09005a;
-        public static final int add_tag=0x7f09006c;
+        public static final int add_tag=0x7f09006b;
         public static final int add_tag_image=0x7f090044;
         /**  activity_edit_adv_people_tab 
          */
@@ -1468,7 +1468,7 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f09001c;
-        public static final int cancel=0x7f09007e;
+        public static final int cancel=0x7f09007d;
         /**  activity_comment_extended_view 
          */
         public static final int comment_img_description=0x7f090057;
@@ -1530,7 +1530,7 @@ containing a value of this type.
         public static final int common_signin_button_text_long=0x7f09001b;
         public static final int create_adventure=0x7f090056;
         public static final int current_gps=0x7f09004d;
-        public static final int description=0x7f090081;
+        public static final int description=0x7f090080;
         public static final int description_text=0x7f09004a;
         public static final int dlg_tagimg_title=0x7f090036;
         public static final int dummy_button=0x7f09002e;
@@ -1547,8 +1547,8 @@ containing a value of this type.
         public static final int email_address_hint=0x7f090066;
         public static final int favorite_quote=0x7f090063;
         public static final int favorite_quote_hint=0x7f090064;
-        public static final int feedback=0x7f09006a;
-        public static final int friends=0x7f09006d;
+        public static final int feedback=0x7f090069;
+        public static final int friends=0x7f09006c;
         /**  activity_friend_list 
          */
         public static final int friends_header=0x7f090067;
@@ -1561,47 +1561,49 @@ containing a value of this type.
         public static final int list_no_advPeople=0x7f090035;
         public static final int list_no_adventures=0x7f090034;
         public static final int list_no_friends=0x7f09003f;
-        public static final int list_no_tags=0x7f09007a;
-        public static final int location=0x7f09007d;
-        public static final int location_text=0x7f090082;
+        public static final int list_no_tags=0x7f090079;
+        public static final int location=0x7f09007c;
+        public static final int location_text=0x7f090081;
         public static final int location_unavailable=0x7f09004e;
-        public static final int login=0x7f09006f;
+        public static final int login=0x7f09006e;
         /**  activity_login 
          */
-        public static final int login_caps=0x7f09006e;
-        public static final int login_img_desc=0x7f090071;
-        public static final int logout=0x7f090069;
+        public static final int login_caps=0x7f09006d;
+        public static final int login_img_desc=0x7f090070;
+        /**  activity_home_limited_adventures 
+         */
+        public static final int logout=0x7f090068;
         public static final int my_profile=0x7f090085;
         /**  activity_home 
          */
-        public static final int my_tags=0x7f09006b;
-        public static final int name=0x7f090080;
+        public static final int my_tags=0x7f09006a;
+        public static final int name=0x7f09007f;
         /**  Layout-Specific Strings 
  activity_add_tag 
          */
         public static final int new_tag=0x7f090042;
-        public static final int new_user=0x7f090070;
+        public static final int new_user=0x7f09006f;
         /**  activity_register 
          */
-        public static final int new_user_label=0x7f090074;
+        public static final int new_user_label=0x7f090073;
         public static final int ok=0x7f090028;
-        public static final int password_hint=0x7f090073;
+        public static final int password_hint=0x7f090072;
         public static final int picture=0x7f090043;
         public static final int profile_image_desc=0x7f090031;
         /**  activity_tag_view 
          */
         public static final int rating_text=0x7f090048;
-        public static final int save=0x7f090083;
-        public static final int str_Pass=0x7f090076;
-        public static final int str_Pass_Confirm=0x7f090077;
-        public static final int str_Username=0x7f090075;
-        public static final int submit=0x7f090078;
+        public static final int save=0x7f090082;
+        public static final int str_Pass=0x7f090075;
+        public static final int str_Pass_Confirm=0x7f090076;
+        public static final int str_Username=0x7f090074;
+        public static final int submit=0x7f090077;
         public static final int tag_comment=0x7f090058;
         public static final int tag_description=0x7f090045;
         public static final int tag_location=0x7f090047;
-        public static final int tag_name=0x7f09007c;
+        public static final int tag_name=0x7f09007b;
         public static final int tagged_by=0x7f090049;
-        public static final int temp_name=0x7f09007f;
+        public static final int temp_name=0x7f09007e;
         public static final int title_activity_add_tag=0x7f090032;
         public static final int title_activity_adventureView=0x7f090038;
         public static final int title_activity_adventurelist=0x7f090037;
@@ -1626,13 +1628,11 @@ containing a value of this type.
         /**  activity_adventurelist 
          */
         public static final int username_adventures=0x7f090055;
-        public static final int username_hint=0x7f090072;
+        public static final int username_hint=0x7f090071;
         /**  activity_taglist 
          */
-        public static final int username_tags=0x7f090079;
-        /**  activity_home_limited_adventures 
-         */
-        public static final int welcome=0x7f090068;
+        public static final int username_tags=0x7f090078;
+        public static final int welcome=0x7f090083;
     }
     public static final class style {
         /** 
