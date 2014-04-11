@@ -2,10 +2,7 @@ package com.hci.geotagger.activities;
 
 import java.io.File;
 
-<<<<<<< HEAD
 import com.hci.geotagger.R;
-=======
->>>>>>> FETCH_HEAD
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.BaseActivity;
 import com.hci.geotagger.common.Constants;

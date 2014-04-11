@@ -1,10 +1,7 @@
 package com.hci.geotagger.activities;
 
-<<<<<<< HEAD
 import com.actionbarsherlock.app.SherlockActivity;
 import com.hci.geotagger.R;
-=======
->>>>>>> FETCH_HEAD
 import com.hci.geotagger.cache.CacheHandler;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;

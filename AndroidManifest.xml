@@ -5,11 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-<<<<<<< HEAD
         android:minSdkVersion="9"
-=======
-        android:minSdkVersion="8"
->>>>>>> FETCH_HEAD
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />

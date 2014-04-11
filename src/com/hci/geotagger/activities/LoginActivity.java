@@ -10,10 +10,7 @@
 package com.hci.geotagger.activities;
 
 import com.actionbarsherlock.app.SherlockActivity;
-<<<<<<< HEAD
 import com.hci.geotagger.R;
-=======
->>>>>>> FETCH_HEAD
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.MyUserAccount;
 import com.hci.geotagger.common.UserSession;
@@ -152,7 +149,7 @@ public class LoginActivity extends SherlockActivity
 				startActivity(j);
 
 			}
-		});*/
+		});
 		if (Constants.LIMIT_HOME_TO_ADVENTURE)
 		{
 			regBtn.setVisibility(Button.INVISIBLE);

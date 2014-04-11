@@ -5,11 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
-<<<<<<< HEAD
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.hci.geotagger.R;
-=======
->>>>>>> FETCH_HEAD
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;
@@ -110,7 +107,7 @@ public class TagListActivity extends SherlockListActivity {
 				i.putExtra("startPos", position);
 				i.putExtra("tagList", tags);
 				// if user is viewing their own tag list, open the tag view
-				// expecting a result incase
+				// expecting a result in case
 				// the user deletes the tag from the tagview
 				if (userID == UserSession.CURRENTUSER_ID)
 					startActivityForResult(i, CONTEXT_DELETE_ID);
@@ -212,7 +209,7 @@ public class TagListActivity extends SherlockListActivity {
 		final AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item
 				.getMenuInfo();
 		// delete the selected tag
-		if (item.getTitle().equals("Remove")) 
+		if (item.getTitle().equals("Delete")) 
 		{
 			deleteTag(info.position);
 		}

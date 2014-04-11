@@ -3,6 +3,7 @@ package com.hci.geotagger.activities;
 import java.util.Date;
 import java.util.ArrayList;
 
+import com.hci.geotagger.R;
 import com.hci.geotagger.activities.AddTagActivity.AddTagTask;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.UserSession;

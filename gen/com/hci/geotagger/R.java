@@ -1114,7 +1114,6 @@ containing a value of this type.
         public static final int ic_star=0x7f02009a;
         public static final int ic_tag=0x7f02009b;
         public static final int icon=0x7f02009c;
-<<<<<<< HEAD
         public static final int image_border=0x7f02009d;
         public static final int list_bg=0x7f02009e;
         public static final int listbody=0x7f02009f;
@@ -1130,22 +1129,6 @@ containing a value of this type.
     public static final class id {
         public static final int CommentLabel=0x7f040050;
         public static final int TagImage=0x7f04009a;
-=======
-        public static final int list_bg=0x7f02009d;
-        public static final int listbody=0x7f02009e;
-        public static final int listheader=0x7f02009f;
-        public static final int pageheader=0x7f0200a0;
-        public static final int purplebutton=0x7f0200a1;
-        public static final int scrollview=0x7f0200a2;
-        public static final int select_text=0x7f0200a3;
-        public static final int textfield=0x7f0200a4;
-        public static final int textfield_selected=0x7f0200a5;
-        public static final int x=0x7f0200a6;
-    }
-    public static final class id {
-        public static final int CommentLabel=0x7f040050;
-        public static final int TagImage=0x7f040099;
->>>>>>> FETCH_HEAD
         public static final int abs__action_bar=0x7f040024;
         public static final int abs__action_bar_container=0x7f040023;
         public static final int abs__action_bar_subtitle=0x7f040015;
@@ -1185,11 +1168,7 @@ containing a value of this type.
         public static final int abs__textButton=0x7f040017;
         public static final int abs__title=0x7f04001f;
         public static final int abs__up=0x7f04000b;
-<<<<<<< HEAD
         public static final int action_settings=0x7f0400ba;
-=======
-        public static final int action_settings=0x7f0400b6;
->>>>>>> FETCH_HEAD
         public static final int addtag_btnCancel=0x7f040038;
         public static final int addtag_btnOk=0x7f040039;
         public static final int addtag_desc=0x7f040040;
@@ -1215,19 +1194,13 @@ containing a value of this type.
         public static final int adventureView_nametxt=0x7f040045;
         public static final int adventurelist=0x7f040048;
         public static final int adventurelist_username=0x7f040049;
-<<<<<<< HEAD
         public static final int application_title=0x7f040081;
         public static final int buttonTest=0x7f04009b;
         public static final int button_layout=0x7f040078;
-=======
-        public static final int application_title=0x7f040080;
-        public static final int buttonTest=0x7f04009a;
->>>>>>> FETCH_HEAD
         public static final int commentExtended_commentImg=0x7f04004b;
         public static final int commentExtended_commentTag=0x7f04004c;
         public static final int commentList=0x7f040051;
         public static final int commentbar=0x7f040052;
-<<<<<<< HEAD
         public static final int commentrow_thumbnail=0x7f0400af;
         public static final int commentrow_txtName=0x7f0400ae;
         public static final int commentrow_txtTime=0x7f0400ad;
@@ -1235,15 +1208,6 @@ containing a value of this type.
         public static final int compassTriangle=0x7f040096;
         public static final int content=0x7f04004e;
         public static final int dialog_ratingbar=0x7f0400b4;
-=======
-        public static final int commentrow_thumbnail=0x7f0400ab;
-        public static final int commentrow_txtName=0x7f0400aa;
-        public static final int commentrow_txtTime=0x7f0400a9;
-        public static final int commentrow_txtdesc=0x7f0400ac;
-        public static final int compassTriangle=0x7f040095;
-        public static final int content=0x7f04004e;
-        public static final int dialog_ratingbar=0x7f0400b0;
->>>>>>> FETCH_HEAD
         public static final int disableHome=0x7f040009;
         public static final int editAdvPeopleTab_btnAddPerson=0x7f040056;
         public static final int editAdvTagTab_btnAddTag=0x7f040058;
@@ -1263,13 +1227,8 @@ containing a value of this type.
         public static final int editprofile_saveBtn=0x7f04006d;
         public static final int editprofile_username=0x7f040061;
         public static final int friendlist_username=0x7f04006e;
-<<<<<<< HEAD
         public static final int friendrow_thumbnail=0x7f0400b1;
         public static final int friendrow_txtName=0x7f0400b2;
-=======
-        public static final int friendrow_thumbnail=0x7f0400ad;
-        public static final int friendrow_txtName=0x7f0400ae;
->>>>>>> FETCH_HEAD
         public static final int friends_bottombar=0x7f040070;
         public static final int friends_btnAdd=0x7f040071;
         public static final int friends_emptylbl=0x7f04006f;
@@ -1277,7 +1236,6 @@ containing a value of this type.
         public static final int homeAsUp=0x7f040006;
         public static final int home_btnAddTag=0x7f040074;
         public static final int home_btnAdventures=0x7f040075;
-<<<<<<< HEAD
         public static final int home_btnComments=0x7f04007a;
         public static final int home_btnFriends=0x7f040076;
         public static final int home_btnMyProfile=0x7f040077;
@@ -1328,61 +1286,10 @@ containing a value of this type.
         public static final int satellite=0x7f040011;
         public static final int scrollView1=0x7f04003a;
         public static final int searchdlg_txtusername=0x7f0400ac;
-=======
-        public static final int home_btnComments=0x7f040079;
-        public static final int home_btnFriends=0x7f040076;
-        public static final int home_btnMyProfile=0x7f040077;
-        public static final int home_btnMyTags=0x7f040073;
-        public static final int home_btnSignOut=0x7f040078;
-        public static final int home_homeLbl=0x7f040072;
-        public static final int hybrid=0x7f040013;
-        public static final int layout_root=0x7f0400a7;
-        public static final int lbl_debug=0x7f040082;
-        public static final int linearLayout1=0x7f040036;
-        public static final int listMode=0x7f040002;
-        public static final int login_btnLogin=0x7f04007e;
-        public static final int login_lblRegister=0x7f04007f;
-        public static final int login_loginLbl=0x7f04007a;
-        public static final int login_mainImage=0x7f04007b;
-        public static final int login_pwTxt=0x7f04007d;
-        public static final int login_unameTxt=0x7f04007c;
-        public static final int map=0x7f040081;
-        public static final int none=0x7f040010;
-        public static final int normal=0x7f040001;
-        public static final int profile_descriptionlbl=0x7f0400a0;
-        public static final int profile_locationlbl=0x7f04009e;
-        public static final int profileview_aboutme=0x7f0400a1;
-        public static final int profileview_editBtn=0x7f04009c;
-        public static final int profileview_email=0x7f0400a5;
-        public static final int profileview_emaillbl=0x7f0400a4;
-        public static final int profileview_imageview=0x7f04009d;
-        public static final int profileview_locationtxt=0x7f04009f;
-        public static final int profileview_quote=0x7f0400a3;
-        public static final int profileview_quotelbl=0x7f0400a2;
-        public static final int profileview_tagsBtn=0x7f0400a6;
-        public static final int profileview_username=0x7f04009b;
-        public static final int pvheader=0x7f040060;
-        public static final int rank_dialog_button=0x7f0400b1;
-        public static final int rank_dialog_text1=0x7f0400af;
-        public static final int reg_btnCancel=0x7f040086;
-        public static final int reg_confirmTxt=0x7f040085;
-        public static final int reg_pwTxt=0x7f040084;
-        public static final int reg_submitBtn=0x7f040087;
-        public static final int reg_unameTxt=0x7f040083;
-        public static final int revealedHandle=0x7f040097;
-        public static final int row_thumbnail=0x7f0400b4;
-        public static final int row_txtName=0x7f0400b2;
-        public static final int row_txtTime=0x7f0400b3;
-        public static final int row_txtdesc=0x7f0400b5;
-        public static final int satellite=0x7f040011;
-        public static final int scrollView1=0x7f04003a;
-        public static final int searchdlg_txtusername=0x7f0400a8;
->>>>>>> FETCH_HEAD
         public static final int showCustom=0x7f040008;
         public static final int showHome=0x7f040005;
         public static final int showTitle=0x7f040007;
         public static final int slidingDrawer1=0x7f04004d;
-<<<<<<< HEAD
         public static final int superCompass=0x7f040094;
         public static final int tabMode=0x7f040003;
         public static final int taglist_username=0x7f040099;
@@ -1405,29 +1312,6 @@ containing a value of this type.
         public static final int tagview_ratingtxt=0x7f04008a;
         public static final int terrain=0x7f040012;
         public static final int text_layout=0x7f0400a9;
-=======
-        public static final int superCompass=0x7f040093;
-        public static final int tabMode=0x7f040003;
-        public static final int taglist_username=0x7f040098;
-        public static final int tagview_commentbtn=0x7f040055;
-        public static final int tagview_commentimg=0x7f040053;
-        public static final int tagview_commenttxt=0x7f040054;
-        public static final int tagview_curGPSlabel=0x7f040091;
-        public static final int tagview_currentlocationtxt=0x7f040092;
-        public static final int tagview_descriptiontxt=0x7f04008c;
-        public static final int tagview_distancetotxt=0x7f040094;
-        public static final int tagview_imageview=0x7f04008b;
-        public static final int tagview_latlongtxt=0x7f040090;
-        public static final int tagview_locationGPSlabel=0x7f04008f;
-        public static final int tagview_locationlabel=0x7f04008d;
-        public static final int tagview_locationtxt=0x7f04008e;
-        public static final int tagview_mapsnavbtn=0x7f040096;
-        public static final int tagview_nametxt=0x7f040037;
-        public static final int tagview_ownertimetxt=0x7f04008a;
-        public static final int tagview_ratingbtn=0x7f040088;
-        public static final int tagview_ratingtxt=0x7f040089;
-        public static final int terrain=0x7f040012;
->>>>>>> FETCH_HEAD
         public static final int useLogo=0x7f040004;
         public static final int wrap_content=0x7f040000;
     }
@@ -1499,13 +1383,8 @@ containing a value of this type.
         public static final int user_profile=0x7f0b0009;
     }
     public static final class string {
-<<<<<<< HEAD
         public static final int about_me=0x7f090061;
         public static final int about_me_hint=0x7f090062;
-=======
-        public static final int about_me=0x7f090060;
-        public static final int about_me_hint=0x7f090061;
->>>>>>> FETCH_HEAD
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
          */
         public static final int abs__action_bar_home_description=0x7f090000;
@@ -1548,7 +1427,6 @@ containing a value of this type.
         public static final int action_settings=0x7f090024;
         /**  Common Strings Between Layouts 
          */
-<<<<<<< HEAD
         public static final int add=0x7f09007b;
         public static final int add_comment_hint=0x7f090053;
         public static final int add_existing_tag=0x7f09005b;
@@ -1565,24 +1443,6 @@ containing a value of this type.
          */
         public static final int adventure_name_hint=0x7f09005c;
         public static final int adventures=0x7f090084;
-=======
-        public static final int add=0x7f090078;
-        public static final int add_comment_hint=0x7f090052;
-        public static final int add_existing_tag=0x7f09005a;
-        /**  activity_edit_adv_tag_tab 
-         */
-        public static final int add_new_tag=0x7f090059;
-        public static final int add_tag=0x7f09006b;
-        public static final int add_tag_image=0x7f090043;
-        /**  activity_edit_adv_people_tab 
-         */
-        public static final int add_user=0x7f090058;
-        public static final int adventure_description=0x7f09005c;
-        /**  activity_edit_adventure 
-         */
-        public static final int adventure_name_hint=0x7f09005b;
-        public static final int adventures=0x7f090081;
->>>>>>> FETCH_HEAD
         public static final int app_name=0x7f090022;
         public static final int app_title=0x7f090023;
         /**   Title for notification shown when GooglePlayServices needs to be
@@ -1608,19 +1468,11 @@ containing a value of this type.
         [CHAR LIMIT=70] 
          */
         public static final int auth_client_using_bad_version_title=0x7f09001c;
-<<<<<<< HEAD
         public static final int cancel=0x7f09007e;
         /**  activity_comment_extended_view 
          */
         public static final int comment_img_description=0x7f090057;
         public static final int comments_text=0x7f090051;
-=======
-        public static final int cancel=0x7f09007b;
-        /**  activity_comment_extended_view 
-         */
-        public static final int comment_img_description=0x7f090056;
-        public static final int comments_text=0x7f090050;
->>>>>>> FETCH_HEAD
         /**  Button in confirmation dialog to enable Google Play services.  Clicking it
         will direct user to application settings of Google Play services where they
         can enable it [CHAR LIMIT=40] 
@@ -1676,24 +1528,15 @@ containing a value of this type.
         /**  Long form sign-in button text [CHAR LIMIT=30] 
          */
         public static final int common_signin_button_text_long=0x7f09001b;
-<<<<<<< HEAD
         public static final int create_adventure=0x7f090056;
         public static final int current_gps=0x7f09004d;
         public static final int description=0x7f090081;
         public static final int description_text=0x7f09004a;
         public static final int dlg_tagimg_title=0x7f090036;
-=======
-        public static final int create_adventure=0x7f090055;
-        public static final int current_gps=0x7f09004c;
-        public static final int description=0x7f09007e;
-        public static final int description_text=0x7f090049;
-        public static final int dlg_tagimg_title=0x7f090035;
->>>>>>> FETCH_HEAD
         public static final int dummy_button=0x7f09002e;
         public static final int dummy_content=0x7f09002f;
         /**  activity_adventure_view_wtabs 
          */
-<<<<<<< HEAD
         public static final int edit=0x7f090054;
         /**  activity_edit_profile 
          */
@@ -1790,101 +1633,6 @@ containing a value of this type.
         /**  activity_home_limited_adventures 
          */
         public static final int welcome=0x7f090068;
-=======
-        public static final int edit=0x7f090053;
-        /**  activity_edit_profile 
-         */
-        public static final int edit_profile=0x7f09005d;
-        public static final int edit_profile_img=0x7f09005f;
-        public static final int edit_profile_img_btn=0x7f09005e;
-        public static final int email_address=0x7f090064;
-        public static final int email_address_hint=0x7f090065;
-        public static final int favorite_quote=0x7f090062;
-        public static final int favorite_quote_hint=0x7f090063;
-        public static final int feedback=0x7f090069;
-        public static final int friends=0x7f09006c;
-        /**  activity_friend_list 
-         */
-        public static final int friends_header=0x7f090066;
-        public static final int google_map=0x7f09004f;
-        public static final int gps_location=0x7f09004a;
-        public static final int hello_world=0x7f090025;
-        public static final int image_description=0x7f090051;
-        public static final int invalid_login=0x7f090029;
-        public static final int lat_long_text=0x7f09004b;
-        public static final int list_no_advPeople=0x7f090034;
-        public static final int list_no_adventures=0x7f090033;
-        public static final int list_no_friends=0x7f09003e;
-        public static final int list_no_tags=0x7f090077;
-        public static final int location=0x7f09007a;
-        public static final int location_text=0x7f09007f;
-        public static final int location_unavailable=0x7f09004d;
-        public static final int login=0x7f09006e;
-        /**  activity_login 
-         */
-        public static final int login_caps=0x7f09006d;
-        public static final int login_img_desc=0x7f090070;
-        public static final int logout=0x7f090068;
-        public static final int my_profile=0x7f090082;
-        /**  activity_home 
-         */
-        public static final int my_tags=0x7f09006a;
-        public static final int name=0x7f09007d;
-        /**  Layout-Specific Strings 
- activity_add_tag 
-         */
-        public static final int new_tag=0x7f090041;
-        public static final int new_user=0x7f09006f;
-        /**  activity_register 
-         */
-        public static final int new_user_label=0x7f090071;
-        public static final int ok=0x7f090028;
-        public static final int picture=0x7f090042;
-        /**  activity_tag_view 
-         */
-        public static final int rating_text=0x7f090047;
-        public static final int save=0x7f090080;
-        public static final int str_Pass=0x7f090073;
-        public static final int str_Pass_Confirm=0x7f090074;
-        public static final int str_Username=0x7f090072;
-        public static final int submit=0x7f090075;
-        public static final int tag_comment=0x7f090057;
-        public static final int tag_description=0x7f090044;
-        public static final int tag_location=0x7f090046;
-        public static final int tag_name=0x7f090079;
-        public static final int tagged_by=0x7f090048;
-        public static final int temp_name=0x7f09007c;
-        public static final int title_activity_add_tag=0x7f090031;
-        public static final int title_activity_adventureView=0x7f090037;
-        public static final int title_activity_adventurelist=0x7f090036;
-        public static final int title_activity_editAdventure=0x7f090038;
-        public static final int title_activity_edit_profile=0x7f09003f;
-        public static final int title_activity_friend_list=0x7f090039;
-        public static final int title_activity_home=0x7f090026;
-        public static final int title_activity_register=0x7f090027;
-        public static final int title_activity_tag_view=0x7f09002d;
-        public static final int title_activity_taglist=0x7f090032;
-        public static final int title_activity_test=0x7f090030;
-        public static final int title_activity_user_profile=0x7f09003d;
-        public static final int title_section1=0x7f09003a;
-        public static final int title_section2=0x7f09003b;
-        public static final int title_section3=0x7f09003c;
-        public static final int triangle_description=0x7f09004e;
-        public static final int unknown_distance=0x7f090040;
-        public static final int unknown_error=0x7f09002a;
-        public static final int unknown_error_response_null=0x7f09002b;
-        public static final int unknown_error_try_catch=0x7f09002c;
-        public static final int use_gps=0x7f090045;
-        /**  activity_adventurelist 
-         */
-        public static final int username_adventures=0x7f090054;
-        /**  activity_taglist 
-         */
-        public static final int username_tags=0x7f090076;
-        /**  activity_home_limited_adventures 
-         */
-        public static final int welcome=0x7f090067;
->>>>>>> FETCH_HEAD
     }
     public static final class style {
         /** 

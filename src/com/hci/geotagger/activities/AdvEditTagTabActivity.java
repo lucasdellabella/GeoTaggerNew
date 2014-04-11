@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;

@@ -61,6 +61,7 @@ import android.app.AlertDialog;
 
 import android.content.DialogInterface;
 
+import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.GeoLocation;
 import com.hci.geotagger.Objects.Tag;

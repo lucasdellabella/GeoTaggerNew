@@ -1,5 +1,6 @@
 package com.hci.geotagger.activities;
 
+import com.hci.geotagger.R;
 import com.hci.geotagger.common.AlertHandler;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.connectors.AccountHandler;

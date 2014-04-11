@@ -34,13 +34,8 @@
 		        	android:layout_marginTop="0dp"
 		        	android:gravity="left|top"
 		        	android:text="Text"
-<<<<<<< HEAD
 		        	android:textColor="@android:color/black"
 		        	android:textSize="10pt"
-=======
-		        	android:textColor="@android:color/white"
-		        	android:textSize="15sp"
->>>>>>> FETCH_HEAD
 		        	android:textStyle="bold" />
 	         
 	         	<TextView
@@ -52,13 +47,8 @@
 	            	android:layout_marginBottom="2dp"
 	            	android:gravity="left"
 	            	android:text="01/01/13 12:00"
-<<<<<<< HEAD
 	            	android:textColor="@android:color/black"
 	            	android:textSize="10pt" />
-=======
-	            	android:textColor="@android:color/darker_gray"
-	            	android:textSize="10sp" />
->>>>>>> FETCH_HEAD
 	     
 	    </RelativeLayout>
 

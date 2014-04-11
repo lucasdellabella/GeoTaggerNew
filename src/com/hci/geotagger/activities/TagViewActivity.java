@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import android.util.Log;
 
+import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Comment;
 import com.hci.geotagger.Objects.GeoLocation;
 import com.hci.geotagger.Objects.Tag;
