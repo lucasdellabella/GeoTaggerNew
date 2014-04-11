@@ -1,6 +1,5 @@
 package com.hci.geotagger.activities;
 
-import com.hci.geotagger.R;
 import com.hci.geotagger.connectors.ImageHandler;
 
 import android.app.Activity;

@@ -2,7 +2,6 @@ package com.hci.geotagger.activities;
 
 import java.util.ArrayList;
 
-import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.Objects.UserAccount;

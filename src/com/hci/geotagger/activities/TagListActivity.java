@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+<<<<<<< HEAD
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.hci.geotagger.R;
+=======
+>>>>>>> FETCH_HEAD
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
 import com.hci.geotagger.common.Constants;

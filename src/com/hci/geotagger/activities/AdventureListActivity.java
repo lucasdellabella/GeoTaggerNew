@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.UserSession;
