@@ -101,7 +101,6 @@
     <string name="friends_header">Username\&apos;s Friends</string>
     
     <!-- activity_home_limited_adventures -->
-    <string name="welcome">Welcome</string>
     <string name="logout">Logout</string>
     <string name="feedback">Geotagger Comments/Suggestions</string>
     
