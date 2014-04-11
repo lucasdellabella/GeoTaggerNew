@@ -9,6 +9,7 @@
  */
 package com.hci.geotagger.activities;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.hci.geotagger.R;
 import com.hci.geotagger.common.Constants;
 import com.hci.geotagger.common.MyUserAccount;
@@ -22,22 +23,30 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.app.ProgressDialog;
 
-public class LoginActivity extends Activity 
+public class LoginActivity extends SherlockActivity 
 {
-	Button loginBtn;
-	TextView regBtn;
-	EditText unameTxt;
-	EditText pwTxt;
+	
+	private Button loginBtn; //log in button
+	private Typeface titleFont; //font used in the title
+	private Typeface font; //font used in everything but the title
+	private TextView title; //the title of the application
+	private EditText unameTxt; //input for user's username
+	private EditText pwTxt; //input for user's password
+	private AlphaAnimation titleFadeIn; //animation for the title's fade in
+	private AlphaAnimation itemsFadeIn; //animation for the widgets' fade in
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -47,6 +56,37 @@ public class LoginActivity extends Activity
 		final Context c = LoginActivity.this;
 		SharedPreferences app_settings = c.getSharedPreferences(Constants.LOGIN_DATAFILE, Constants.MODE_PRIVATE);
 
+		//keyboard is hidden upon starting the application
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+		
+		//find the fonts
+		titleFont = Typeface.createFromAsset(getAssets(), "steelfish rg.ttf");
+		font = Typeface.createFromAsset(getAssets(), "Gravity-Book.ttf");
+		
+		//find the widgets
+		title = (TextView) findViewById(R.id.application_title);
+		unameTxt = (EditText) findViewById(R.id.login_unameTxt);
+		pwTxt = (EditText) findViewById(R.id.login_pwTxt);
+		loginBtn = (Button) findViewById(R.id.login_btnLogin);
+		
+		
+		//apply fonts to widgets
+		title.setTypeface(titleFont);
+		unameTxt.setTypeface(font);
+		loginBtn.setTypeface(font);
+		
+		//animation for the title's fade in
+		titleFadeIn = new AlphaAnimation(0.0f, 1.0f); 
+		titleFadeIn.setDuration(1200);
+		title.startAnimation(titleFadeIn);
+		
+		//animation for the EditTexts' and button's fade in
+		itemsFadeIn = new AlphaAnimation(0.0f, 1.0f);
+		itemsFadeIn.setDuration(2400);
+		unameTxt.startAnimation(itemsFadeIn);
+		pwTxt.startAnimation(itemsFadeIn);
+		loginBtn.startAnimation(itemsFadeIn);
+		
 		//First Check user session see if a user is already logged in
 		if (UserSession.LOGGED_IN == true && UserSession.CURRENT_USER != null)
 		{
@@ -69,9 +109,9 @@ public class LoginActivity extends Activity
 			}
 		}
 		//get form controls
-		unameTxt = (EditText) findViewById(R.id.login_unameTxt);
-		pwTxt = (EditText) findViewById(R.id.login_pwTxt);
-		loginBtn = (Button) findViewById(R.id.login_btnLogin);
+		//unameTxt = (EditText) findViewById(R.id.login_unameTxt);
+		//pwTxt = (EditText) findViewById(R.id.login_pwTxt);
+		//loginBtn = (Button) findViewById(R.id.login_btnLogin);
 		//Set onClick action for login button
 		loginBtn.setOnClickListener(new OnClickListener()
 		{
@@ -96,6 +136,7 @@ public class LoginActivity extends Activity
 			}
 		});
 
+		/*
 		//Register Button Action
 		regBtn = (TextView) findViewById(R.id.login_lblRegister);
 		regBtn.setOnClickListener(new OnClickListener() 
@@ -113,7 +154,7 @@ public class LoginActivity extends Activity
 		{
 			regBtn.setVisibility(Button.INVISIBLE);
 			regBtn.setEnabled(false);
-		}
+		}*/
 		
 	}//end oncreate
 

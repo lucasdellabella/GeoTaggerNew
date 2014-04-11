@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
+import com.actionbarsherlock.app.SherlockListActivity;
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.Adventure;
 import com.hci.geotagger.Objects.Tag;
@@ -23,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -44,7 +46,7 @@ import android.widget.Toast;
  * to click on them to view the tag. 
  */
 
-public class TagListActivity extends ListActivity {
+public class TagListActivity extends SherlockListActivity {
 
 	private ProgressDialog PD = null;
 	private ArrayList<Tag> tags = null;
@@ -58,7 +60,9 @@ public class TagListActivity extends ListActivity {
 	private ImageHandler imageHandler;
 	private int flag;	
 	private Adventure adventure;
-	TextView nameTxt;
+	private Typeface titleFont; //font used for the title
+	private Typeface font; //font used for everything but title in the activity
+	private TextView nameTxt, txtName, txtTime, txtDesc;
 
 	HashMap<String, Bitmap> thumbCache;
 
@@ -71,6 +75,9 @@ public class TagListActivity extends ListActivity {
 		Bundle bundle = intent.getExtras();
 		adventure = (Adventure) bundle.getSerializable("adventure");
 		
+		titleFont = Typeface.createFromAsset(getAssets(), "steelfish rg.ttf");
+		font = Typeface.createFromAsset(getAssets(), "Gravity-Book.ttf");
+		
 		// initialize objects
 		imageHandler = new ImageHandler(this);
 		thumbCache = new HashMap<String, Bitmap>();
@@ -81,7 +88,10 @@ public class TagListActivity extends ListActivity {
 
 		tagHandler = new TagHandler(this);
 		accountHandler = new AccountHandler(this);
+		
+		
 		nameTxt = (TextView) findViewById(R.id.taglist_username);
+		nameTxt.setTypeface(titleFont);
 		// action when a list item is clicked
 		getListView().setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> parent, View view,
@@ -173,40 +183,6 @@ public class TagListActivity extends ListActivity {
 	 * Event Handlers
 	 */
 
-	// add logout to options menu since this class can't inherit it from
-	// BaseActivity
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		//create logout menu item with ID = 1
-		menu.add(1, 1, 1, "Logout");
-		menu.add(1,2,2,"Home");
-		return true;
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item)
-	{
-		switch (item.getItemId())
-		{
-		case 1: 
-			//log out the user, then open the login screen
-			UserSession.logout(this);
-			
-			Intent i = new Intent(getBaseContext(), LoginActivity.class);
-			i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-						Intent.FLAG_ACTIVITY_CLEAR_TASK |
-						Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(i);
-			finish();
-			return true;
-		case 2:
-			Intent homeIntent = new Intent(getBaseContext(), HomeActivity.class); 
-			startActivity(homeIntent);
-			finish();
-		}
-		
-		return super.onOptionsItemSelected(item);
-	}
 	// create context menu when list item is long-pressed
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v,
@@ -404,12 +380,16 @@ public class TagListActivity extends ListActivity {
 		private ArrayList<Tag> tags;
 		private Runnable loadImage;
 		Context c;
+		private Typeface font; //font used for everything but title in the activity
+		private TextView nameTxt, timeTxt, descTxt;
 
 		public TagAdapter(Context context, int textViewResourceId,
 				ArrayList<Tag> tags) {
 			super(context, textViewResourceId, tags);
 			this.tags = tags;
 			this.c = context;
+			
+			font = Typeface.createFromAsset(getAssets(), "Gravity-Book.ttf");
 		}
 
 		@Override
@@ -426,12 +406,17 @@ public class TagListActivity extends ListActivity {
 			}
 			Tag t = tags.get(position);
 			if (t != null) {
-				TextView nameTxt = (TextView) row
+				nameTxt = (TextView) row
 						.findViewById(R.id.row_txtName);
-				TextView descTxt = (TextView) row
+				descTxt = (TextView) row
 						.findViewById(R.id.row_txtdesc);
-				TextView timeTxt = (TextView) row
+				timeTxt = (TextView) row
 						.findViewById(R.id.row_txtTime);
+				
+				nameTxt.setTypeface(font);
+				descTxt.setTypeface(font);
+				timeTxt.setTypeface(font);
+				
 				final ImageView imgView = (ImageView) row
 						.findViewById(R.id.row_thumbnail);
 

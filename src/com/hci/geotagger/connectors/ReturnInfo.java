@@ -46,7 +46,9 @@ public final class ReturnInfo {
 	public ReturnInfo(JSONObject jsonResponse) {
 		if (jsonResponse != null) {
 			try {
+				Log.d("ReturnInfo", "Enter try.");
 				String successString = jsonResponse.getString(Constants.SUCCESS);
+				Log.d("ReturnInfo", "Post-Enter try.");
 
 				if (successString != null) {
 					int successCode = Integer.parseInt(successString);
@@ -65,6 +67,7 @@ public final class ReturnInfo {
 				success = false;
 				detail = FAIL_JSONERROR;
 				exceptionString = e.getMessage();
+				Log.d("ReturnInfo", "UnknownError Cause");
 			}
 		} else {
 			success = false;

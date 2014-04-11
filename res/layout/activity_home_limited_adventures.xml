@@ -33,7 +33,16 @@
 	    	android:text="@string/adventures"
 	    	android:textColor="@android:color/white"
         	android:textSize="@dimen/home_page_button_textsize"
-	    	android:textStyle="bold" />		    	
+	    	android:textStyle="bold" />	
+	   	<Button
+       		android:id="@+id/home_btnAddTag"
+        	android:layout_width="match_parent"
+        	android:layout_height="140dp"        	        	            	
+        	android:background="@drawable/greenbutton"
+        	android:text="@string/add_tag"
+        	android:textColor="@android:color/white"
+        	android:textSize="@dimen/home_page_button_textsize"
+        	android:textStyle="bold" />		    	
 		<Button
         	android:id="@+id/home_btnMyProfile"                               
         	android:layout_width="match_parent"

@@ -1,5 +1,6 @@
 package com.hci.geotagger.activities;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.hci.geotagger.R;
 import com.hci.geotagger.Objects.UserAccount;
 import com.hci.geotagger.common.UserSession;
@@ -9,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,27 +21,42 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class UserProfileActivity extends Activity {
+public class UserProfileActivity extends SherlockActivity {
 
 	private UserAccount currentUserAccount;
-	private TextView uNameTxt, locTxt, descTxt, quoteTxt;
+	private TextView uNameTxt, locTxt, descTxt, quoteTxt, emailTxt;
 	private ImageView imgView;
 	private Button btnTags;
-	private ImageButton btnEdit;
+	private Button btnEdit;
+	private Typeface titleFont; //font used for the title
+	private Typeface font; //font used in everything but the title
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_user_profile);
+		
+		//find the fonts
+		titleFont = Typeface.createFromAsset(getAssets(), "steelfish rg.ttf");
+		font = Typeface.createFromAsset(getAssets(), "Gravity-Book.ttf");
+		
 		//init ui elements
 		uNameTxt = (TextView) findViewById(R.id.profileview_username);
 		locTxt = (TextView) findViewById(R.id.profileview_locationtxt);
 		descTxt = (TextView) findViewById(R.id.profileview_aboutme);
 		quoteTxt= (TextView) findViewById(R.id.profileview_quote);
+		emailTxt = (TextView) findViewById(R.id.profileview_email);
 		
 		imgView = (ImageView) findViewById(R.id.profileview_imageview);
 		btnTags = (Button) findViewById(R.id.profileview_tagsBtn);
-		btnEdit = (ImageButton) findViewById(R.id.profileview_editBtn);
+		btnEdit = (Button) findViewById(R.id.profileview_editBtn);
+		
+		uNameTxt.setTypeface(titleFont);
+		locTxt.setTypeface(font);
+		descTxt.setTypeface(font);
+		quoteTxt.setTypeface(font);
+		btnTags.setTypeface(font);
+		btnEdit.setTypeface(font);
 		
 		Intent i = getIntent();
 	
@@ -119,6 +136,7 @@ public class UserProfileActivity extends Activity {
 		}
 	}
 
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//create logout menu item with ID = 1
@@ -150,7 +168,7 @@ public class UserProfileActivity extends Activity {
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 
 	//display the User's profile data on the screen
 	private void setUIFields() 
@@ -166,10 +184,12 @@ public class UserProfileActivity extends Activity {
 		String quote = (currentUserAccount.getQuote().equalsIgnoreCase("null")) ? str_default : currentUserAccount.getQuote();
 		String loc = (currentUserAccount.getLocation().equalsIgnoreCase("null"))? str_default : currentUserAccount.getLocation();
 		String desc = (currentUserAccount.getDescription().equalsIgnoreCase("null")) ? str_default : currentUserAccount.getDescription();
-
+		String email = (currentUserAccount.getEmail().equalsIgnoreCase("null")) ? str_default : currentUserAccount.getEmail(); 
+		
 		locTxt.setText(loc);
 		descTxt.setText(desc );
-		quoteTxt.setText(quote);	
+		quoteTxt.setText(quote);
+		emailTxt.setText(email);
 	}
 	
 	// load the tag's image from the url into the image view

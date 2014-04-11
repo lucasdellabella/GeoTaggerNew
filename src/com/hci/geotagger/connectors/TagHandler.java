@@ -95,6 +95,7 @@ public class TagHandler {
 			} else {
 				// TODO: if a failure then what?
 				dbresponse = new ReturnInfo(ReturnInfo.FAIL_GENERAL);
+				Log.d("AddTag","Failure");
 			}
 		} else {
 			// Since record was not added we need a Tag ID, so we use the next Cache Tag ID
@@ -137,6 +138,7 @@ public class TagHandler {
 			JSONObject json = jsonParser.getJSONFromUrl(tagOpURL, params);
 			Log.d(TAG, "addTagToServer: JSON Response from PHP: " + json.toString());
 			result = new ReturnInfo(json);
+			Log.d("AddTagToServer", "Result is " + result.success);
 			if (result.success)
 				result.object = createTagFromJSON(json);
 		}
@@ -166,7 +168,7 @@ public class TagHandler {
 			
 			JSONArray tagData = getTagsByIdFromServer(oId);
 			JSONObject obj;
-			if (tagData != null) {
+			if (tagData != null) { //tagId
 				// loop through each JSON entry in the JSON array (tags encoded as JSON)
 				for (int i = 0; i < tagData.length(); i++) {
 					obj = null;
@@ -213,7 +215,7 @@ public class TagHandler {
     		SimpleDateFormat ts = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			d = ts.parse(json.getString("CreatedDateTime"));
 			double lat, lon;
-			if(! json.getString("Latitude").equalsIgnoreCase("null") && ! json.getString("Longitude").equalsIgnoreCase("null"))
+			if(!json.getString("Latitude").equalsIgnoreCase("null") && ! json.getString("Longitude").equalsIgnoreCase("null"))
 			{
 				lat = json.getDouble("Latitude");
 				lon = json.getDouble("Longitude");

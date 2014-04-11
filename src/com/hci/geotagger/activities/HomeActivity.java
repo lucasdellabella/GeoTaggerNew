@@ -1,5 +1,6 @@
 package com.hci.geotagger.activities;
 
+import com.actionbarsherlock.app.SherlockActivity;
 import com.hci.geotagger.R;
 import com.hci.geotagger.cache.CacheHandler;
 import com.hci.geotagger.common.Constants;
@@ -7,6 +8,7 @@ import com.hci.geotagger.common.UserSession;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -16,12 +18,19 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class HomeActivity extends Activity {
+public class HomeActivity extends SherlockActivity {
 	TextView homeLabel;
 	Button btnGroups, btnMyTags, btnFriends, btnMyProfile, btnSignOut1, btnSignOut2, btnAdventures, btnAddTag, btnComments;
+	private Typeface titleFont; //font used for the title of the activity
+	private Typeface font; //font used for everything but title in the activity
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		titleFont = Typeface.createFromAsset(getAssets(), "steelfish rg.ttf");
+		font = Typeface.createFromAsset(getAssets(), "Gravity-Book.ttf");
+		
 		if (!Constants.LIMIT_HOME_TO_ADVENTURE){
 			setContentView(R.layout.activity_home);
 			btnAddTag = (Button) findViewById(R.id.home_btnAddTag);		
@@ -66,6 +75,7 @@ public class HomeActivity extends Activity {
 		else
 		{	setContentView(R.layout.activity_home_limited_adventures);
 			btnSignOut2 = (Button) findViewById(R.id.home_btnSignOut);
+			btnSignOut2.setTypeface(font);
 			btnSignOut2.setOnClickListener(new OnClickListener()
 			{	@Override
 				public void onClick(View arg0) {
@@ -75,14 +85,24 @@ public class HomeActivity extends Activity {
 		}
 
 		homeLabel = (TextView) findViewById(R.id.home_homeLbl);
+		btnMyProfile = (Button) findViewById(R.id.home_btnMyProfile);		
+		btnAdventures = (Button) findViewById(R.id.home_btnAdventures);	
+		btnAddTag = (Button) findViewById(R.id.home_btnAddTag);	
+		btnComments = (Button) findViewById(R.id.home_btnComments);
+		
+		homeLabel.setTypeface(titleFont);
+		btnMyProfile.setTypeface(font);
+		btnAdventures.setTypeface(font);
+		btnAddTag.setTypeface(font);
+		btnComments.setTypeface(font);
+		
 		String uname = UserSession.CURRENT_USER.getuName();
 		if (uname.length() > 0)
 		{	String homeLabelStr = "Welcome " + uname.substring(0, 1).toUpperCase() + uname.substring(1); 
 			homeLabel.setText(homeLabelStr);
 		}
 		
-		btnMyProfile = (Button) findViewById(R.id.home_btnMyProfile);		
-		btnAdventures = (Button) findViewById(R.id.home_btnAdventures);
+
 		
 		// go to profile screen when my profile button is clicked
 		btnMyProfile.setOnClickListener(new OnClickListener() {
@@ -106,7 +126,17 @@ public class HomeActivity extends Activity {
 			}
 		});
 		
-		btnComments = (Button) findViewById(R.id.home_btnComments);
+		btnAddTag.setOnClickListener(new OnClickListener() 
+		{
+			public void onClick(View view0) 
+			{
+				// create link to add tag
+				Intent i = new Intent(getBaseContext(), AddTagActivity.class);
+				startActivity(i);
+			}
+		});
+		
+
 		btnComments.setOnClickListener(new OnClickListener() {
 			public void onClick(View view0) {
 				// open the comments/suggestions webpage
@@ -120,6 +150,7 @@ public class HomeActivity extends Activity {
 		CacheHandler ch = new CacheHandler(this);
 		ch.cleanup();
 	}
+	/*
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		//create logout menu item with ID = 1
@@ -138,7 +169,7 @@ public class HomeActivity extends Activity {
 		}
 		
 		return super.onOptionsItemSelected(item);
-	}
+	}*/
 	
 	private void logoutSession()
 	{
