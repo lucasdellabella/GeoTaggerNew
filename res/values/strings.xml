@@ -129,7 +129,6 @@
     <!-- activity_taglist -->
     <string name="username_tags">Username\&apos;s Tags</string>
     <string name="list_no_tags">No Tags to display.</string>
-    <string name="title_activity_taglist">MyTagsActivity</string>
     
     <!-- Common Strings Between Layouts -->
     <string name="add">Add</string>
