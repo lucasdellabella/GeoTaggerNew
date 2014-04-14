@@ -47,7 +47,7 @@ public class UserProfileActivity extends SherlockActivity {
 		quoteTxt= (TextView) findViewById(R.id.profileview_quote);
 		emailTxt = (TextView) findViewById(R.id.profileview_email);
 		
-		imgView = (ImageView) findViewById(R.id.profileview_imageview);
+		imgView = (ImageView) findViewById(R.id.profile_photo);
 		btnTags = (Button) findViewById(R.id.profileview_tagsBtn);
 		btnEdit = (Button) findViewById(R.id.profileview_editBtn);
 		

@@ -35,7 +35,8 @@ public class HomeActivity extends SherlockActivity {
 			setContentView(R.layout.activity_home);
 			btnAddTag = (Button) findViewById(R.id.home_btnAddTag);		
 			btnMyTags = (Button) findViewById(R.id.home_btnMyTags);
-			btnFriends = (Button) findViewById(R.id.home_btnFriends);
+//			There is no friends implementation yet
+//			btnFriends = (Button) findViewById(R.id.home_btnFriends);
 
 			//go to add tags menu when add button is clicked
 			btnAddTag.setOnClickListener(new OnClickListener() 
