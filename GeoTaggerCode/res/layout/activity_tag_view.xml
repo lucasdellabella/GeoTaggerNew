@@ -1,0 +1,441 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="3dp"
+    tools:context=".TagViewActivity" >
+
+    <TextView
+        android:id="@+id/tagview_nametxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerHorizontal="false"
+        android:shadowColor="@android:color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:text="@string/tag_name"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/pageheader_textsize"
+        android:textStyle="bold"
+        android:typeface="sans" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" 
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/tagview_ratingbtn"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:clickable="true"
+            android:src="@drawable/ic_star" />
+
+        <TextView
+            android:id="@+id/tagview_ratingtxt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="@string/rating_text"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+        
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tagview_ownertimetxt"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tagview_nametxt"
+        android:layout_centerHorizontal="true"
+        android:gravity="left"
+        android:text="@string/tagged_by"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="@color/light_gray"
+        android:textColorHint="@color/light_gray" />
+    
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/tagview_ownertimetxt"
+        android:layout_below="@+id/tagview_ownertimetxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:foregroundGravity="center" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:orientation="vertical" >
+
+            <ImageView
+                android:id="@+id/tagview_imageview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:adjustViewBounds="true"
+                android:maxHeight="400dp"
+                android:maxWidth="400dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/icon"
+                android:contentDescription="@string/image_description" />
+            
+            <TextView
+                android:id="@+id/tagview_descriptiontxt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/description_text"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@android:color/white" />
+            
+            <LinearLayout 
+                android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:orientation="horizontal" >
+	            
+	            <TextView
+	                android:id="@+id/tagview_locationlabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp"
+	                android:gravity="left"
+	                android:textSize="18sp"
+	                android:layout_weight="1"
+	                android:text="@string/location_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+	            <TextView
+	                android:id="@+id/tagview_locationtxt"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp"
+	                android:gravity="right"
+	                android:textSize="18sp"
+	                android:layout_weight="2"
+	                android:text="@string/location"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+			</LinearLayout>
+			
+            <LinearLayout 
+                android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:orientation="horizontal" >
+
+	            <TextView
+	                android:id="@+id/tagview_locationGPSlabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp"
+	                android:gravity="left"
+	                android:textSize="14sp"
+	                android:layout_weight="1"
+	                android:text="@string/gps_location"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+	            <TextView
+	                android:id="@+id/tagview_latlongtxt"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:layout_marginTop="10dp"
+	                android:gravity="right"
+	                android:textSize="14sp"
+	                android:layout_weight="2"
+	                android:text="@string/lat_long_text"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+	        </LinearLayout>
+
+            <LinearLayout 
+                android:layout_width="match_parent"
+	            android:layout_height="match_parent"
+	            android:orientation="horizontal" >
+	            
+	            <TextView
+	                android:id="@+id/tagview_curGPSlabel"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:gravity="left"
+	                android:textSize="14sp"
+	                android:layout_weight="1"
+	                android:text="@string/current_gps"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+	            <TextView
+	                android:id="@+id/tagview_currentlocationtxt"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:text="@string/location_unavailable"
+	                android:gravity="right"
+	                android:textSize="14sp"
+	                android:layout_weight="2"
+	                android:textAppearance="?android:attr/textAppearanceMedium"
+	                android:textColor="@color/light_gray" />
+	            
+	        </LinearLayout>
+            
+            <LinearLayout
+                android:layout_width="match_parent"
+	            android:orientation="horizontal" 
+	            android:layout_height="wrap_content" >
+                
+	            <RelativeLayout 
+	                android:layout_width="wrap_content"
+				    android:layout_height="100dp"
+				    android:id="@+id/superCompass"
+	                android:layout_marginTop="10dp"
+	                android:layout_weight="1" >
+		            
+		            <TextView
+		                android:id="@+id/tagview_distancetotxt"
+		                android:layout_width="fill_parent"
+		                android:layout_height="fill_parent"
+		                android:gravity="center"
+		                android:text="@string/unknown_distance"
+		                android:textColor="@android:color/white"
+						android:textSize="@dimen/pageheader_textsize"
+						android:textAppearance="@style/ShadowText"
+						android:textStyle="bold"
+						android:typeface="sans" />
+	
+		            <ImageView
+		                android:id="@+id/compassTriangle"
+		                android:layout_height="fill_parent"
+		                android:layout_width="fill_parent"
+		                android:scaleType="centerInside"
+		                android:contentDescription="@string/triangle_description"
+		                android:src="@drawable/arrow"
+		                android:visibility="invisible" />
+		            
+		        </RelativeLayout>
+
+				<Button
+	                android:id="@+id/tagview_mapsnavbtn"
+	                android:layout_width="fill_parent"
+	                android:layout_height="fill_parent"
+	                android:background="@drawable/graybutton"
+	                android:minHeight="@dimen/button_height"
+	                android:minWidth="0dp"
+	                android:layout_marginTop="10dp"
+	                android:layout_weight="1"
+	                android:textColor="@android:color/white"
+					android:textSize="@dimen/pageheader_textsize"
+					android:textAppearance="@style/ShadowText"
+					android:textStyle="bold"
+					android:typeface="sans"
+					android:text="@string/google_map" />
+	            
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+    
+    <Button
+        android:id="@+id/handle"
+        android:layout_height="@dimen/button_height"
+        android:layout_width="fill_parent"
+        android:minHeight="0dp"
+        android:minWidth="50dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/greenbutton"
+        android:drawableRight="@drawable/ic_largecomment"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="@string/comments_text" />
+    
+	<Button 
+        android:id="@+id/revealedHandle"
+        android:layout_height="@dimen/button_height"
+        android:layout_width="fill_parent"
+        android:minHeight="0dp"
+        android:minWidth="50dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="gone"
+        android:background="@drawable/greenbutton"
+        android:drawableRight="@drawable/ic_largecomment"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:text="@string/comments_text"/>
+    
+   	<RelativeLayout
+    	android:id="@+id/content"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:background="@drawable/purplebutton"
+        android:orientation="vertical"
+        android:layout_below="@+id/revealedHandle"
+        android:visibility="gone" >
+            
+        <ListView
+            android:id="@+id/commentList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:transcriptMode="alwaysScroll"
+            android:layout_above="@+id/commentbar"       
+            android:layout_alignParentTop="true">
+        </ListView>
+                
+        <LinearLayout
+        	android:id="@+id/commentbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="3dp"
+            android:layout_marginTop="10dp"
+            android:gravity="bottom"
+            android:paddingTop="3dp"
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:weightSum="6" >
+                    
+            <ImageView
+                android:id="@+id/tagview_commentimg"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:contentDescription="@string/image_description"
+                android:adjustViewBounds="true"
+                android:clickable="true"
+                android:cropToPadding="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:scaleType="fitCenter"
+                android:paddingRight="2dp"
+                android:paddingLeft="4dp"
+                android:src="@drawable/icon" 
+                android:layout_weight="1"/>
+
+             <EditText
+             	android:id="@+id/tagview_commenttxt"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/button_height"
+                android:ems="10"
+                android:hint="@string/add_comment_hint"
+                android:inputType="textCapSentences"
+                android:maxLines="5"
+                android:layout_weight="4" />
+
+             <Button
+             	android:id="@+id/tagview_commentbtn"
+                android:layout_width="@dimen/button_height"
+                android:layout_height="@dimen/button_height"
+                android:background="@drawable/greenbutton"
+                android:minWidth="0dp"
+                android:text="@string/add"
+                android:layout_weight="1" />
+              
+		</LinearLayout>
+	</RelativeLayout>
+    
+    
+    
+    <!-- SLIDING DRAWER STUFF -->
+    
+    <!--  <SlidingDrawer
+        android:id="@+id/slidingDrawer1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="false"
+        android:animateOnClick="true"
+        android:content="@+id/content"
+        android:handle="@+id/handle" >
+
+        <Button
+            android:id="@+id/handle"
+            android:layout_width="fill_parent"
+            android:layout_height="@dimen/button_height"
+            android:background="@drawable/greenbutton"
+            android:drawableRight="@drawable/ic_largecomment"
+            android:minHeight="0dp"
+            android:minWidth="50dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="3dp"
+            android:text="@string/comments_text" />
+
+        <RelativeLayout
+            android:id="@+id/content"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:background="@drawable/purplebutton"
+            android:orientation="vertical" >
+            
+            <ListView
+            	android:id="@+id/commentList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:transcriptMode="alwaysScroll"
+                android:layout_above="@+id/commentbar"
+                android:layout_alignParentTop="true">
+           	</ListView>
+                
+            <LinearLayout
+            	android:id="@+id/commentbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="3dp"
+                android:layout_marginTop="10dp"
+                android:gravity="bottom"
+                android:paddingTop="3dp"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true"
+                android:weightSum="6" >
+                    
+                <ImageView
+                	android:id="@+id/tagview_commentimg"
+                    android:layout_width="@dimen/button_height"
+                   	android:layout_height="@dimen/button_height"
+                   	android:contentDescription="@string/image_description"
+                   	android:adjustViewBounds="true"
+                   	android:clickable="true"
+                   	android:cropToPadding="false"
+                   	android:focusable="true"
+                   	android:focusableInTouchMode="true"
+                   	android:scaleType="fitCenter"
+                   	android:paddingRight="2dp"
+                   	android:paddingLeft="4dp"
+                 	android:src="@drawable/icon" 
+                 	android:layout_weight="1"/>
+
+                 <EditText
+                    android:id="@+id/tagview_commenttxt"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/button_height"
+                    android:ems="10"
+                    android:hint="@string/add_comment_hint"
+                    android:inputType="textCapSentences"
+                    android:maxLines="5"
+                    android:layout_weight="4" />
+
+                 <Button
+                    android:id="@+id/tagview_commentbtn"
+                    android:layout_width="@dimen/button_height"
+                    android:layout_height="@dimen/button_height"
+                    android:background="@drawable/greenbutton"
+                    android:minWidth="0dp"
+                    android:text="@string/add"
+                    android:layout_weight="1" />
+                 
+        	</LinearLayout>
+        </RelativeLayout>
+    </SlidingDrawer>-->
+</RelativeLayout>

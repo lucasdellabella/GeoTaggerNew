@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.hci.geotagger"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-sdk
+        android:minSdkVersion="9"
+        android:targetSdkVersion="21" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="com.hci.geotagger.activities.LoginActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateVisible|adjustResize"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AddTagActivity"
+            android:label="@string/title_activity_add_tag"
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustPan" >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.TagListActivity"
+            android:label="@string/title_activity_taglist"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.TagViewActivity"
+            android:label="@string/title_activity_tag_view"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.FriendListActivity"
+            android:label="@string/title_activity_friend_list"
+            android:theme="@android:style/Theme.Black.NoTitleBar" > >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.UserProfileActivity"
+            android:label="@string/title_activity_user_profile"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" > >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.EditProfileActivity"
+            android:label="@string/title_activity_edit_profile"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >  >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdvEditPeopleTabActivity" 
+            android:theme="@style/CustomTabTheme"> >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdvEditTagTabActivity" > >            
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdventureListActivity"
+            android:label="@string/title_activity_adventurelist"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >  >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdventureViewActivity"
+            android:label="@string/title_activity_adventureView"
+            android:theme="@android:style/Theme.Black.NoTitleBar" >  >
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdvViewPeopleTabActivity" > >            
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.AdvViewTagTabActivity" > >            
+        </activity>
+        <activity
+            android:name="com.hci.geotagger.activities.EditAdventureActivity"
+            android:label="@string/title_activity_editAdventure"           
+            android:theme="@android:style/Theme.Black.NoTitleBar" >  >
+        </activity> 
+        <activity
+            android:name="com.hci.geotagger.activities.CommentViewActivity" 
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Dialog">
+        </activity>
+               
+    </application>
+
+</manifest>

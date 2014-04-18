@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/background"
+    android:orientation="vertical" >   
+	
+	<ListView
+	    android:id="@+id/android:list"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent" />
+	<Button 
+	    android:id="@+id/advViewTagTab_btnNewTag"
+	    android:layout_width="match_parent"
+	    android:layout_height="@dimen/button_height"
+	    android:background="@drawable/greenbutton"
+	    android:text="Add New Tag"/>			    
+	<TextView
+	    android:id="@+id/android:empty"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/list_no_tags"
+	    android:textColor="@android:color/white" />
+	
+</LinearLayout>
