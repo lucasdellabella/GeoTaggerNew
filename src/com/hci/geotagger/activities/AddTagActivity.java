@@ -124,7 +124,7 @@ public class AddTagActivity extends BaseActivity
 		//open camera to take pic when camera button is clicked				
         startActivityForResult(i_Cam, Constants.CAPTURE_IMG);
 	}
-	private void openCamera1()
+	private void openCamera4()
 	{
 		Intent i_Cam = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 		//create a file to save an image in
