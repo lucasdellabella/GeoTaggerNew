@@ -221,6 +221,19 @@ public class Adventure implements Serializable
 		}		
 	}
 	
+		public void removePerson128(long userID)
+	{
+		for(int i = 0; i < peopleArray.size(); i++)
+		{
+			long ID = peopleArray.get(i).getId();
+			if(ID == userID)
+			{
+				int index = peopleArray.indexOf(ID);
+				peopleArray.remove(index);
+			}
+		}		
+	}
+	
 	/**
 	 * These methods deal with storing tags and users that are to be added and/or removed from the adventure.
 	 * These methods are used by activities called from AdvEditTagTabActivity, AdvEditPeopleTabActivity and the 
