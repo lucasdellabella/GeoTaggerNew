@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="5dp"
+    android:background="#B2FFFF" 
+    android:orientation="vertical" 
+    android:id="@+id/adventurelist"	>
+
+    <TextView
+    	android:id="@+id/adventurelist_username"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+    	android:background="#B2FFFF" 
+        android:gravity="center"
+        android:paddingBottom="3dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/username_adventures"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/pageheader_textsize"
+        android:textStyle="bold" />
+    
+   	<Button 
+   		android:id="@+id/adventureList_btnNewAdv"
+   		android:layout_width="match_parent"
+   		android:layout_height="@dimen/button_height"
+   		android:background="@drawable/graybutton"
+   		android:text="@string/create_adventure"/>
+    
+	<LinearLayout
+  		android:orientation="vertical"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		android:layout_gravity="fill"
+  		android:background="#B2FFFF">
+	
+		<ListView
+   			android:id="@+id/android:list"
+   			android:layout_width="fill_parent"
+   			android:layout_height="fill_parent" 
+   			android:background="#B2FFFF"
+   			android:scrollingCache="false"/>
+   
+		<TextView
+   			android:id="@+id/android:empty"
+   			android:layout_width="fill_parent"
+   			android:layout_height="fill_parent"
+   			android:text="@string/list_no_adventures"
+   			android:textColor="@android:color/white" />
+	
+	</LinearLayout>
+</LinearLayout>

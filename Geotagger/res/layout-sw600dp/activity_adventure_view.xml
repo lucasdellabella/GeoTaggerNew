@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCF0F7" >
+      
+    <TextView 
+        android:id="@+id/adventure_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/adventure_title"
+        android:textSize="24pt"
+        android:layout_centerHorizontal="true" />
+    
+   	<ImageView 
+        android:id="@+id/tag_photo"
+        android:layout_width="325dp"
+        android:layout_height="325dp"
+        android:maxWidth="325dp"
+        android:maxHeight="325dp"
+        android:contentDescription="@string/adventure_pic_desc" 
+        android:background="@drawable/image_border"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/adventure_header"
+        android:src="@drawable/android_logo_white"
+        android:layout_marginBottom="10dip" />
+   	
+   	<!-- Row of toggle buttons -->
+   	<LinearLayout
+		android:id="@+id/tab_buttons"
+		android:layout_width="fill_parent"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal"
+		android:layout_centerVertical="true"
+		android:background="#5F6B61"
+		android:weightSum="3" >
+		
+   	   	<ToggleButton 
+	        android:id="@+id/description_button"
+	        android:textOn="@string/adventure_toggle_description"
+	        android:textOff="@string/adventure_toggle_description"
+	        android:background="@drawable/toggle_button"
+	        android:textColor="#DCF0F7"
+	        android:textSize="14pt"
+	        android:layout_width="0dip"
+	        android:layout_height="65dip"
+	        android:layout_weight="1"
+	        android:layout_margin="10dip"
+	        android:checked="true" />
+   	   	
+   	  	<ToggleButton
+	        android:id="@+id/users_button"
+	        android:textOn="@string/adventure_toggle_users"
+	        android:textOff="@string/adventure_toggle_users"
+	        android:background="@drawable/toggle_button"
+	        android:textColor="#DCF0F7"
+	        android:textSize="14pt"
+	        android:layout_width="0dip"
+	        android:layout_height="65dip"
+	        android:layout_margin="10dip"
+	        android:layout_weight="1" />
+   	  	
+   	  	<ToggleButton
+	        android:id="@+id/map_button"
+	        android:textOn="@string/adventure_toggle_map"
+	        android:textOff="@string/adventure_toggle_map"
+	        android:background="@drawable/toggle_button"
+	        android:textColor="#DCF0F7"
+	        android:textSize="14pt"
+	        android:layout_width="0dip"
+	        android:layout_height="65dip"
+	        android:layout_margin="10dip"
+	        android:layout_weight="1" />
+
+   	</LinearLayout>
+   	
+   	<FrameLayout
+	    android:id="@+id/adventure_view_content"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	   	android:layout_below="@id/tab_buttons" >
+	</FrameLayout>
+   	  	
+</RelativeLayout>
